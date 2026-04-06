@@ -8,10 +8,10 @@ public enum PokemonType
     Electric,
     Psychic,
     Ice,
-    Dragon,
     Dark,
     Fighting,
-    Normal
+    Poison,
+    Ground
 }
 
 [CreateAssetMenu(fileName = "NewPokemonCard", menuName = "PokeSoul/Pokemon Card")]
