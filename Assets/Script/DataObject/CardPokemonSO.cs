@@ -24,8 +24,9 @@ public class CardPokemonSO : ScriptableObject
 
     [Header("Visual")]
     public Sprite spritePokemonCard;
-    public GameObject fxTypeCard;
 
     [Header("Shop")]
     public int priceToBuy;
+
+    public PokemonData pokemonData;
 }
