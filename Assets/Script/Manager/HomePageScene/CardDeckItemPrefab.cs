@@ -13,10 +13,10 @@ public class CardDeckItemPrefab : MonoBehaviour
     public List<Sprite> TypeSprites;
     public List<GameObject> cardTypeEffectPrefabs;
 
-    public void Setup(CardPokemonSO cardPokemon)
+    public void Setup(PokemonData cardPokemon)
     {
         pokemonCardImage.sprite = cardPokemon.spritePokemonCard;
-        pokemonNameText.text = cardPokemon.pokemonName;
+        pokemonNameText.text = cardPokemon.PokemonName;
         pokemonTypeText.text = cardPokemon.type.ToString();
 
     }
@@ -30,7 +30,7 @@ public class CardDeckItemPrefab : MonoBehaviour
         }
 
     }
-    public void SetupType(CardPokemonSO cardPokemon)
+    public void SetupType(PokemonData cardPokemon)
     {
         switch (cardPokemon.type)
         {
