@@ -16,6 +16,6 @@ public class EnemyHPUI : MonoBehaviour
     }
     void UpdateHPUI(double hp)
     {
-        hpSlider.value = (float)enemyHPController.currentHP;
+        hpSlider.value = (float)hp;
     }
 }

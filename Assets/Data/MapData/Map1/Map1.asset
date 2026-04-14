@@ -18,7 +18,7 @@ MonoBehaviour:
   enemyDatas:
   - {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
   waves:
-  - waveNumber: 0
+  - waveNumber: 1
     waveReward:
       waveReward: 0
       waveSpecialReward: 0

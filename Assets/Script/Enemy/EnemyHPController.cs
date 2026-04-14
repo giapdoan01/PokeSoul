@@ -13,10 +13,12 @@ public class EnemyHPController : MonoBehaviour
     {
         
     }
+    
     private void Start()
     {
 
     }
+    
     public void setHpByWaveName(int waveName)
     {
         EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveName);
@@ -24,6 +26,9 @@ public class EnemyHPController : MonoBehaviour
         {
             currentHP = waveData.enemyStats.HP;
             Debug.Log($"[EnemyHealtController] Đã thiết lập HP cho {enemyData.enemyName} ở wave {waveName}: {currentHP}");
+            
+            // Kích hoạt sự kiện onEnemyHealthChanged để UI cập nhật
+            onEnemyHealthChanged?.Invoke(currentHP);
         }
         else
         {
@@ -38,7 +43,7 @@ public class EnemyHPController : MonoBehaviour
         {
             Die();
         }
-        onEnemyHealthChanged?.Invoke(damage);
+        onEnemyHealthChanged?.Invoke(currentHP);
     }
 
     private void Die()
