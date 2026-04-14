@@ -80,7 +80,6 @@ public class EnemyMoveController : MonoBehaviour
         }
     }
     
-    // Phương thức được gọi khi đến điểm cuối cùng
     void OnReachEndPoint()
     {
        
