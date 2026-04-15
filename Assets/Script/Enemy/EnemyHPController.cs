@@ -5,13 +5,19 @@ using System;
 
 public class EnemyHPController : MonoBehaviour
 {
-    public EnemyData enemyData;
+    private EnemyData enemyData;
     public double currentHP;
     public Action<double> onEnemyHealthChanged;
+    public Action<double> onEnemyMaxHPSet;
+
+    public void SetEnemyData(EnemyData data)
+    {
+        enemyData = data;
+    }
 
     void Awake()
     {
-        
+
     }
     
     private void Start()
@@ -26,7 +32,9 @@ public class EnemyHPController : MonoBehaviour
         {
             currentHP = waveData.enemyStats.HP;
             Debug.Log($"[EnemyHealtController] Đã thiết lập HP cho {enemyData.enemyName} ở wave {waveName}: {currentHP}");
-            
+
+            // Thông báo maxHP để UI setup slider trước
+            onEnemyMaxHPSet?.Invoke(currentHP);
             // Kích hoạt sự kiện onEnemyHealthChanged để UI cập nhật
             onEnemyHealthChanged?.Invoke(currentHP);
         }
@@ -50,5 +58,6 @@ public class EnemyHPController : MonoBehaviour
     {
         Debug.Log($"{enemyData.enemyName} đã chết!");
         Destroy(gameObject);
+        
     }
 }

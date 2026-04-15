@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyMoveController : MonoBehaviour
 {
-    public EnemyData enemyData;
+    private EnemyData enemyData;
     
     public WayPointForEnemy wayPointManager;
     
@@ -14,7 +14,12 @@ public class EnemyMoveController : MonoBehaviour
     private bool reachedEnd = false;
     private EnemyWaveData enemyWaveData;
 
-    public void SetSpeedByWave (int waveIndex)
+    public void SetEnemyData(EnemyData data)
+    {
+        enemyData = data;
+    }
+
+    public void SetSpeedByWave(int waveIndex)
     {
         enemyWaveData = enemyData.getEnemyWaveDataByName(waveIndex);
         if (enemyWaveData != null)
@@ -42,8 +47,6 @@ public class EnemyMoveController : MonoBehaviour
         }
         
         wayPointManager.getWayPoint(currentWayPointIndex, out currentWayPoint);
-
-        SetSpeedByWave(1);
     }
     
     void Update()

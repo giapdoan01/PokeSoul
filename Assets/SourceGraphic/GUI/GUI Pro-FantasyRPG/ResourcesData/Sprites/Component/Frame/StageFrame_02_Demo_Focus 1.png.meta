@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: bfbebe839de174feeba861144f792df1
-AssetOrigin:
-  serializedVersion: 1
-  productId: 170168
-  packageName: GUI Pro - Fantasy RPG
-  packageVersion: 4.0.3
-  assetPath: Assets/Layer Lab/GUI Pro-FantasyRPG/ResourcesData/Sprites/Component/Frame/StageFrame_02_White_FocusGlow.png
-  uploadId: 797988
+guid: 2e894cb076a1cc248b11968092bbb85a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -70,7 +63,7 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 0
+  applyGammaDecoding: 1
   swizzle: 50462976
   cookieLightType: 1
   platformSettings:
