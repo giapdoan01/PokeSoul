@@ -18,12 +18,12 @@ public class PokemonData : ScriptableObject
     public PokemonData EvolutionPokemonData;
     public PokemonLevelData[] levelUpData;
 
-    public StatEntry[] getStatEntryByLevel(int level)
+    public PokemonLevelData getPokemonLevelDataByLevel(int level)
     {
         foreach (var levelData in levelUpData)
         {
             if (levelData.level == level)
-                return levelData.statEntries;
+                return levelData;
         }
         Debug.LogWarning($"[PokemonData] Không tìm thấy level: {level}");
         return null;
@@ -71,10 +71,6 @@ public class StatEntry
         statName = name;
         value    = val;
     }
-    public double GetValue()
-    {
-        return value;
-    }
 }
 
 [System.Serializable]
@@ -82,5 +78,14 @@ public class PokemonLevelData
 {
     public int level;
     public StatEntry[] statEntries;
+    public StatEntry GetStatEntryByName(string name)
+    {
+        foreach (var entry in statEntries)
+        {
+            if (entry.StatName == name)
+                return entry;
+        }
+        return null;
+    }
 }
 
