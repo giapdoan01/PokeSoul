@@ -18,8 +18,9 @@ public class PlayerData
 public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance { get; private set; }
-
     public PlayerData CurrentData { get; private set; }
+    public AllPokemonData allPokemonData;
+    public PokemonData[] myPokemonDatas;
 
     void Awake()
     {
@@ -49,6 +50,20 @@ public class PlayerDataManager : MonoBehaviour
             {
                 await CreateNewPlayerDataAsync(username);
             }
+            // Load PokemonData cho player
+            var pokemonList = new List<PokemonData>();  // hoặc: List<PokemonData> pokemonList = new();
+            foreach (var cardId in CurrentData.ownCard)
+            {
+                var pokemonData = allPokemonData.GetPokemonDataById(cardId);
+                if (pokemonData != null)
+                    pokemonList.Add(pokemonData);
+            }
+            myPokemonDatas = pokemonList.ToArray();
+
+            //LoadPokemonData cho Shop
+            ShopManager shopManager = FindObjectOfType<ShopManager>();
+            if (shopManager != null)
+                shopManager.SetupMyPokemonData(myPokemonDatas);
         }
         catch (Exception e)
         {
@@ -81,6 +96,42 @@ public class PlayerDataManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"Save error: {e.Message}");
+        }
+    }
+    public PokemonData GetPokemonDataByIdFromPlayerData(string id)
+    {
+        return allPokemonData.GetPokemonDataById(id);
+    }
+    public async Task AddCardToOwnCardAsync(string cardId)
+    {
+        if (!CurrentData.ownCard.Contains(cardId))
+        {
+            CurrentData.ownCard.Add(cardId);
+            await SaveAsync();
+            Debug.Log($"Added card {cardId} to ownCard");
+        }
+        else
+        {
+            Debug.LogWarning($"Card {cardId} already exists in ownCard");
+        }
+    }
+    public async Task AddGemAsync(int amount)
+    {
+        CurrentData.gem += amount;
+        await SaveAsync();
+        Debug.Log($"Added {amount} gems. Total now: {CurrentData.gem}");
+    }
+    public async Task MinusGemAsync(int amount)
+    {
+        if (CurrentData.gem >= amount)
+        {
+            CurrentData.gem -= amount;
+            await SaveAsync();
+            Debug.Log($"Subtracted {amount} gems. Total now: {CurrentData.gem}");
+        }
+        else
+        {
+            Debug.LogWarning($"Not enough gems to subtract. Total now: {CurrentData.gem}");
         }
     }
 }
