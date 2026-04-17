@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class WaveManager : MonoBehaviour
 {
     public Map mapData;
-    public PlayerStatsManager playerStatsManager;
+    public PlayerStatsInBattleManager playerStatsInBattleManager;
     public int timeToStartFirstWave = 10;
     private int currentWaveNumber;
     private EnemyData[] enemyBattleDatas;
@@ -78,7 +78,7 @@ public class WaveManager : MonoBehaviour
             rewardCoin = waveReward.waveReward;
             bonusCoin = waveReward.waveSpecialReward;
             int totalReward = rewardCoin + bonusCoin;
-            playerStatsManager.AddCoin(totalReward);
+            playerStatsInBattleManager.AddCoin(totalReward);
             Debug.Log($"[WaveManager] Kết thúc wave {waveNumber}. Thưởng {totalReward} coin.");
         }
         else

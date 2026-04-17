@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class PlayerStatsManager : MonoBehaviour
+public class PlayerStatsInBattleManager : MonoBehaviour
 {
     public int playerCoin;
     private PokemonData[] pokemonDatas;

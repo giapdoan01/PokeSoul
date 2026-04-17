@@ -21,6 +21,7 @@ public class PlayerDataManager : MonoBehaviour
     public PlayerData CurrentData { get; private set; }
     public AllPokemonData allPokemonData;
     public PokemonData[] myPokemonDatas;
+    public Action<int> OnGemChanged;
 
     void Awake()
     {
@@ -50,20 +51,30 @@ public class PlayerDataManager : MonoBehaviour
             {
                 await CreateNewPlayerDataAsync(username);
             }
-            // Load PokemonData cho player
-            var pokemonList = new List<PokemonData>();  // hoặc: List<PokemonData> pokemonList = new();
-            foreach (var cardId in CurrentData.ownCard)
+            // Load PokemonData cho player (ownCard rỗng khi mới tạo acc là bình thường)
+            var pokemonList = new List<PokemonData>();
+            if (allPokemonData != null)
             {
-                var pokemonData = allPokemonData.GetPokemonDataById(cardId);
-                if (pokemonData != null)
-                    pokemonList.Add(pokemonData);
+                foreach (var cardId in CurrentData.ownCard)
+                {
+                    var pokemonData = allPokemonData.GetPokemonDataById(cardId);
+                    if (pokemonData != null)
+                        pokemonList.Add(pokemonData);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[PlayerDataManager] allPokemonData chưa được assign trong Inspector!");
             }
             myPokemonDatas = pokemonList.ToArray();
-
-            //LoadPokemonData cho Shop
+            OnGemChanged?.Invoke(CurrentData.gem);
+            // Setup Shop
             ShopManager shopManager = FindObjectOfType<ShopManager>();
             if (shopManager != null)
+            {
                 shopManager.SetupMyPokemonData(myPokemonDatas);
+                shopManager.SetUpAllPokemonData(allPokemonData);
+            }
         }
         catch (Exception e)
         {
@@ -118,6 +129,7 @@ public class PlayerDataManager : MonoBehaviour
     public async Task AddGemAsync(int amount)
     {
         CurrentData.gem += amount;
+        OnGemChanged?.Invoke(CurrentData.gem);
         await SaveAsync();
         Debug.Log($"Added {amount} gems. Total now: {CurrentData.gem}");
     }
@@ -126,6 +138,7 @@ public class PlayerDataManager : MonoBehaviour
         if (CurrentData.gem >= amount)
         {
             CurrentData.gem -= amount;
+            OnGemChanged?.Invoke(CurrentData.gem);
             await SaveAsync();
             Debug.Log($"Subtracted {amount} gems. Total now: {CurrentData.gem}");
         }

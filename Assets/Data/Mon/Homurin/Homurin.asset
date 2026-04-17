@@ -15,7 +15,7 @@ MonoBehaviour:
   id: _homurin
   PokemonName: Homurin
   type: 0
-  spritePokemonCard: {fileID: 0}
+  spritePokemonCard: {fileID: -1751767932, guid: 6d8ac39f806ca5342950fed871008e8a, type: 3}
   priceToBuyCard: 250
   pokemonPrefab: {fileID: 0}
   skillPrefab: {fileID: 0}

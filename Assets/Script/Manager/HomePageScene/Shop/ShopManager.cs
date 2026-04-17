@@ -1,33 +1,45 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 
 public class ShopManager : MonoBehaviour
 {
-    public int myGem;
     public AllPokemonData allPokemonData;
     private PokemonData[] myPokemonDatas;
 
+    void Start() { }
 
-    void Start()
+    public async void BuyPokemon(PokemonData pokemonData, int price, Action<PokemonData> onSuccess = null)
     {
-      
-    }
-    public async void BuyPokemon(PokemonData pokemonData, int price)
-    {
-        if (PlayerDataManager.Instance.CurrentData.gem >= price)
+        if (PlayerDataManager.Instance.CurrentData.gem < price)
+        {
+            Debug.LogWarning($"[ShopManager] Không đủ gem để mua {pokemonData.PokemonName}. Gem hiện tại: {PlayerDataManager.Instance.CurrentData.gem}");
+            return;
+        }
+
+        bool success = await LoadingManager.Instance.RunWithLoadingAsync(async () =>
         {
             await PlayerDataManager.Instance.MinusGemAsync(price);
             await PlayerDataManager.Instance.AddCardToOwnCardAsync(pokemonData.id);
-            Debug.Log($"[ShopManager] Đã mua {pokemonData.PokemonName} với giá {price} gem. Gem còn lại: {PlayerDataManager.Instance.CurrentData.gem}");
-        }
-        else
+        }, $"Đang mua {pokemonData.PokemonName}...");
+
+        if (success)
         {
-            Debug.LogWarning($"[ShopManager] Không đủ gem để mua {pokemonData.PokemonName}. Gem hiện tại: {PlayerDataManager.Instance.CurrentData.gem}");
+            Debug.Log($"[ShopManager] Đã mua {pokemonData.PokemonName} với giá {price} gem. Gem còn lại: {PlayerDataManager.Instance.CurrentData.gem}");
+            onSuccess?.Invoke(pokemonData);
         }
     }
+
     public void SetupMyPokemonData(PokemonData[] pokemonDatas)
     {
         myPokemonDatas = pokemonDatas;
+    }
+    public void SetUpAllPokemonData(AllPokemonData data)
+    {
+        allPokemonData = data;
+    }
+
+    public bool IsOwned(string cardId)
+    {
+        return PlayerDataManager.Instance.CurrentData.ownCard.Contains(cardId);
     }
 }
