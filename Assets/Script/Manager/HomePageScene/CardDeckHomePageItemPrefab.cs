@@ -11,24 +11,60 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
     public TMP_Text monName;
     public TMP_Text typeText;
     public Image TypeImage;
+    public Button addOrReplaceCardButton;
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
-    public void SetupCard(PokemonData pokemonData)
+    
+    private int _positionInDeck;  // Vị trí của card trong deck (0-3)
+    private PopupListCardSelect _popupListCardSelect;
+
+    void Start()
     {
+        // Gán sự kiện click cho button
+        addOrReplaceCardButton.onClick.AddListener(AddOrReplaceCard);
+        
+        // Tìm popup trong scene
+        _popupListCardSelect = FindObjectOfType<PopupListCardSelect>();
+    }
+    
+    public void SetupCard(PokemonData pokemonData, int positionInDeck)
+    {
+        _positionInDeck = positionInDeck;
+        
         backgroundCardWhenNoData.enabled = false;
+        typeCardBackgroundImage.enabled = true;
+        monImage.enabled = true;
+        TypeImage.enabled = true;
+        
         monImage.sprite = pokemonData.spritePokemonCard;
         monName.text = pokemonData.PokemonName;
         typeText.text = pokemonData.type.ToString();
         SetupType(pokemonData);
     }
-    public void SetupEmptyCard()
+    
+    public void SetupEmptyCard(int positionInDeck)
     {
+        _positionInDeck = positionInDeck;
+        
         backgroundCardWhenNoData.enabled = true;
         typeCardBackgroundImage.enabled = false;
         monImage.enabled = false;
         monName.text = "Add Mon";
         typeText.text = "";
         TypeImage.enabled = false;
+    }
+    
+    public void AddOrReplaceCard()
+    {
+        if (_popupListCardSelect != null)
+        {
+            _popupListCardSelect.SetCurrentEditingPosition(_positionInDeck);
+            _popupListCardSelect.OpenPopup();
+        }
+        else
+        {
+            Debug.LogError("PopupListCardSelect not found in scene!");
+        }
     }
 
     public void SetupType(PokemonData cardPokemon)

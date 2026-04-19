@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   mapData: {fileID: 11400000, guid: 2f8d4df362f1603499d9cef545b713c4, type: 2}
-  playerStatsManager: {fileID: 631509266}
+  playerStatsInBattleManager: {fileID: 0}
   timeToStartFirstWave: 10
 --- !u!4 &39896907
 Transform:
@@ -6988,7 +6988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsUI
   coinText: {fileID: 0}
-  playerStatsManager: {fileID: 631509266}
+  playerStatsInBattleManager: {fileID: 0}
 --- !u!114 &631509266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17854,6 +17854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450653046454318}
+  - component: {fileID: 919132148776690325}
   m_Layer: 0
   m_Name: Homurin
   m_TagString: Untagged
@@ -17861,6 +17862,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!95 &919132148776690325
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148776690324}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: d16730d79fe035f46887f2ff20468a4a, type: 3}
+  m_Controller: {fileID: 9100000, guid: 3101be6ecae2b6f43933473cd46a61da, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &919132148888833271
 GameObject:
   m_ObjectHideFlags: 0

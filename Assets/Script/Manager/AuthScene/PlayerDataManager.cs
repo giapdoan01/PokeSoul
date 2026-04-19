@@ -4,6 +4,18 @@ using Unity.Services.CloudSave.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+[Serializable]
+public class DeckSlot
+{
+    public string cardId;
+    public DeckSlot() { cardId = ""; }
+    public DeckSlot(string id) { cardId = id ?? ""; }
+    public bool IsEmpty => string.IsNullOrEmpty(cardId);
+}
 
 [Serializable]
 public class PlayerData
@@ -11,8 +23,49 @@ public class PlayerData
     public string username;
     public int level = 1;
     public List<string> ownCard = new();
-    public List<string> cardDeckToBattle = new();
+    public List<DeckSlot> cardDeckToBattle = new();
     public int gem = 1000;
+
+    public PlayerData() { InitDeck(); }
+
+    /// <summary>Chỉ gọi khi tạo tài khoản MỚI</summary>
+    public void InitDeck()
+    {
+        cardDeckToBattle = new List<DeckSlot>
+        {
+            new DeckSlot(), new DeckSlot(), new DeckSlot(), new DeckSlot()
+        };
+    }
+
+    /// <summary>Repair cấu trúc nếu bị lỗi — KHÔNG xóa dữ liệu hợp lệ</summary>
+    public void EnsureDeckIntegrity()
+    {
+        if (cardDeckToBattle == null)
+            cardDeckToBattle = new List<DeckSlot>();
+
+        while (cardDeckToBattle.Count < 4)
+            cardDeckToBattle.Add(new DeckSlot());
+
+        if (cardDeckToBattle.Count > 4)
+            cardDeckToBattle = cardDeckToBattle.GetRange(0, 4);
+
+        for (int i = 0; i < 4; i++)
+            if (cardDeckToBattle[i] == null)
+                cardDeckToBattle[i] = new DeckSlot();
+    }
+
+    public string GetCardIdAt(int position)
+    {
+        if (position < 0 || position >= 4) return null;
+        var slot = cardDeckToBattle[position];
+        return (slot == null || slot.IsEmpty) ? null : slot.cardId;
+    }
+
+    public void SetCardIdAt(int position, string cardId)
+    {
+        if (position < 0 || position >= 4) return;
+        cardDeckToBattle[position] = new DeckSlot(cardId);
+    }
 }
 
 public class PlayerDataManager : MonoBehaviour
@@ -22,6 +75,7 @@ public class PlayerDataManager : MonoBehaviour
     public AllPokemonData allPokemonData;
     public PokemonData[] myPokemonDatas;
     public Action<int> OnGemChanged;
+    public Action OnPlayerDataLoaded;
 
     void Awake()
     {
@@ -35,51 +89,134 @@ public class PlayerDataManager : MonoBehaviour
             await SaveAsync();
     }
 
-    // Gọi sau khi login/register thành công
     public async Task LoadOrCreatePlayerDataAsync(string username)
     {
         try
         {
-            var result = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "playerData" });
+            var result = await CloudSaveService.Instance.Data.Player.LoadAsync(
+                new HashSet<string> { "playerData" }
+            );
 
             if (result.TryGetValue("playerData", out var item))
             {
-                CurrentData = item.Value.GetAs<PlayerData>();
-                Debug.Log($"Loaded data for: {CurrentData.username}");
-            }
-            else
-            {
-                await CreateNewPlayerDataAsync(username);
-            }
-            // Load PokemonData cho player (ownCard rỗng khi mới tạo acc là bình thường)
-            var pokemonList = new List<PokemonData>();
-            if (allPokemonData != null)
-            {
-                foreach (var cardId in CurrentData.ownCard)
+                // ── Load raw JSON để tự xử lý migration ──
+                string rawJson = item.Value.GetAsString();
+                Debug.Log($"[LOAD] Raw JSON from cloud: {rawJson}");
+
+                CurrentData = ParsePlayerDataWithMigration(rawJson);
+                Debug.Log($"[LOAD] Loaded existing account: {CurrentData.username}");
+                Debug.Log($"[LOAD] cardDeckToBattle: [{string.Join(", ", Enumerable.Range(0, 4).Select(i => $"{i}:{CurrentData.GetCardIdAt(i) ?? "null"}"))}]");
+
+                // Nếu data vừa được migrate từ format cũ → save lại format mới
+                if (_wasMigrated)
                 {
-                    var pokemonData = allPokemonData.GetPokemonDataById(cardId);
-                    if (pokemonData != null)
-                        pokemonList.Add(pokemonData);
+                    Debug.Log("[LOAD] Data migrated from old format, saving new format...");
+                    await SaveAsync();
+                    _wasMigrated = false;
                 }
             }
             else
             {
-                Debug.LogWarning("[PlayerDataManager] allPokemonData chưa được assign trong Inspector!");
+                // ── Tài khoản mới ──
+                Debug.Log($"[LOAD] No data found → Creating new account: {username}");
+                await CreateNewPlayerDataAsync(username);
             }
-            myPokemonDatas = pokemonList.ToArray();
+
+            RefreshMyPokemonDatas();
             OnGemChanged?.Invoke(CurrentData.gem);
-            // Setup Shop
+
             ShopManager shopManager = FindObjectOfType<ShopManager>();
             if (shopManager != null)
             {
                 shopManager.SetupMyPokemonData(myPokemonDatas);
                 shopManager.SetUpAllPokemonData(allPokemonData);
             }
+
+            Debug.Log("[PlayerDataManager] OnPlayerDataLoaded event firing!");
+            OnPlayerDataLoaded?.Invoke();
+            Debug.Log("[PlayerDataManager] OnPlayerDataLoaded event fired!");
         }
         catch (Exception e)
         {
-            Debug.LogError($"LoadOrCreate error: {e.Message}");
+            Debug.LogError($"[PlayerDataManager] LoadOrCreate error: {e.Message}\n{e.StackTrace}");
         }
+    }
+
+    // Flag để biết có cần re-save sau migration không
+    private bool _wasMigrated = false;
+
+    /// <summary>
+    /// Parse JSON thủ công, tự động detect format cũ (List<string>) 
+    /// và migrate sang format mới (List<DeckSlot>).
+    /// </summary>
+    private PlayerData ParsePlayerDataWithMigration(string rawJson)
+    {
+        _wasMigrated = false;
+        var jObj = JObject.Parse(rawJson);
+
+        var data = new PlayerData();
+        data.username = jObj["username"]?.ToString() ?? "";
+        data.level    = jObj["level"]?.Value<int>() ?? 1;
+        data.gem      = jObj["gem"]?.Value<int>() ?? 1000;
+        data.ownCard  = jObj["ownCard"]?.ToObject<List<string>>() ?? new List<string>();
+
+        // ── Detect & migrate cardDeckToBattle ──
+        var deckToken = jObj["cardDeckToBattle"];
+        if (deckToken == null || !deckToken.HasValues)
+        {
+            // Không có data → init 4 slot rỗng
+            data.InitDeck();
+            _wasMigrated = true;
+            Debug.Log("[MIGRATE] No deck data found, initialized 4 empty slots.");
+        }
+        else
+        {
+            var firstElement = deckToken[0];
+
+            if (firstElement?.Type == JTokenType.String)
+            {
+                // ── FORMAT CŨ: List<string> ──
+                Debug.Log("[MIGRATE] Detected OLD format (List<string>), migrating...");
+                var oldList = deckToken.ToObject<List<string>>() ?? new List<string>();
+                _wasMigrated = true;
+
+                // Handle bug 8 phần tử từ format cũ
+                if (oldList.Count == 8)
+                {
+                    var first4  = oldList.GetRange(0, 4);
+                    var second4 = oldList.GetRange(4, 4);
+                    oldList = new List<string>();
+                    for (int i = 0; i < 4; i++)
+                        oldList.Add(!string.IsNullOrEmpty(first4[i]) ? first4[i] : second4[i]);
+                    Debug.Log($"[MIGRATE] Fixed 8→4 elements: [{string.Join(", ", oldList.Select(x => x ?? "null"))}]");
+                }
+
+                // Convert string → DeckSlot
+                data.cardDeckToBattle = new List<DeckSlot>();
+                for (int i = 0; i < 4; i++)
+                {
+                    string cardId = (i < oldList.Count) ? oldList[i] : null;
+                    data.cardDeckToBattle.Add(new DeckSlot(cardId));
+                }
+                Debug.Log($"[MIGRATE] Migration complete: [{string.Join(", ", Enumerable.Range(0, 4).Select(i => $"{i}:{data.GetCardIdAt(i) ?? "null"}"))}]");
+            }
+            else if (firstElement?.Type == JTokenType.Object)
+            {
+                // ── FORMAT MỚI: List<DeckSlot> ──
+                Debug.Log("[LOAD] Detected NEW format (List<DeckSlot>), loading normally.");
+                data.cardDeckToBattle = deckToken.ToObject<List<DeckSlot>>() ?? new List<DeckSlot>();
+            }
+            else
+            {
+                // Null token hoặc format không xác định → init an toàn
+                Debug.LogWarning("[LOAD] Unknown deck format, initializing 4 empty slots.");
+                data.InitDeck();
+                _wasMigrated = true;
+            }
+        }
+
+        data.EnsureDeckIntegrity();
+        return data;
     }
 
     private async Task CreateNewPlayerDataAsync(string username)
@@ -87,52 +224,76 @@ public class PlayerDataManager : MonoBehaviour
         CurrentData = new PlayerData
         {
             username = username,
-            level = 1,
-            ownCard = new List<string>(),
-            cardDeckToBattle = new List<string>(),
-            gem = 1000
+            level    = 1,
+            ownCard  = new List<string>(),
+            gem      = 1000
         };
-
+        CurrentData.InitDeck();
         await SaveAsync();
-        Debug.Log($"Created new data for: {username}");
+        Debug.Log($"[LOAD] Created new account: {username}");
+    }
+
+    private void RefreshMyPokemonDatas()
+    {
+        var pokemonList = new List<PokemonData>();
+        if (allPokemonData != null)
+        {
+            foreach (var cardId in CurrentData.ownCard)
+            {
+                var pokemonData = allPokemonData.GetPokemonDataById(cardId);
+                if (pokemonData != null)
+                    pokemonList.Add(pokemonData);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerDataManager] allPokemonData chưa được assign trong Inspector!");
+        }
+        myPokemonDatas = pokemonList.ToArray();
     }
 
     public async Task SaveAsync()
     {
         try
         {
+            CurrentData.EnsureDeckIntegrity();
+            Debug.Log($"[SAVE] cardDeckToBattle: [{string.Join(", ", Enumerable.Range(0, 4).Select(i => $"{i}:{CurrentData.GetCardIdAt(i) ?? "null"}"))}]");
             var data = new Dictionary<string, object> { { "playerData", CurrentData } };
             await CloudSaveService.Instance.Data.Player.SaveAsync(data);
+            Debug.Log("[SAVE] Save completed!");
         }
         catch (Exception e)
         {
-            Debug.LogError($"Save error: {e.Message}");
+            Debug.LogError($"[PlayerDataManager] Save error: {e.Message}");
         }
     }
+
     public PokemonData GetPokemonDataByIdFromPlayerData(string id)
-    {
-        return allPokemonData.GetPokemonDataById(id);
-    }
+        => allPokemonData.GetPokemonDataById(id);
+
     public async Task AddCardToOwnCardAsync(string cardId)
     {
         if (!CurrentData.ownCard.Contains(cardId))
         {
             CurrentData.ownCard.Add(cardId);
+            RefreshMyPokemonDatas();
             await SaveAsync();
-            Debug.Log($"Added card {cardId} to ownCard");
+            Debug.Log($"[PlayerDataManager] Added card {cardId} to ownCard");
         }
         else
         {
-            Debug.LogWarning($"Card {cardId} already exists in ownCard");
+            Debug.LogWarning($"[PlayerDataManager] Card {cardId} already in ownCard");
         }
     }
+
     public async Task AddGemAsync(int amount)
     {
         CurrentData.gem += amount;
         OnGemChanged?.Invoke(CurrentData.gem);
         await SaveAsync();
-        Debug.Log($"Added {amount} gems. Total now: {CurrentData.gem}");
+        Debug.Log($"[PlayerDataManager] +{amount} gems → Total: {CurrentData.gem}");
     }
+
     public async Task MinusGemAsync(int amount)
     {
         if (CurrentData.gem >= amount)
@@ -140,11 +301,44 @@ public class PlayerDataManager : MonoBehaviour
             CurrentData.gem -= amount;
             OnGemChanged?.Invoke(CurrentData.gem);
             await SaveAsync();
-            Debug.Log($"Subtracted {amount} gems. Total now: {CurrentData.gem}");
+            Debug.Log($"[PlayerDataManager] -{amount} gems → Total: {CurrentData.gem}");
         }
         else
         {
-            Debug.LogWarning($"Not enough gems to subtract. Total now: {CurrentData.gem}");
+            Debug.LogWarning($"[PlayerDataManager] Not enough gems. Current: {CurrentData.gem}, Required: {amount}");
         }
     }
+
+    public async Task AddCardToBattleDeckAsync(string cardId, int position)
+    {
+        if (position < 0 || position >= 4)
+        { Debug.LogError($"[PlayerDataManager] Invalid position: {position}"); return; }
+
+        if (!string.IsNullOrEmpty(cardId) && !CurrentData.ownCard.Contains(cardId))
+        { Debug.LogWarning($"[PlayerDataManager] Card {cardId} not in ownCard."); return; }
+
+        CurrentData.SetCardIdAt(position, cardId);
+        await SaveAsync();
+        Debug.Log($"[PlayerDataManager] Set battle deck [{position}] = {cardId}");
+    }
+
+    public string GetCardFromBattleDeck(int position)
+    {
+        if (position < 0 || position >= 4)
+        { Debug.LogError($"[PlayerDataManager] Invalid position: {position}"); return null; }
+        return CurrentData.GetCardIdAt(position);
+    }
+
+    public async Task RemoveCardFromBattleDeckAsync(int position)
+    {
+        if (position < 0 || position >= 4)
+        { Debug.LogError($"[PlayerDataManager] Invalid position: {position}"); return; }
+
+        CurrentData.SetCardIdAt(position, null);
+        await SaveAsync();
+        Debug.Log($"[PlayerDataManager] Cleared battle deck slot [{position}]");
+    }
+
+    public List<string> GetBattleDeck()
+        => Enumerable.Range(0, 4).Select(i => CurrentData.GetCardIdAt(i)).ToList();
 }
