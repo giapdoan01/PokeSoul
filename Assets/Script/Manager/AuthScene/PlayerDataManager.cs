@@ -77,6 +77,7 @@ public class PlayerDataManager : MonoBehaviour
     public PokemonData[] myPokemonDatas;
     public Action<int> OnGemChanged;
     public Action OnPlayerDataLoaded;
+    public Action OnOwnCardUpdated;
 
     void Awake()
     {
@@ -274,6 +275,7 @@ public class PlayerDataManager : MonoBehaviour
             CurrentData.ownCard.Add(cardId);
             RefreshMyPokemonDatas();
             await SaveAsync();
+            OnOwnCardUpdated?.Invoke();
             Debug.Log($"[PlayerDataManager] Added card {cardId} to ownCard");
         }
         else

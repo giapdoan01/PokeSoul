@@ -15,6 +15,7 @@ public class SetupListCardEvoContainer : MonoBehaviour
         PlayerDataManager playerDataManager = PlayerDataManager.Instance;
         if (playerDataManager != null) {
            playerDataManager.OnPlayerDataLoaded += OnPlayerDataLoaded;
+           playerDataManager.OnOwnCardUpdated += OnPlayerDataLoaded;
            if (playerDataManager.CurrentData != null) {
                OnPlayerDataLoaded();
            }
@@ -24,6 +25,7 @@ public class SetupListCardEvoContainer : MonoBehaviour
         PlayerDataManager playerDataManager = PlayerDataManager.Instance;
         if (playerDataManager != null) {
            playerDataManager.OnPlayerDataLoaded -= OnPlayerDataLoaded;
+           playerDataManager.OnOwnCardUpdated -= OnPlayerDataLoaded;
         }
     }
 

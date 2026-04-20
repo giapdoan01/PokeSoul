@@ -15,6 +15,8 @@ public class CardShopItemPrefab : MonoBehaviour
     public TMP_Text priceText;
     public Image gemIcon;
     public Image purchasedImage;
+    public ParticleSystem buyParticle;
+    public PopupNotificationShop popupNotificationShop;
     public List<Sprite> typeSprites;
     public List<Sprite> typeCardBackgroundSprites;
 
@@ -54,12 +56,13 @@ public class CardShopItemPrefab : MonoBehaviour
             Debug.LogError("[CardShopItemPrefab] _shopManager null — SetupCardShopItem chưa được gọi!");
             return;
         }
-        _shopManager.BuyPokemon(_pokemonData, _price, OnBuySuccess);
+        _shopManager.BuyPokemon(_pokemonData, _price, OnBuySuccess, popupNotificationShop);
     }
 
     private void OnBuySuccess(PokemonData _)
     {
         SetPurchasedState(true);
+        buyParticle?.Play();
     }
 
     private void SetPurchasedState(bool isPurchased)

@@ -5,6 +5,7 @@ public class ShopUI : MonoBehaviour
     public ShopManager shopManager;
     public Transform cardContainer;
     public GameObject cardShopItemPrefab;
+    public PopupNotificationShop popupNotificationShop;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class ShopUI : MonoBehaviour
         {
             bool isPurchased = shopManager.IsOwned(pokemonData.id);
             var item = Instantiate(cardShopItemPrefab, cardContainer).GetComponent<CardShopItemPrefab>();
+            item.popupNotificationShop = popupNotificationShop;
             item.SetupCardShopItem(pokemonData, pokemonData.priceToBuyCard, isPurchased, shopManager);
         }
     }
