@@ -28,7 +28,6 @@ public class PlayerData
 
     public PlayerData() { InitDeck(); }
 
-    /// <summary>Chỉ gọi khi tạo tài khoản MỚI</summary>
     public void InitDeck()
     {
         cardDeckToBattle = new List<DeckSlot>
@@ -37,7 +36,6 @@ public class PlayerData
         };
     }
 
-    /// <summary>Repair cấu trúc nếu bị lỗi — KHÔNG xóa dữ liệu hợp lệ</summary>
     public void EnsureDeckIntegrity()
     {
         if (cardDeckToBattle == null)
@@ -65,6 +63,9 @@ public class PlayerData
     {
         if (position < 0 || position >= 4) return;
         cardDeckToBattle[position] = new DeckSlot(cardId);
+    }
+    public List<string> GetOwnCard(){
+        return ownCard;
     }
 }
 
@@ -142,13 +143,8 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
-    // Flag để biết có cần re-save sau migration không
     private bool _wasMigrated = false;
 
-    /// <summary>
-    /// Parse JSON thủ công, tự động detect format cũ (List<string>) 
-    /// và migrate sang format mới (List<DeckSlot>).
-    /// </summary>
     private PlayerData ParsePlayerDataWithMigration(string rawJson)
     {
         _wasMigrated = false;

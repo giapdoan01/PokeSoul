@@ -19,7 +19,7 @@ MonoBehaviour:
   priceToBuyCard: 250
   pokemonPrefab: {fileID: 0}
   skillPrefab: {fileID: 0}
-  EvolutionPokemonData: {fileID: 0}
+  EvolutionPokemonData: {fileID: 11400000, guid: 5239d81423cff6644bcb47ccd7310673, type: 2}
   levelUpData:
   - level: 1
     statEntries:

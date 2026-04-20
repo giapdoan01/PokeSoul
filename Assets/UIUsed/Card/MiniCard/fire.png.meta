@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: afe4d10ec7822ad41ba48ccc06b5e71f
+guid: c4a710882831763448555d21b4913682
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -110,23 +110,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MiniCard-Fire_0
+      name: fire_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 388
-        height: 384
+        width: 320
+        height: 320
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc4081e1628405e4aa8068b13ec64675
-      internalID: -1119215572
+      spriteID: 0c03a5d2b25265b4c9af6a1863f8ff2c
+      internalID: 1080696289
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: dce37c7a9940a7143834587176a5ba0b
+    spriteID: 2b29f4e6a9747324babae53afe0d1a8e
     internalID: 0
     vertices: []
     indices: 
@@ -147,7 +147,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      MiniCard-Fire_0: -1119215572
+      fire_0: 1080696289
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

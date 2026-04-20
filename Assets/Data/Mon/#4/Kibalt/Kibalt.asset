@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9642cde8dc07a184c80518e3427bb310, type: 3}
-  m_Name: Spriggle
+  m_Name: Kibalt
   m_EditorClassIdentifier: Assembly-CSharp::PokemonData
-  id: _spriggle
-  PokemonName: Spriggle
-  type: 2
-  spritePokemonCard: {fileID: 1255059597, guid: e9bcad74b5a3e044bb9bfab5ec324a46, type: 3}
-  priceToBuyCard: 250
+  id: _kibalt
+  PokemonName: Kibalt
+  type: 3
+  spritePokemonCard: {fileID: -679235658, guid: 3b28c38989959564d840a819d2c27bd8, type: 3}
+  priceToBuyCard: 0
   pokemonPrefab: {fileID: 0}
   skillPrefab: {fileID: 0}
   EvolutionPokemonData: {fileID: 0}

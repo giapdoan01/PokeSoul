@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9642cde8dc07a184c80518e3427bb310, type: 3}
+  m_Name: Kiblu
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonData
+  id: _kiblu
+  PokemonName: Kiblu
+  type: 3
+  spritePokemonCard: {fileID: -931295039, guid: 55a51277088aee14cbbadfafd758db53, type: 3}
+  priceToBuyCard: 250
+  pokemonPrefab: {fileID: 0}
+  skillPrefab: {fileID: 0}
+  EvolutionPokemonData: {fileID: 11400000, guid: 5d6bcc1b9f4cd5b418dc45010eae4338, type: 2}
+  levelUpData: []

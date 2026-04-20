@@ -15,3 +15,5 @@ MonoBehaviour:
   allPokemonDatas:
   - {fileID: 11400000, guid: 8c8d5b01fe14f3945b3edcf92fe83ea5, type: 2}
   - {fileID: 11400000, guid: a3b880b6c513c6f498456acb6012eb23, type: 2}
+  - {fileID: 11400000, guid: de6a93520efae5a4f892f79c38a54e9e, type: 2}
+  - {fileID: 11400000, guid: 03e2d9a40e34cba409fb4481604aeb51, type: 2}

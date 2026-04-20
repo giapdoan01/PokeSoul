@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9642cde8dc07a184c80518e3427bb310, type: 3}
+  m_Name: Nivoria
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonData
+  id: _nivoria
+  PokemonName: Nivoria
+  type: 1
+  spritePokemonCard: {fileID: -1773044898, guid: 36ecc37fb3f5d7f4392fb81c50c7ad96, type: 3}
+  priceToBuyCard: 0
+  pokemonPrefab: {fileID: 0}
+  skillPrefab: {fileID: 0}
+  EvolutionPokemonData: {fileID: 0}
+  levelUpData: []
