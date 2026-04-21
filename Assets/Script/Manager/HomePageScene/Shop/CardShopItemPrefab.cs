@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public class CardShopItemPrefab : MonoBehaviour
@@ -15,7 +16,6 @@ public class CardShopItemPrefab : MonoBehaviour
     public TMP_Text priceText;
     public Image gemIcon;
     public Image purchasedImage;
-    public ParticleSystem buyParticle;
     public PopupNotificationShop popupNotificationShop;
     public List<Sprite> typeSprites;
     public List<Sprite> typeCardBackgroundSprites;
@@ -23,6 +23,7 @@ public class CardShopItemPrefab : MonoBehaviour
     private PokemonData _pokemonData;
     private int _price;
     private ShopManager _shopManager;
+    private Vector3 _buyButtonOriginalScale;
 
     public void SetupCardShopItem(PokemonData pokemonData, int price, bool isPurchased, ShopManager shopManager)
     {
@@ -38,6 +39,8 @@ public class CardShopItemPrefab : MonoBehaviour
 
         SetupType(pokemonData);
         SetPurchasedState(isPurchased);
+
+        _buyButtonOriginalScale = buyButton.transform.localScale;
 
         buyButton.GetComponent<Button>().onClick.RemoveAllListeners();
         buyButton.GetComponent<Button>().onClick.AddListener(OnBuyButtonClicked);
@@ -56,13 +59,20 @@ public class CardShopItemPrefab : MonoBehaviour
             Debug.LogError("[CardShopItemPrefab] _shopManager null — SetupCardShopItem chưa được gọi!");
             return;
         }
+        StartCoroutine(PressAnimation());
         _shopManager.BuyPokemon(_pokemonData, _price, OnBuySuccess, popupNotificationShop);
+    }
+
+    private IEnumerator PressAnimation()
+    {
+        buyButton.transform.localScale = _buyButtonOriginalScale * 0.88f;
+        yield return new WaitForSeconds(0.12f);
+        buyButton.transform.localScale = _buyButtonOriginalScale;
     }
 
     private void OnBuySuccess(PokemonData _)
     {
         SetPurchasedState(true);
-        buyParticle?.Play();
     }
 
     private void SetPurchasedState(bool isPurchased)

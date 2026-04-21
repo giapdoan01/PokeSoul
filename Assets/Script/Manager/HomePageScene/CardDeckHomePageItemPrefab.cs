@@ -12,6 +12,7 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
     public TMP_Text typeText;
     public Image TypeImage;
     public Button addOrReplaceCardButton;
+    public GameObject onSelectChangeFrame;
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
     
@@ -54,6 +55,11 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
         TypeImage.enabled = false;
     }
     
+    public void SetSelectFrame(bool active)
+    {
+        onSelectChangeFrame?.SetActive(active);
+    }
+
     public void AddOrReplaceCard()
     {
         if (_popupListCardSelect != null)

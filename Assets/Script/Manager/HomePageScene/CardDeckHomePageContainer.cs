@@ -147,4 +147,16 @@ public class CardDeckHomePageContainer : MonoBehaviour
         LoadCardDeckFromPlayerData();
         Debug.Log("Battle deck UI refreshed");
     }
+
+    public void SetSelectFrame(int position)
+    {
+        for (int i = 0; i < deckSlots.Count; i++)
+            deckSlots[i].SetSelectFrame(i == position);
+    }
+
+    public void ClearSelectFrame()
+    {
+        foreach (var slot in deckSlots)
+            slot.SetSelectFrame(false);
+    }
 }

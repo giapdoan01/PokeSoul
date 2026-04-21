@@ -27,6 +27,7 @@ public class PopupListCardSelect : MonoBehaviour
     public void SetCurrentEditingPosition(int position)
     {
         _currentEditingPosition = position;
+        CardDeckHomePageContainer.Instance?.SetSelectFrame(position);
     }
 
     public void OpenPopup()
@@ -41,6 +42,7 @@ public class PopupListCardSelect : MonoBehaviour
 
     public void ClosePopup()
     {
+        CardDeckHomePageContainer.Instance?.ClearSelectFrame();
         PlayScale(Vector3.one, Vector3.zero, () =>
         {
             popupListCardSelect.SetActive(false);
