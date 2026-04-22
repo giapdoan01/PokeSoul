@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,10 @@ public class AuthUIManager : MonoBehaviour
     [Header("Panels")]
     [SerializeField] private GameObject loginPanel;
     [SerializeField] private GameObject registerPanel;
+
+    [Header("Loading")]
+    [SerializeField] private GameObject panelLoading;
+    [SerializeField] private CanvasGroup loadingCanvasGroup;
 
     [Header("Login")]
     [SerializeField] private TMP_InputField loginUsername;
@@ -30,6 +35,9 @@ public class AuthUIManager : MonoBehaviour
 
     async void Start()
     {
+        if (panelLoading != null)
+            panelLoading.SetActive(false);
+
         ShowLogin();
 
         // Chờ AuthManager init xong
@@ -116,6 +124,20 @@ public class AuthUIManager : MonoBehaviour
 
     private void HandleLoginSuccess()
     {
+        StartCoroutine(ShowLoadingThenLoadScene());
+    }
+
+    private IEnumerator ShowLoadingThenLoadScene()
+    {
+        SetInteractable(false);
+
+        if (panelLoading != null)
+        {
+            panelLoading.SetActive(true);
+            yield return StartCoroutine(AnimateLoadingIn());
+        }
+
+        yield return new WaitForSeconds(0.3f);
         SceneManager.LoadScene(gameSceneName);
     }
 
@@ -125,6 +147,45 @@ public class AuthUIManager : MonoBehaviour
             loginErrorText.text = message;
         else
             registerErrorText.text = message;
+    }
+
+    // ── LOADING ANIMATION ─────────────────────────────────────
+
+    private IEnumerator AnimateLoadingIn()
+    {
+        const float duration = 0.45f;
+        float elapsed = 0f;
+
+        RectTransform rt = panelLoading.GetComponent<RectTransform>();
+        if (loadingCanvasGroup != null) loadingCanvasGroup.alpha = 0f;
+        if (rt != null) rt.localScale = Vector3.one * 0.6f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float eased = EaseOutBack(t);
+
+            if (rt != null)
+                rt.localScale = Vector3.LerpUnclamped(Vector3.one * 0.6f, Vector3.one, eased);
+
+            if (loadingCanvasGroup != null)
+                loadingCanvasGroup.alpha = Mathf.Lerp(0f, 1f, t * 2f);
+
+            yield return null;
+        }
+
+        if (rt != null) rt.localScale = Vector3.one;
+        if (loadingCanvasGroup != null) loadingCanvasGroup.alpha = 1f;
+    }
+
+    // Back ease: scale vọt lên hơi quá rồi về đúng vị trí
+    private static float EaseOutBack(float t)
+    {
+        const float c1 = 1.70158f;
+        const float c3 = c1 + 1f;
+        float t1 = t - 1f;
+        return 1f + c3 * t1 * t1 * t1 + c1 * t1 * t1;
     }
 
     // ── HELPERS ───────────────────────────────────────────────
