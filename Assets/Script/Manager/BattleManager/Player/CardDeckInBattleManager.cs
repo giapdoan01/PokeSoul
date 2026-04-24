@@ -7,7 +7,6 @@ public class CardDeckInBattleManager : MonoBehaviour
     public PokemonData[] playerDeck;
     void Start()
     {
-        SetupCardDeck(playerDeck);
     }
     public void SetupCardDeck(PokemonData[] deck)
     {
@@ -22,5 +21,6 @@ public class CardDeckInBattleManager : MonoBehaviour
     public void SetupDataPlayerDeck(PokemonData[] deck)
     {
         playerDeck = deck;
+        SetupCardDeck(playerDeck);
     }
 }

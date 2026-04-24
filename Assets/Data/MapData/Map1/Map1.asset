@@ -20,5 +20,5 @@ MonoBehaviour:
   waves:
   - waveNumber: 1
     waveReward:
-      waveReward: 0
+      waveReward: 100
       waveSpecialReward: 0

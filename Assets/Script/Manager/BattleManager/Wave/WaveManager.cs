@@ -53,6 +53,19 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnEnemiesForCurrentWave(int waveNumber)
     {
+        // Cộng tiền ngay khi bắt đầu wave
+        WaveReward waveReward = mapData.getWaveRewardByWaveNumber(waveNumber);
+        if (waveReward != null)
+        {
+            int totalReward = waveReward.waveReward + waveReward.waveSpecialReward;
+            playerStatsInBattleManager.AddCoin(totalReward);
+            Debug.Log($"[WaveManager] Bắt đầu wave {waveNumber}. Thưởng {totalReward} coin.");
+        }
+        else
+        {
+            Debug.LogWarning($"[WaveManager] Không tìm thấy phần thưởng cho wave {waveNumber}");
+        }
+
         if (waveNumber == 1)
         {
             Debug.Log($"[WaveManager] Bắt đầu đếm ngược {timeToStartFirstWave} giây trước khi bắt đầu wave 1");
@@ -68,22 +81,6 @@ public class WaveManager : MonoBehaviour
         {
             Debug.LogError("[WaveManager] Không thể spawn enemy vì không tìm thấy waypoint!");
             yield break;
-        }
-        //Cộng tiền wave này vào playerCoin
-        int rewardCoin = 0;
-        int bonusCoin = 0;
-        WaveReward waveReward = mapData.getWaveRewardByWaveNumber(waveNumber);
-        if (waveReward != null)
-        {
-            rewardCoin = waveReward.waveReward;
-            bonusCoin = waveReward.waveSpecialReward;
-            int totalReward = rewardCoin + bonusCoin;
-            playerStatsInBattleManager.AddCoin(totalReward);
-            Debug.Log($"[WaveManager] Kết thúc wave {waveNumber}. Thưởng {totalReward} coin.");
-        }
-        else
-        {
-            Debug.LogWarning($"[WaveManager] Không tìm thấy phần thưởng cho wave {waveNumber}");
         }
 
         // Lấy vị trí spawn (waypoint đầu tiên)

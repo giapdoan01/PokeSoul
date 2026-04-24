@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerStatsInBattleUI : MonoBehaviour
 {
-    public Text coinText;
+    public TMP_Text coinText;
     public PlayerStatsInBattleManager playerStatsInBattleManager;
     private PokemonData[] pokemonDatas;
 
@@ -29,12 +30,11 @@ public class PlayerStatsInBattleUI : MonoBehaviour
             }
         }
     }
-
     void UpdateCoinText(int coin)
     {
         if (coinText != null)
         {
-            coinText.text = $"Coin: {coin}";
+            coinText.text = $"{coin}";
         }
     }
 
