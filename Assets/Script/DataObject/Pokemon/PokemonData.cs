@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
 [CreateAssetMenu(fileName = "NewPokemonData", menuName = "PokeSoul/Pokemon Data")]
@@ -23,10 +22,33 @@ public class PokemonData : ScriptableObject
         foreach (var levelData in levelUpData)
         {
             if (levelData.level == level)
+            {
                 return levelData;
+            }
         }
-        Debug.LogWarning($"[PokemonData] Không tìm thấy level: {level}");
+
+        Debug.LogWarning($"[PokemonData] Khong tim thay level: {level}");
         return null;
+    }
+
+    public bool TryGetStatValueByLevel(int level, string statName, out double value)
+    {
+        value = 0;
+
+        PokemonLevelData levelData = getPokemonLevelDataByLevel(level);
+        if (levelData == null)
+        {
+            return false;
+        }
+
+        StatEntry entry = levelData.GetStatEntryByName(statName);
+        if (entry == null)
+        {
+            return false;
+        }
+
+        value = entry.Value;
+        return true;
     }
 }
 
@@ -50,7 +72,6 @@ public class StatEntry
     public string statName;
     public double value;
 
-    // ── Properties ──
     public string StatName
     {
         get { return statName; }
@@ -60,16 +81,15 @@ public class StatEntry
     public double Value
     {
         get { return value; }
-        set { this.value = value < 0 ? 0 : value; } 
+        set { this.value = value < 0 ? 0 : value; }
     }
 
-    // ── Constructor ──
     public StatEntry() { }
 
     public StatEntry(string name, double val)
     {
         statName = name;
-        value    = val;
+        value = val;
     }
 }
 
@@ -78,14 +98,22 @@ public class PokemonLevelData
 {
     public int level;
     public StatEntry[] statEntries;
+
     public StatEntry GetStatEntryByName(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return null;
+        }
+
         foreach (var entry in statEntries)
         {
-            if (entry.StatName == name)
+            if (string.Equals(entry.StatName, name, StringComparison.OrdinalIgnoreCase))
+            {
                 return entry;
+            }
         }
+
         return null;
     }
 }
-

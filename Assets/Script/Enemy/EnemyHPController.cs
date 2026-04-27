@@ -7,8 +7,12 @@ public class EnemyHPController : MonoBehaviour
 {
     private EnemyData enemyData;
     public double currentHP;
+    public double maxHP;
     public Action<double> onEnemyHealthChanged;
     public Action<double> onEnemyMaxHPSet;
+
+    public double CurrentHP => currentHP;
+    public double MaxHP => maxHP;
 
     public void SetEnemyData(EnemyData data)
     {
@@ -30,11 +34,12 @@ public class EnemyHPController : MonoBehaviour
         EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveName);
         if (waveData != null)
         {
-            currentHP = waveData.enemyStats.HP;
+            maxHP = waveData.enemyStats.HP;
+            currentHP = maxHP;
             Debug.Log($"[EnemyHealtController] Đã thiết lập HP cho {enemyData.enemyName} ở wave {waveName}: {currentHP}");
 
             // Thông báo maxHP để UI setup slider trước
-            onEnemyMaxHPSet?.Invoke(currentHP);
+            onEnemyMaxHPSet?.Invoke(maxHP);
             // Kích hoạt sự kiện onEnemyHealthChanged để UI cập nhật
             onEnemyHealthChanged?.Invoke(currentHP);
         }
@@ -47,11 +52,17 @@ public class EnemyHPController : MonoBehaviour
     public void TakeDamage(double damage)
     {
         currentHP -= damage;
+        if (currentHP < 0)
+        {
+            currentHP = 0;
+        }
+
+        onEnemyHealthChanged?.Invoke(currentHP);
+
         if (currentHP <= 0)
         {
             Die();
         }
-        onEnemyHealthChanged?.Invoke(currentHP);
     }
 
     private void Die()
