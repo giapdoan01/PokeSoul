@@ -10,6 +10,9 @@ public class HomurinSkill : MonoBehaviour, IPokemonSkillLaunch
     [SerializeField] private GameObject homurinImpact;
     [SerializeField] private float impactLifeTime = 1.5f;
     [SerializeField] private float impactHeightOffset = 1f;
+    [SerializeField] private int impactPreloadAmount = 5;
+
+    private const string ImpactPoolKey = "HomurinImpact";
 
     private PokemonSkill ownerSkill;
     private Transform target;
@@ -24,6 +27,18 @@ public class HomurinSkill : MonoBehaviour, IPokemonSkillLaunch
         cachedRigidbody = GetComponent<Rigidbody>();
 
         ConfigurePhysicsForTriggerOnly();
+        RegisterImpactPool();
+    }
+
+    private void RegisterImpactPool()
+    {
+        if (homurinImpact == null || SkillObjectPolling.Instance == null)
+        {
+            return;
+        }
+
+        SkillObjectPolling.Instance.RegisterPrefab(ImpactPoolKey, homurinImpact, impactPreloadAmount);
+        LogDebug($"Impact pool registered. key={ImpactPoolKey}, preload={impactPreloadAmount}");
     }
 
     public void Launch(PokemonSkill owner, Transform targetEnemy, PokemonData pokemonData, int level, string attack)
@@ -222,15 +237,36 @@ public class HomurinSkill : MonoBehaviour, IPokemonSkillLaunch
 
         Vector3 spawnPosition = overridePosition ?? (hitCollider != null ? hitCollider.ClosestPoint(transform.position) : transform.position);
         spawnPosition += Vector3.up * impactHeightOffset;
-        Quaternion spawnRotation = Quaternion.identity;
-        GameObject impact = Instantiate(homurinImpact, spawnPosition, spawnRotation);
 
-        if (impactLifeTime > 0f)
+        if (SkillObjectPolling.Instance != null)
         {
-            Destroy(impact, impactLifeTime);
+            RegisterImpactPool();
+            GameObject impact = SkillObjectPolling.Instance.GetFromPool(ImpactPoolKey, spawnPosition, Quaternion.identity);
+            if (impact != null)
+            {
+                LogDebug($"Impact VFX from pool: {impact.name}");
+                if (impactLifeTime > 0f)
+                {
+                    SkillPoolToken token = impact.GetComponent<SkillPoolToken>();
+                    if (token != null)
+                    {
+                        token.ReturnToPoolAfterDelay(impactLifeTime);
+                    }
+                    else
+                    {
+                        SkillObjectPolling.Instance.ReturnByInstance(impact);
+                    }
+                }
+                return;
+            }
         }
 
-        LogDebug($"Impact VFX spawned: {impact.name}");
+        GameObject fallback = Instantiate(homurinImpact, spawnPosition, Quaternion.identity);
+        LogDebug($"Impact VFX fallback instantiate: {fallback.name}");
+        if (impactLifeTime > 0f)
+        {
+            Destroy(fallback, impactLifeTime);
+        }
     }
 
     private void Release()

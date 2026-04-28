@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 
 public class AuthManager : MonoBehaviour
@@ -13,14 +13,13 @@ public class AuthManager : MonoBehaviour
 
     public bool IsInitialized { get; private set; }
 
-    async void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            await UnityServices.InitializeAsync();
-            IsInitialized = true;
+            InitializeAsync().Forget();
         }
         else
         {
@@ -28,7 +27,13 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    public async Task RegisterAsync(string username, string password)
+    private async UniTaskVoid InitializeAsync()
+    {
+        await UnityServices.InitializeAsync();
+        IsInitialized = true;
+    }
+
+    public async UniTask RegisterAsync(string username, string password)
     {
         try
         {
@@ -46,7 +51,7 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    public async Task LoginAsync(string username, string password)
+    public async UniTask LoginAsync(string username, string password)
     {
         try
         {
@@ -69,14 +74,11 @@ public class AuthManager : MonoBehaviour
         AuthenticationService.Instance.SignOut();
     }
 
-    private string GetErrorMessage(int errorCode)
+    private static string GetErrorMessage(int errorCode) => errorCode switch
     {
-        return errorCode switch
-        {
-            10002 => "Email hoặc mật khẩu không đúng.",
-            10003 => "Email này đã được đăng ký.",
-            10009 => "Mật khẩu phải có ít nhất 8 ký tự.",
-            _     => "Có lỗi xảy ra. Vui lòng thử lại."
-        };
-    }
+        10002 => "Email hoặc mật khẩu không đúng.",
+        10003 => "Email này đã được đăng ký.",
+        10009 => "Mật khẩu phải có ít nhất 8 ký tự.",
+        _     => "Có lỗi xảy ra. Vui lòng thử lại."
+    };
 }

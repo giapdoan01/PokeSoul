@@ -8,6 +8,8 @@ public class EnemyMoveController : MonoBehaviour
     
     public WayPointForEnemy wayPointManager;
     
+    public int CurrentWayPointIndex => currentWayPointIndex;
+
     private int currentWayPointIndex = 0;
     private Transform currentWayPoint;
     private double moveSpeed;

@@ -179,4 +179,21 @@ public class SkillPoolToken : MonoBehaviour
 
         SkillObjectPolling.Instance.ReturnByInstance(gameObject);
     }
+
+    public void ReturnToPoolAfterDelay(float delay)
+    {
+        StopAllCoroutines();
+        StartCoroutine(ReturnAfterDelay(delay));
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
+    private System.Collections.IEnumerator ReturnAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ReturnToPool();
+    }
 }

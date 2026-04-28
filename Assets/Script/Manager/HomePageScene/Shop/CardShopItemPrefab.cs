@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public class CardShopItemPrefab : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class CardShopItemPrefab : MonoBehaviour
             return;
         }
         StartCoroutine(PressAnimation());
-        _shopManager.BuyPokemon(_pokemonData, _price, OnBuySuccess, popupNotificationShop);
+        _shopManager.BuyPokemon(_pokemonData, _price, OnBuySuccess, popupNotificationShop).Forget();
     }
 
     private IEnumerator PressAnimation()

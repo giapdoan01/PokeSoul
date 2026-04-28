@@ -41,6 +41,7 @@ public class PokemonSkill : MonoBehaviour
     public string SkillComponent => skillComponent;
     public int Level => level;
     public PokemonData PokemonData => pokemonData;
+    public float AttackRange => attackRange;
 
     private void Awake()
     {
@@ -274,38 +275,42 @@ public class PokemonSkill : MonoBehaviour
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         if (enemies == null || enemies.Length == 0)
-        {
             return false;
-        }
 
-        float nearestDistance = float.MaxValue;
         Vector3 origin = transform.position;
+        int bestWaypointIndex = -1;
+        float bestDistanceToWaypoint = float.MaxValue;
 
         for (int i = 0; i < enemies.Length; i++)
         {
             GameObject enemy = enemies[i];
             if (enemy == null || !enemy.activeInHierarchy)
-            {
                 continue;
-            }
 
-            float distance = Vector3.Distance(origin, enemy.transform.position);
-            if (distance > attackRange)
-            {
+            if (Vector3.Distance(origin, enemy.transform.position) > attackRange)
                 continue;
-            }
 
-            if (distance < nearestDistance)
+            EnemyMoveController move = enemy.GetComponent<EnemyMoveController>();
+            int waypointIndex = move != null ? move.CurrentWayPointIndex : 0;
+            float distanceToNextWaypoint = move != null && move.wayPointManager != null
+                ? Vector3.Distance(enemy.transform.position, move.wayPointManager.wayPoints[Mathf.Min(waypointIndex, move.wayPointManager.wayPoints.Count - 1)].position)
+                : float.MaxValue;
+
+            // Ưu tiên enemy có waypointIndex lớn hơn (đi xa hơn trên path)
+            // Nếu bằng nhau thì chọn enemy gần waypoint tiếp theo hơn
+            bool isBetter = waypointIndex > bestWaypointIndex
+                || (waypointIndex == bestWaypointIndex && distanceToNextWaypoint < bestDistanceToWaypoint);
+
+            if (isBetter)
             {
-                nearestDistance = distance;
+                bestWaypointIndex = waypointIndex;
+                bestDistanceToWaypoint = distanceToNextWaypoint;
                 nearestTarget = enemy.transform;
             }
         }
 
         if (nearestTarget != null)
-        {
-            LogDebug($"Nearest enemy found: {nearestTarget.name}");
-        }
+            LogDebug($"Target found: {nearestTarget.name} at waypointIndex={bestWaypointIndex}");
 
         return nearestTarget != null;
     }
