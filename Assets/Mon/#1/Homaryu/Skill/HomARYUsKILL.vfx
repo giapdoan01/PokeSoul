@@ -12568,7 +12568,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.AABox, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"center":{"x":0.0,"y":0.0,"z":0.0},"size":{"x":4.5,"y":7.0,"z":4.5}}'
+      m_SerializableObject: '{"center":{"x":0.0,"y":-0.800000011920929,"z":0.0},"size":{"x":4.5,"y":7.0,"z":4.5}}'
     m_Space: 0
   m_Property:
     name: bounds
@@ -15230,7 +15230,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"4a0aca3a5f2effb41b43cc0a1661d845","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"6618529a1f1f5bc4a8ae2f98b1a8f5ca","type":3}}'
     m_Space: -1
   m_Property:
     name: mainTexture

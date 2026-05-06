@@ -32,7 +32,7 @@ public class PokemonSkill : MonoBehaviour
     private float cooldownTimer;
     private float attackCooldown;
     private float baseAnimatorSpeed = 1f;
-    private float baseCooldownForAnimation = 1f;
+    private float attackAnimationClipDuration = -1f;
     private Transform currentTarget;
     private bool isSkillRegistered;
 
@@ -56,6 +56,7 @@ public class PokemonSkill : MonoBehaviour
         }
 
         baseAnimatorSpeed = animator != null ? animator.speed : 1f;
+        attackAnimationClipDuration = ResolveAttackClipDuration();
 
         BuildPoolKey();
         ApplyStatsFromLevel();
@@ -154,6 +155,14 @@ public class PokemonSkill : MonoBehaviour
         CastSkillAnimationEvent(attackAnimationTrigger);
     }
 
+    public void OnAttackAnimationEnd()
+    {
+        if (animator != null)
+        {
+            animator.speed = baseAnimatorSpeed;
+        }
+    }
+
     public void SetLevel(int newLevel)
     {
         level = Mathf.Max(1, newLevel);
@@ -217,17 +226,6 @@ public class PokemonSkill : MonoBehaviour
     private void ApplyStatsFromLevel()
     {
         attackCooldown = GetAttackCooldownFromStat(level);
-
-        if (pokemonData != null)
-        {
-            float levelOneCd = GetAttackCooldownFromStat(1);
-            baseCooldownForAnimation = Mathf.Max(minAttackCooldown, levelOneCd);
-        }
-        else
-        {
-            baseCooldownForAnimation = Mathf.Max(minAttackCooldown, defaultAttackCooldown);
-        }
-
         UpdateAnimationSpeedByCooldown();
     }
 
@@ -264,9 +262,44 @@ public class PokemonSkill : MonoBehaviour
             return;
         }
 
-        float speedMultiplier = baseCooldownForAnimation / Mathf.Max(minAttackCooldown, attackCooldown);
-        float targetSpeed = baseAnimatorSpeed * speedMultiplier;
+        if (attackAnimationClipDuration < 0f)
+        {
+            attackAnimationClipDuration = ResolveAttackClipDuration();
+        }
+
+        if (attackAnimationClipDuration <= 0f)
+        {
+            return;
+        }
+
+        float targetSpeed = attackAnimationClipDuration / Mathf.Max(minAttackCooldown, attackCooldown);
         animator.speed = Mathf.Clamp(targetSpeed, minAnimatorSpeed, maxAnimatorSpeed);
+    }
+
+    private float ResolveAttackClipDuration()
+    {
+        if (animator == null || string.IsNullOrWhiteSpace(attackAnimationTrigger))
+        {
+            return -1f;
+        }
+
+        RuntimeAnimatorController controller = animator.runtimeAnimatorController;
+        if (controller == null)
+        {
+            return -1f;
+        }
+
+        foreach (AnimationClip clip in controller.animationClips)
+        {
+            if (clip.name.ToLower().Contains(attackAnimationTrigger.ToLower()))
+            {
+                LogDebug($"Attack clip found: {clip.name}, duration={clip.length}");
+                return clip.length;
+            }
+        }
+
+        LogDebug($"No attack clip found matching '{attackAnimationTrigger}'. Speed not scaled.");
+        return -1f;
     }
 
     private bool TryFindNearestEnemy(out Transform nearestTarget)

@@ -15,9 +15,59 @@ MonoBehaviour:
   id: _spriggle
   PokemonName: Spriggle
   type: 2
-  spritePokemonCard: {fileID: 1255059597, guid: e9bcad74b5a3e044bb9bfab5ec324a46, type: 3}
+  spritePokemonCard: {fileID: -1818261194, guid: e9bcad74b5a3e044bb9bfab5ec324a46, type: 3}
   priceToBuyCard: 250
-  pokemonPrefab: {fileID: 0}
-  skillPrefab: {fileID: 0}
+  pokemonPrefab: {fileID: 4413999392726796028, guid: 4c2e3982105a30f4cbade13159200360, type: 3}
+  skillPrefab: {fileID: 7357334006461732656, guid: ed10308d3cf094c41a6d716f35a6b20c, type: 3}
   EvolutionPokemonData: {fileID: 11400000, guid: ee06ca152afb4eb46b0536f2c82f1b42, type: 2}
-  levelUpData: []
+  levelUpData:
+  - level: 1
+    statEntries:
+    - statName: price
+      value: 70
+    - statName: sell
+      value: 49
+    - statName: damage
+      value: 3
+    - statName: cd
+      value: 0.9
+  - level: 2
+    statEntries:
+    - statName: price
+      value: 45
+    - statName: sell
+      value: 80
+    - statName: damage
+      value: 4
+    - statName: cd
+      value: 0.88
+  - level: 3
+    statEntries:
+    - statName: price
+      value: 70
+    - statName: sell
+      value: 129
+    - statName: damage
+      value: 5
+    - statName: cd
+      value: 0.85
+  - level: 4
+    statEntries:
+    - statName: price
+      value: 100
+    - statName: sell
+      value: 199
+    - statName: damage
+      value: 6
+    - statName: cd
+      value: 0.82
+  - level: 5
+    statEntries:
+    - statName: price
+      value: 140
+    - statName: sell
+      value: 297
+    - statName: damage
+      value: 7
+    - statName: cd
+      value: 0.8

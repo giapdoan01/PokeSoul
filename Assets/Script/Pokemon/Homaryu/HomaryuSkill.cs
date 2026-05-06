@@ -14,6 +14,7 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
     [SerializeField] private int impactPreloadAmount = 5;
 
     [SerializeField] private float curveWidth = 3f;
+    [SerializeField] private float curveHeight = 1.5f;
 
     private const string ImpactPoolKey = "HomaryuImpact";
 
@@ -51,7 +52,7 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
     public void Launch(PokemonSkill owner, Transform targetEnemy, PokemonData pokemonData, int level, string attack)
     {
         LogDebug($"Launch called. owner={(owner != null ? owner.name : "null")}, target={(targetEnemy != null ? targetEnemy.name : "null")}, level={level}, attack={attack}");
-        LaunchInternal(owner, targetEnemy, pokemonData, level, attack, true);
+        LaunchInternal(owner, targetEnemy, pokemonData, level, attack, true, 1f);
     }
 
     private void LaunchInternal(PokemonSkill owner, Transform targetEnemy, PokemonData pokemonData, int level, string attack, bool spawnBurst, float curveSign = 0f)
@@ -78,9 +79,15 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
         bezierStart = transform.position;
         Vector3 end = targetEnemy.position;
         Vector3 mid = (bezierStart + end) * 0.5f;
-        Vector3 toTarget = (end - bezierStart).normalized;
-        Vector3 perpendicular = Vector3.Cross(toTarget, Vector3.up).normalized;
-        bezierControl = mid + perpendicular * curveSign * curveWidth;
+
+        Vector3 toTarget = (end - bezierStart);
+        toTarget.y = 0f;
+        toTarget = toTarget.normalized;
+
+        // Perpendicular luôn nằm ngang trên mặt phẳng XZ, không phụ thuộc hướng bay
+        Vector3 right = new Vector3(-toTarget.z, 0f, toTarget.x);
+
+        bezierControl = mid + right * curveSign * curveWidth + Vector3.up * curveHeight;
         bezierT = 0f;
         float distance = Vector3.Distance(bezierStart, end);
         bezierDuration = distance / moveSpeed;
@@ -202,9 +209,8 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
             bool hasDifferentTarget = i < targets.Length && targets[i] != primaryTarget;
             Transform extraTarget = hasDifferentTarget ? targets[i] : primaryTarget;
 
-            // Nếu cùng target thì dùng curve để đạn tỏa ra rồi chụm lại
-            // Xen kẽ trái/phải: index lẻ = +1, index chẵn = -1
-            float curveSign = hasDifferentTarget ? 0f : (i % 2 == 1 ? 1f : -1f);
+            // Đạn đầu = +1f, đạn tiếp theo xen kẽ -1f, +1f, -1f...
+            float curveSign = hasDifferentTarget ? 0f : (i % 2 == 1 ? -1f : 1f);
 
             Vector3 spawnPosition = GetProjectileSpawnPosition(i, projectileCount);
             Quaternion spawnRotation = GetProjectileRotation(spawnPosition, extraTarget);
