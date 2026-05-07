@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5312225177670423879
+--- !u!1 &2953920874145618562
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3420528002082328154}
-  - component: {fileID: 6041034203754128137}
-  - component: {fileID: 1218553754195146359}
-  - component: {fileID: 2375871399436219378}
-  - component: {fileID: 3893015765739190144}
+  - component: {fileID: 5583282514084120424}
+  - component: {fileID: 3421807596879079174}
+  - component: {fileID: 3365262355445074929}
+  - component: {fileID: 172573444087107647}
+  - component: {fileID: 4334079906420133548}
   m_Layer: 0
-  m_Name: Homaryu_Skill
+  m_Name: VerdrakeSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3420528002082328154
+--- !u!4 &5583282514084120424
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312225177670423879}
+  m_GameObject: {fileID: 2953920874145618562}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 1.151, z: 16.33}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -3.092, y: 1.95, z: 14.339}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &6041034203754128137
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!2083052967 &3421807596879079174
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312225177670423879}
+  m_GameObject: {fileID: 2953920874145618562}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 0edbe504fdbf93041979414fc0c32b85, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 2a0f741a122dca844a7a51eac4f2ad95, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -73,14 +73,14 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
---- !u!73398921 &1218553754195146359
+--- !u!73398921 &3365262355445074929
 VFXRenderer:
   serializedVersion: 1
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312225177670423879}
+  m_GameObject: {fileID: 2953920874145618562}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
@@ -120,35 +120,33 @@ VFXRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
---- !u!114 &2375871399436219378
+--- !u!114 &172573444087107647
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312225177670423879}
+  m_GameObject: {fileID: 2953920874145618562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0396a403c300bae49a42f0a574c7d73f, type: 3}
+  m_Script: {fileID: 11500000, guid: 00f28bf91b9539947b31ed90b8963497, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HomaryuSkill
+  m_EditorClassIdentifier: Assembly-CSharp::VerdrakeSkill
   enableDebugLog: 0
-  moveSpeed: 3
-  projectileSpread: 1
-  homaryuImpact: {fileID: 8753983262462095365, guid: 747bc24dbbf8162479bcffb6151bb5b2, type: 3}
-  impactLifeTime: 2
-  impactHeightOffset: 0.5
+  moveSpeed: 5
+  skillHeightOffset: 5
+  targetVfxPrefab: {fileID: 7419744000959548430, guid: c0c7653278c5e1746baa8a38abf8abf1, type: 3}
+  verdrakeImpactPrefab: {fileID: 4614030016371139285, guid: 291f0b7bf244d2b48aa7deb09a457629, type: 3}
+  impactLifeTime: 1.5
+  vfxPreloadAmount: 5
   impactPreloadAmount: 5
-  launchHeightOffset: 1.2
-  curveWidth: 3
-  curveHeight: 3
---- !u!135 &3893015765739190144
+--- !u!135 &4334079906420133548
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312225177670423879}
+  m_GameObject: {fileID: 2953920874145618562}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -157,9 +155,9 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.18
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.44842783
+  m_Center: {x: -0.009049007, y: 0, z: 0}

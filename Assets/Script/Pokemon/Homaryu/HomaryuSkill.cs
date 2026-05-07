@@ -13,6 +13,7 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
     [SerializeField] private float impactHeightOffset = 1f;
     [SerializeField] private int impactPreloadAmount = 5;
 
+    [SerializeField] private float launchHeightOffset = 1f;
     [SerializeField] private float curveWidth = 3f;
     [SerializeField] private float curveHeight = 1.5f;
 
@@ -62,6 +63,7 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
         runtimeDamage = ResolveDamageByLevel(pokemonData, level);
         didHit = false;
         ConfigurePhysicsForTriggerOnly();
+        transform.position += Vector3.up * launchHeightOffset;
 
         useCurve = curveSign != 0f && targetEnemy != null;
         if (useCurve)

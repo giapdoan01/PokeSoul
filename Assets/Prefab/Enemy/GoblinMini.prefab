@@ -182,6 +182,37 @@ Transform:
   - {fileID: 3651352351103259606}
   m_Father: {fileID: 7712222851455639237}
   m_LocalEulerAnglesHint: {x: 41.61011, y: -13.323006, z: -5.420683}
+--- !u!1 &659150510648867427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4720890581537419095}
+  m_Layer: 6
+  m_Name: FootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4720890581537419095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659150510648867427}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6903990460409207891}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1273422623847692530
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,6 +751,7 @@ Transform:
   - {fileID: 1278314211887202985}
   - {fileID: 3499020785127818699}
   - {fileID: 2985508690235601252}
+  - {fileID: 4720890581537419095}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &1872829366005362860
@@ -807,6 +839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMoveController
   wayPointManager: {fileID: 0}
+  footPoint: {fileID: 4720890581537419095}
 --- !u!114 &1714692028912359622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,6 +853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHPController
   currentHP: 0
+  maxHP: 0
 --- !u!114 &8057950167234183406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,8 +930,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6280096789199907187}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0, z: -1.512}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -982,7 +1016,7 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 1278314211887202985}
   m_AABB:
-    m_Center: {x: -0.09782599, y: 0.09214395, z: 0.08297463}
+    m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.32750535, y: 0.48126602, z: 0.30402213}
   m_DirtyAABB: 0
 --- !u!1 &6304953753701391005

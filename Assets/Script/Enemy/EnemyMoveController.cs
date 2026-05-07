@@ -5,8 +5,12 @@ using System.Collections.Generic;
 public class EnemyMoveController : MonoBehaviour
 {
     private EnemyData enemyData;
-    
+
     public WayPointForEnemy wayPointManager;
+
+    [SerializeField] private Transform footPoint;
+
+    public Vector3 FootPosition => footPoint != null ? footPoint.position : transform.position;
     
     public int CurrentWayPointIndex => currentWayPointIndex;
 
