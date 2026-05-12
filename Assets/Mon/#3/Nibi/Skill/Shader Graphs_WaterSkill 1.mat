@@ -47,7 +47,7 @@ Material:
     - _VertexDisplayment: 0.01
     - _distorsion: 0.01
     m_Colors:
-    - _Color: {r: 0, g: 12.966362, b: 14.15186, a: 1}
+    - _Color: {r: 0, g: 3.8821542, b: 4.237095, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6252549808758270433

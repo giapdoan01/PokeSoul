@@ -31,7 +31,8 @@ public class PokemonSkill : MonoBehaviour
     private string poolKey;
     private float cooldownTimer;
     private float attackCooldown;
-    private float baseAnimatorSpeed = 1f;
+    private const float baseAnimatorSpeed = 1f;
+    private float attackAnimatorSpeed = 1f;
     private float attackAnimationClipDuration = -1f;
     private Transform currentTarget;
     private bool isSkillRegistered;
@@ -55,7 +56,6 @@ public class PokemonSkill : MonoBehaviour
             castPoint = transform;
         }
 
-        baseAnimatorSpeed = animator != null ? animator.speed : 1f;
         attackAnimationClipDuration = ResolveAttackClipDuration();
 
         BuildPoolKey();
@@ -79,7 +79,6 @@ public class PokemonSkill : MonoBehaviour
             castPoint = transform;
         }
 
-        baseAnimatorSpeed = animator != null ? animator.speed : 1f;
         ApplyStatsFromLevel();
     }
 
@@ -102,6 +101,7 @@ public class PokemonSkill : MonoBehaviour
 
         if (animator != null && !string.IsNullOrWhiteSpace(attackAnimationTrigger))
         {
+            animator.speed = attackAnimatorSpeed;
             animator.SetTrigger(attackAnimationTrigger);
             return;
         }
@@ -269,11 +269,12 @@ public class PokemonSkill : MonoBehaviour
 
         if (attackAnimationClipDuration <= 0f)
         {
+            attackAnimatorSpeed = baseAnimatorSpeed;
             return;
         }
 
         float targetSpeed = attackAnimationClipDuration / Mathf.Max(minAttackCooldown, attackCooldown);
-        animator.speed = Mathf.Clamp(targetSpeed, minAnimatorSpeed, maxAnimatorSpeed);
+        attackAnimatorSpeed = Mathf.Clamp(targetSpeed, minAnimatorSpeed, maxAnimatorSpeed);
     }
 
     private float ResolveAttackClipDuration()
