@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class EnemyMoveController : MonoBehaviour
 {
+    private EnemyStatusEffects _status;
     private EnemyData enemyData;
 
     public WayPointForEnemy wayPointManager;
@@ -36,6 +37,8 @@ public class EnemyMoveController : MonoBehaviour
     
     void Start()
     {
+        _status = GetComponent<EnemyStatusEffects>();
+
         if (wayPointManager == null)
         {
             wayPointManager = FindObjectOfType<WayPointForEnemy>();
@@ -59,10 +62,13 @@ public class EnemyMoveController : MonoBehaviour
     {
         if (reachedEnd || currentWayPoint == null)
             return;
-            
-        // Di chuyển enemy đến waypoint hiện tại
+
+        if (_status != null && _status.IsImmobilized)
+            return;
+
         Vector3 direction = currentWayPoint.position - transform.position;
-        float distanceThisFrame = (float)moveSpeed * Time.deltaTime;
+        float speed = (float)moveSpeed * (_status != null ? _status.SpeedMultiplier : 1f);
+        float distanceThisFrame = speed * Time.deltaTime;
         
         // Quay mặt enemy theo hướng di chuyển
         if (direction != Vector3.zero)
