@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -3.092, y: 1.95, z: 14.339}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -135,6 +135,7 @@ MonoBehaviour:
   enableDebugLog: 0
   moveSpeed: 5
   skillHeightOffset: 5
+  hitRadius: 0.4
   targetVfxPrefab: {fileID: 7419744000959548430, guid: c0c7653278c5e1746baa8a38abf8abf1, type: 3}
   verdrakeImpactPrefab: {fileID: 4614030016371139285, guid: 291f0b7bf244d2b48aa7deb09a457629, type: 3}
   impactLifeTime: 1.5
