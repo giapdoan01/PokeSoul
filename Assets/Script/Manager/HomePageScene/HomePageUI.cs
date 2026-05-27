@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class HomePageUI : MonoBehaviour
@@ -8,6 +9,7 @@ public class HomePageUI : MonoBehaviour
     public Button openBattlePanel;
     public Button openShopPanel;
     public Button openCardPanel;
+    public Button openListMapButton;
 
     [Header("Button Icons")]
     public RectTransform battleButtonIcon;
@@ -19,6 +21,12 @@ public class HomePageUI : MonoBehaviour
     public RectTransform ShopPanel;
     public RectTransform BattlePanel;
     public RectTransform CardPanel;
+
+    [Header("List Map Panel")]
+    public GameObject ListMapPanel;
+    public Transform mapListContent;
+    public GameObject mapItemPrefab;
+    public Button closeListMapButton;
 
     [Header("Animation")]
     public float pageWidth = 1500f;
@@ -46,6 +54,11 @@ public class HomePageUI : MonoBehaviour
         openShopPanel.onClick.AddListener(() => GoToPanel(0, shopButtonIcon));
         openBattlePanel.onClick.AddListener(() => GoToPanel(1, battleButtonIcon));
         openCardPanel.onClick.AddListener(() => GoToPanel(2, cardButtonIcon));
+
+        openListMapButton?.onClick.AddListener(OpenListMapPanel);
+        closeListMapButton?.onClick.AddListener(CloseListMapPanel);
+
+        ListMapPanel?.SetActive(false);
 
         // Icon ban đầu
         for (int i = 0; i < _icons.Length; i++)
@@ -115,5 +128,85 @@ public class HomePageUI : MonoBehaviour
     private static void ScaleIconImmediate(RectTransform icon, float scale)
     {
         if (icon != null) icon.localScale = Vector3.one * scale;
+    }
+
+    // ── List Map Panel ──
+
+    [Header("List Map Panel Animation")]
+    public float panelScaleDuration = 0.3f;
+
+    private Coroutine _panelScaleCoroutine;
+
+    private void OpenListMapPanel()
+    {
+        if (ListMapPanel == null) return;
+        PopulateMapList();
+        ListMapPanel.SetActive(true);
+
+        if (_panelScaleCoroutine != null) StopCoroutine(_panelScaleCoroutine);
+        _panelScaleCoroutine = StartCoroutine(ScalePanel(Vector3.zero, Vector3.one));
+    }
+
+    private void CloseListMapPanel()
+    {
+        if (ListMapPanel == null) return;
+
+        if (_panelScaleCoroutine != null) StopCoroutine(_panelScaleCoroutine);
+        _panelScaleCoroutine = StartCoroutine(ScalePanel(
+            ListMapPanel.transform.localScale, Vector3.zero,
+            onDone: () => ListMapPanel.SetActive(false)
+        ));
+    }
+
+    private IEnumerator ScalePanel(Vector3 from, Vector3 to, System.Action onDone = null)
+    {
+        var rt = ListMapPanel.transform;
+        rt.localScale = from;
+        float elapsed = 0f;
+        while (elapsed < panelScaleDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = EaseOutBack(Mathf.Clamp01(elapsed / panelScaleDuration));
+            rt.localScale = Vector3.LerpUnclamped(from, to, t);
+            yield return null;
+        }
+        rt.localScale = to;
+        onDone?.Invoke();
+    }
+
+    // Ease out back: scale vượt quá 1 rồi về đúng — cảm giác "pop" khi mở
+    // Khi đóng dùng từ scale hiện tại về 0 nên chỉ cần EaseInBack
+    private static float EaseOutBack(float t)
+    {
+        const float c1 = 1.70158f;
+        const float c3 = c1 + 1f;
+        return 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
+    }
+
+    private void PopulateMapList()
+    {
+        if (mapListContent == null || mapItemPrefab == null) return;
+
+        // Xóa item cũ
+        foreach (Transform child in mapListContent)
+            Destroy(child.gameObject);
+
+        var pdm = PlayerDataManager.Instance;
+        if (pdm == null || pdm.allMapData == null) return;
+
+        List<Map> allMaps = pdm.allMapData.maps;
+        for (int i = 0; i < allMaps.Count; i++)
+        {
+            Map map = allMaps[i];
+
+            // index dùng để tính lẻ/chẵn — dùng int.Parse(map.id) để đúng với id "1","2","3"...
+            int.TryParse(map.id, out int mapIdInt);
+
+            MapProgress progress = pdm.GetMapProgress(map.id);
+
+            var go   = Instantiate(mapItemPrefab, mapListContent);
+            var item = go.GetComponent<MapItemPrefab>();
+            item?.Setup(map, progress, mapIdInt);
+        }
     }
 }

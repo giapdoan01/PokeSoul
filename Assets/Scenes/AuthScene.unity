@@ -2317,6 +2317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerDataManager
   allPokemonData: {fileID: 11400000, guid: c1f532fddeb782a4aa65004a1126c8d6, type: 2}
+  allMapData: {fileID: 11400000, guid: 532a367ef3e90884fbdf43b0d6bfdcc7, type: 2}
   myPokemonDatas: []
 --- !u!4 &1920822017
 Transform:

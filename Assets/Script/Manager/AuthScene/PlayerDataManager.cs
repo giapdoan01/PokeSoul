@@ -25,6 +25,7 @@ public class PlayerData
     public List<string> ownCard = new();
     public List<DeckSlot> cardDeckToBattle = new();
     public int gem = 1000;
+    public List<MapProgress> mapProgress = new();
 
     public PlayerData() { InitDeck(); }
 
@@ -74,6 +75,7 @@ public class PlayerDataManager : MonoBehaviour
     public static PlayerDataManager Instance { get; private set; }
     public PlayerData CurrentData { get; private set; }
     public AllPokemonData allPokemonData;
+    public AllMap allMapData;
     public PokemonData[] myPokemonDatas;
     public Action<int> OnGemChanged;
     public Action OnPlayerDataLoaded;
@@ -155,7 +157,8 @@ public class PlayerDataManager : MonoBehaviour
         data.username = jObj["username"]?.ToString() ?? "";
         data.level    = jObj["level"]?.Value<int>() ?? 1;
         data.gem      = jObj["gem"]?.Value<int>() ?? 1000;
-        data.ownCard  = jObj["ownCard"]?.ToObject<List<string>>() ?? new List<string>();
+        data.ownCard       = jObj["ownCard"]?.ToObject<List<string>>() ?? new List<string>();
+        data.mapProgress   = jObj["mapProgress"]?.ToObject<List<MapProgress>>() ?? new List<MapProgress>();
 
         // ── Detect & migrate cardDeckToBattle ──
         var deckToken = jObj["cardDeckToBattle"];
@@ -213,7 +216,18 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         data.EnsureDeckIntegrity();
+        EnsureFirstMapUnlocked(data);
         return data;
+    }
+
+    private static void EnsureFirstMapUnlocked(PlayerData data)
+    {
+        string firstMapId = data.level.ToString();
+        if (!data.mapProgress.Exists(m => m.mapId == firstMapId))
+        {
+            data.mapProgress.Add(new MapProgress(firstMapId));
+            Debug.Log($"[PlayerDataManager] Auto-unlocked map {firstMapId} for level {data.level}");
+        }
     }
 
     private async Task CreateNewPlayerDataAsync(string username)
@@ -226,6 +240,7 @@ public class PlayerDataManager : MonoBehaviour
             gem      = 1000
         };
         CurrentData.InitDeck();
+        EnsureFirstMapUnlocked(CurrentData);
         await SaveAsync();
         Debug.Log($"[LOAD] Created new account: {username}");
     }
@@ -339,4 +354,50 @@ public class PlayerDataManager : MonoBehaviour
 
     public List<string> GetBattleDeck()
         => Enumerable.Range(0, 4).Select(i => CurrentData.GetCardIdAt(i)).ToList();
+
+    // ── Map Progress API ──
+
+    public List<MapProgress> GetAllMapProgress() => CurrentData.mapProgress;
+
+    public MapProgress GetMapProgress(string mapId)
+        => CurrentData.mapProgress.Find(m => m.mapId == mapId);
+
+    /// Mở khóa map nếu chưa có trong danh sách.
+    public async Task UnlockMapAsync(string mapId)
+    {
+        if (CurrentData.mapProgress.Exists(m => m.mapId == mapId)) return;
+        CurrentData.mapProgress.Add(new MapProgress(mapId));
+        await SaveAsync();
+        Debug.Log($"[PlayerDataManager] Unlocked map: {mapId}");
+    }
+
+    /// Đánh dấu map đã hoàn thành và cộng gem thưởng.
+    public async Task CompleteMapAsync(string mapId)
+    {
+        var progress = GetMapProgress(mapId);
+        if (progress == null)
+        {
+            Debug.LogWarning($"[PlayerDataManager] Map {mapId} chưa được mở khóa.");
+            return;
+        }
+        if (progress.isCompleted) return;
+
+        progress.isCompleted = true;
+
+        if (allMapData != null)
+        {
+            var map = allMapData.GetMapById(mapId);
+            if (map != null && map.rewardWinMap > 0)
+                await AddGemAsync(map.rewardWinMap);
+        }
+
+        await SaveAsync();
+        Debug.Log($"[PlayerDataManager] Completed map: {mapId}");
+    }
+
+    public bool IsMapUnlocked(string mapId)
+        => CurrentData.mapProgress.Exists(m => m.mapId == mapId);
+
+    public bool IsMapCompleted(string mapId)
+        => CurrentData.mapProgress.Exists(m => m.mapId == mapId && m.isCompleted);
 }

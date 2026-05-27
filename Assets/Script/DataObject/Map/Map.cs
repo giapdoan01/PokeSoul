@@ -9,6 +9,7 @@ public class Map : ScriptableObject
     public string id;
     public string mapName;
     public Sprite mapSprite;
+    public int rewardWinMap;
     public EnemyData[] enemyDatas;
     public WaveData[] waves;
 
@@ -17,14 +18,41 @@ public class Map : ScriptableObject
         foreach (var wave in waves)
         {
             if (wave.waveNumber == waveNumber)
-            {
                 return wave.waveReward;
-            }
         }
         Debug.LogWarning($"[Map] Không tìm thấy WaveReward với số wave: {waveNumber}");
         return null;
     }
+}
 
+[CreateAssetMenu(fileName = "AllMap", menuName = "PokeSoul/All Map")]
+public class AllMap : ScriptableObject
+{
+    public List<Map> maps;
+
+    public Map GetMapById(string id)
+    {
+        foreach (var map in maps)
+        {
+            if (map.id == id)
+                return map;
+        }
+        Debug.LogWarning($"[AllMap] Không tìm thấy map với id: {id}");
+        return null;
+    }
+}
+
+[System.Serializable]
+public class MapProgress
+{
+    public string mapId;
+    public bool isCompleted;
+
+    public MapProgress(string id)
+    {
+        mapId = id;
+        isCompleted = false;
+    }
 }
 
 [System.Serializable]
