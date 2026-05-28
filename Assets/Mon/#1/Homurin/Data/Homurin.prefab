@@ -160,7 +160,7 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 8012765628239450161}
   m_AABB:
-    m_Center: {x: 0.011051118, y: 0.31646103, z: -0.10494104}
+    m_Center: {x: 0, y: -0.21, z: 0}
     m_Extent: {x: 0.39720875, y: 0.6153894, z: 0.4257407}
   m_DirtyAABB: 0
 --- !u!1 &402738293209894166
@@ -2310,6 +2310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 267237e8ea90172489ecc2feac1b4e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PokemonSkill
+  enableDebugLog: 0
   pokemonData: {fileID: 11400000, guid: 8c8d5b01fe14f3945b3edcf92fe83ea5, type: 2}
   level: 1
   skillComponent: HomurinSkill
@@ -2322,8 +2323,6 @@ MonoBehaviour:
   attackRange: 5
   defaultAttackCooldown: 1
   minAttackCooldown: 0.05
-  defaultProjectileCount: 1
-  projectileSpread: 0.35
   preloadAmount: 5
 --- !u!1 &8676516208523176130
 GameObject:

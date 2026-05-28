@@ -17,7 +17,67 @@ MonoBehaviour:
   type: 3
   spritePokemonCard: {fileID: -931295039, guid: 55a51277088aee14cbbadfafd758db53, type: 3}
   priceToBuyCard: 250
-  pokemonPrefab: {fileID: 0}
-  skillPrefab: {fileID: 0}
+  pokemonPrefab: {fileID: 1396789357132794312, guid: 7406c5a7279e61b469de26ca3f5ef194, type: 3}
+  skillPrefab: {fileID: 7273959768875312746, guid: dc8fe470c95e6aa44aa50b2fe2d080de, type: 3}
   EvolutionPokemonData: {fileID: 11400000, guid: 5d6bcc1b9f4cd5b418dc45010eae4338, type: 2}
-  levelUpData: []
+  levelUpData:
+  - level: 1
+    statEntries:
+    - statName: price
+      value: 70
+    - statName: sell
+      value: 49
+    - statName: damage
+      value: 5
+    - statName: cd
+      value: 0.800000011920929
+    - statName: pc
+      value: 1
+  - level: 2
+    statEntries:
+    - statName: price
+      value: 40
+    - statName: sell
+      value: 77
+    - statName: damage
+      value: 7
+    - statName: cd
+      value: 0.800000011920929
+    - statName: pc
+      value: 1
+  - level: 3
+    statEntries:
+    - statName: price
+      value: 60
+    - statName: sell
+      value: 119
+    - statName: damage
+      value: 9
+    - statName: cd
+      value: 0.7799999713897705
+    - statName: pc
+      value: 1
+  - level: 4
+    statEntries:
+    - statName: price
+      value: 85
+    - statName: sell
+      value: 178
+    - statName: damage
+      value: 10
+    - statName: cd
+      value: 0.75
+    - statName: pc
+      value: 1
+  - level: 5
+    statEntries:
+    - statName: price
+      value: 115
+    - statName: sell
+      value: 259
+    - statName: damage
+      value: 12
+    - statName: cd
+      value: 0.7200000286102295
+    - statName: pc
+      value: 1

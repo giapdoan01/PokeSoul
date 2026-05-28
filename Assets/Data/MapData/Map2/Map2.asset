@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Map2
   m_EditorClassIdentifier: Assembly-CSharp::Map
   id: 2
-  mapName: map2
+  mapName: 2
   mapSprite: {fileID: 999881856, guid: 675b20cb81864044eb95bd7011315cd6, type: 3}
   rewardWinMap: 0
   enemyDatas:
