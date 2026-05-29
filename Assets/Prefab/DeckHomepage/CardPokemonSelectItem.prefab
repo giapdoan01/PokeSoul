@@ -245,6 +245,16 @@ MonoBehaviour:
   - {fileID: -1256534718, guid: 732049f46f2b8f345859441713fb528d, type: 3}
   - {fileID: 25497196, guid: 8a9eee7b59ce7a64985e0a65dfe559a4, type: 3}
   - {fileID: 532238475, guid: 2963b38125edf3b4586e9a1a8c773ed2, type: 3}
+  fireColor: {r: 0.9960785, g: 0.0627451, b: 0.06666667, a: 1}
+  waterColor: {r: 0.30588236, g: 0.8941177, b: 0.9960785, a: 1}
+  grassColor: {r: 0.17254902, g: 0.5882353, b: 0.058823533, a: 1}
+  electricColor: {r: 0.9960785, g: 0.79215693, b: 0, a: 1}
+  psychicColor: {r: 0.9960785, g: 0.3647059, b: 0.7254902, a: 1}
+  iceColor: {r: 0.06666667, g: 0.95294124, b: 1, a: 1}
+  darkColor: {r: 0.22352943, g: 0.14117648, b: 0.14117648, a: 1}
+  fightingColor: {r: 0.5372549, g: 0.53333336, b: 0.5372549, a: 1}
+  poisonColor: {r: 0.47450984, g: 0.20784315, b: 0.7372549, a: 1}
+  groundColor: {r: 0.654902, g: 0.3803922, b: 0.14901961, a: 1}
   buttonClickSFX: {fileID: 8300000, guid: bfd8033a7198c3d419ed0a35c7a7caa0, type: 3}
 --- !u!1 &2804638162257708219
 GameObject:
@@ -313,8 +323,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Dark
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0b51dbee9f2f047cebc9e85675fb05d5, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: 0b51dbee9f2f047cebc9e85675fb05d5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 268364c37da181741bd813da8f3d46de, type: 2}
+  m_sharedMaterial: {fileID: 8757492363488190178, guid: 268364c37da181741bd813da8f3d46de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -525,8 +535,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d67edce7cf9164e1293042f9d9da494d, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: d67edce7cf9164e1293042f9d9da494d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 268364c37da181741bd813da8f3d46de, type: 2}
+  m_sharedMaterial: {fileID: 8757492363488190178, guid: 268364c37da181741bd813da8f3d46de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

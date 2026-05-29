@@ -21,6 +21,18 @@ public class CardShopItemPrefab : MonoBehaviour
     public List<Sprite> typeSprites;
     public List<Sprite> typeCardBackgroundSprites;
 
+    [Header("Color Text By Type")]
+    public Color fireColor = new Color(0f, 0f, 0f);
+    public Color waterColor = new Color(0f, 0f, 0f);
+    public Color grassColor = new Color(0f, 0f, 0f);
+    public Color electricColor = new Color(0f, 0f, 0f);
+    public Color psychicColor = new Color(0f, 0f, 0f);
+    public Color iceColor = new Color(0f, 0f, 0f);
+    public Color darkColor = new Color(0f, 0f, 0f);
+    public Color fightingColor = new Color(0f, 0f, 0f);
+    public Color poisonColor = new Color(0f, 0f, 0f);
+    public Color groundColor = new Color(0f, 0f, 0f);
+
     [Header("SFX")]
     [SerializeField] private AudioClip buttonClickSFX;
 
@@ -42,6 +54,7 @@ public class CardShopItemPrefab : MonoBehaviour
         priceText.gameObject.SetActive(!isPurchased);
 
         SetupType(pokemonData);
+        SetupTextColor(pokemonData.type);
         SetPurchasedState(isPurchased);
 
         _buyButtonOriginalScale = buyButton.transform.localScale;
@@ -87,6 +100,27 @@ public class CardShopItemPrefab : MonoBehaviour
         gemIcon.gameObject.SetActive(!isPurchased);
         priceText.gameObject.SetActive(!isPurchased);
         purchasedImage.gameObject.SetActive(isPurchased);
+    }
+
+    private void SetupTextColor(PokemonType type)
+    {
+        Color color = type switch
+        {
+            PokemonType.Fire     => fireColor,
+            PokemonType.Water    => waterColor,
+            PokemonType.Grass    => grassColor,
+            PokemonType.Electric => electricColor,
+            PokemonType.Psychic  => psychicColor,
+            PokemonType.Ice      => iceColor,
+            PokemonType.Dark     => darkColor,
+            PokemonType.Fighting => fightingColor,
+            PokemonType.Poison   => poisonColor,
+            PokemonType.Ground   => groundColor,
+            _                    => Color.white
+        };
+
+        pokemonNameText.color = color;
+        typeNameText.color = color;
     }
 
     private void SetupType(PokemonData pokemonData)

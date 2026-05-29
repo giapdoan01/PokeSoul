@@ -142,8 +142,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Homurin
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23616b1d3aa4e449dae482e465a926a6, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: 23616b1d3aa4e449dae482e465a926a6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 268364c37da181741bd813da8f3d46de, type: 2}
+  m_sharedMaterial: {fileID: 8757492363488190178, guid: 268364c37da181741bd813da8f3d46de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

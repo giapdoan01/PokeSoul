@@ -16,6 +16,18 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
     
+    [Header("Color Text By Type")]
+    public Color fireColor;
+    public Color waterColor;
+    public Color grassColor;
+    public Color electricColor;
+    public Color psychicColor;
+    public Color iceColor;
+    public Color darkColor;
+    public Color fightingColor;
+    public Color poisonColor;
+    public Color groundColor;
+
     [Header("SFX")]
     [SerializeField] private AudioClip buttonClickSFX;
 
@@ -44,6 +56,7 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
         monName.text = pokemonData.PokemonName;
         typeText.text = pokemonData.type.ToString();
         SetupType(pokemonData);
+        SetupTextColor(pokemonData.type);
     }
     
     public void SetupEmptyCard(int positionInDeck)
@@ -74,6 +87,27 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
         {
             Debug.LogError("PopupListCardSelect not found in scene!");
         }
+    }
+
+    private void SetupTextColor(PokemonType type)
+    {
+        Color color = type switch
+        {
+            PokemonType.Fire     => fireColor,
+            PokemonType.Water    => waterColor,
+            PokemonType.Grass    => grassColor,
+            PokemonType.Electric => electricColor,
+            PokemonType.Psychic  => psychicColor,
+            PokemonType.Ice      => iceColor,
+            PokemonType.Dark     => darkColor,
+            PokemonType.Fighting => fightingColor,
+            PokemonType.Poison   => poisonColor,
+            PokemonType.Ground   => groundColor,
+            _                    => Color.white
+        };
+
+        monName.color = color;
+        typeText.color = color;
     }
 
     public void SetupType(PokemonData cardPokemon)

@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 13.3, y: 1}
+  m_AnchoredPosition: {x: 13.3, y: -1.1}
   m_SizeDelta: {x: 73.2384, y: 46.3641}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4170292352390995242
@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bbf71d8a58305463e9d91aeaca31eaa0, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: bbf71d8a58305463e9d91aeaca31eaa0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 268364c37da181741bd813da8f3d46de, type: 2}
+  m_sharedMaterial: {fileID: 8757492363488190178, guid: 268364c37da181741bd813da8f3d46de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -354,15 +354,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 27f54c9130c9748c9be53df11fa03382, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: 27f54c9130c9748c9be53df11fa03382, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 268364c37da181741bd813da8f3d46de, type: 2}
+  m_sharedMaterial: {fileID: 8757492363488190178, guid: 268364c37da181741bd813da8f3d46de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280770972
+  m_fontColor: {r: 0.6117647, g: 0.3803922, b: 0.15294118, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -491,15 +491,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Psychic
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 27f54c9130c9748c9be53df11fa03382, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: 27f54c9130c9748c9be53df11fa03382, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 268364c37da181741bd813da8f3d46de, type: 2}
+  m_sharedMaterial: {fileID: 8757492363488190178, guid: 268364c37da181741bd813da8f3d46de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280770972
+  m_fontColor: {r: 0.6117647, g: 0.3803922, b: 0.15294118, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -687,6 +687,16 @@ MonoBehaviour:
   - {fileID: -1256534718, guid: 732049f46f2b8f345859441713fb528d, type: 3}
   - {fileID: 25497196, guid: 8a9eee7b59ce7a64985e0a65dfe559a4, type: 3}
   - {fileID: 532238475, guid: 2963b38125edf3b4586e9a1a8c773ed2, type: 3}
+  fireColor: {r: 0.9960785, g: 0.0627451, b: 0.06666667, a: 1}
+  waterColor: {r: 0.08235294, g: 0.6862745, b: 0.9960785, a: 1}
+  grassColor: {r: 0.17254902, g: 0.5882353, b: 0.058823533, a: 1}
+  electricColor: {r: 0.9960785, g: 0.79215693, b: 0, a: 1}
+  psychicColor: {r: 0.9960785, g: 0.3647059, b: 0.7254902, a: 1}
+  iceColor: {r: 0.06666667, g: 0.95294124, b: 1, a: 1}
+  darkColor: {r: 0.22352943, g: 0.14117648, b: 0.14117648, a: 1}
+  fightingColor: {r: 0.5372549, g: 0.53333336, b: 0.5372549, a: 1}
+  poisonColor: {r: 0.4784314, g: 0.20784315, b: 0.7411765, a: 1}
+  groundColor: {r: 0.654902, g: 0.3803922, b: 0.14901961, a: 1}
   buttonClickSFX: {fileID: 8300000, guid: bfd8033a7198c3d419ed0a35c7a7caa0, type: 3}
 --- !u!1 &4967151181253917241
 GameObject:

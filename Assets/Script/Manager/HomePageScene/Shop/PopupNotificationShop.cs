@@ -14,11 +14,15 @@ public class PopupNotificationShop : MonoBehaviour
 
     [Header("SFX")]
     [SerializeField] private AudioClip buttonClickSFX;
+    [SerializeField] private AudioClip successSound;
+    [SerializeField] private AudioClip failureSound;
 
     private const float AnimDuration = 0.25f;
+    private Vector2 _monImageOriginalSize;
 
     void Start()
     {
+        _monImageOriginalSize = MonImage.rectTransform.sizeDelta;
         gameObject.SetActive(false);
         closeButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
         closeButton.onClick.AddListener(Hide);
@@ -27,17 +31,21 @@ public class PopupNotificationShop : MonoBehaviour
     public void SetupNotificationBuyMonSuccess(PokemonData pokemonData, string message)
     {
         MonImage.sprite = pokemonData.spritePokemonCard;
+        MonImage.rectTransform.sizeDelta = _monImageOriginalSize;
         notificationText.text = message;
         Show();
         successEffect.Play();
+        SoundUIManager.Instance?.PlayUISound(successSound);
     }
 
     public void SetupNotificationNotEnoughGem(string message)
     {
         MonImage.sprite = GemSprite;
+        MonImage.rectTransform.sizeDelta = new Vector2(250f, 250f);
         notificationText.text = message;
         Show();
         failureEffect.Play();
+        SoundUIManager.Instance?.PlayUISound(failureSound);
     }
 
     private void Show()

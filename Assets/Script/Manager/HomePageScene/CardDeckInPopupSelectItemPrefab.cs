@@ -15,6 +15,18 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
     
+    [Header("Color Text By Type")]
+    public Color fireColor;
+    public Color waterColor;
+    public Color grassColor;
+    public Color electricColor;
+    public Color psychicColor;
+    public Color iceColor;
+    public Color darkColor;
+    public Color fightingColor;
+    public Color poisonColor;
+    public Color groundColor;
+
     [Header("SFX")]
     [SerializeField] private AudioClip buttonClickSFX;
 
@@ -45,9 +57,10 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
             typeText.text = pokemonData.type.ToString();
             selectCardButton.interactable = true;
             SetupType(pokemonData);
+            SetupTextColor(pokemonData.type);
         }
     }
-    
+
     public void SetupCardInUsed(PokemonData pokemonData)
     {
         frameCardWhenInBattleDeck.enabled = true;
@@ -55,8 +68,9 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
         monImage.sprite = pokemonData.spritePokemonCard;
         monName.text = pokemonData.PokemonName;
         typeText.text = pokemonData.type.ToString();
-        selectCardButton.interactable = false;  // Không thể chọn thẻ đã được dùng
+        selectCardButton.interactable = false;
         SetupType(pokemonData);
+        SetupTextColor(pokemonData.type);
     }
     
     private void OnSelectCardButtonClicked()
@@ -67,6 +81,27 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
         }
     }
     
+    private void SetupTextColor(PokemonType type)
+    {
+        Color color = type switch
+        {
+            PokemonType.Fire     => fireColor,
+            PokemonType.Water    => waterColor,
+            PokemonType.Grass    => grassColor,
+            PokemonType.Electric => electricColor,
+            PokemonType.Psychic  => psychicColor,
+            PokemonType.Ice      => iceColor,
+            PokemonType.Dark     => darkColor,
+            PokemonType.Fighting => fightingColor,
+            PokemonType.Poison   => poisonColor,
+            PokemonType.Ground   => groundColor,
+            _                    => Color.white
+        };
+
+        monName.color = color;
+        typeText.color = color;
+    }
+
     private void SetupType(PokemonData cardPokemon)
     {
         switch (cardPokemon.type)

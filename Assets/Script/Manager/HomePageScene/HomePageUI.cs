@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class HomePageUI : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class HomePageUI : MonoBehaviour
     public Transform mapListContent;
     public GameObject mapItemPrefab;
     public Button closeListMapButton;
+    public TMP_Text statusText;
 
     [Header("Animation")]
     public float pageWidth = 1500f;
@@ -149,11 +151,46 @@ public class HomePageUI : MonoBehaviour
     private void OpenListMapPanel()
     {
         if (ListMapPanel == null) return;
+
+        var deck = PlayerDataManager.Instance?.GetBattleDeck();
+        int filledSlots = deck != null ? deck.FindAll(id => !string.IsNullOrEmpty(id)).Count : 0;
+        if (filledSlots < 4)
+        {
+            ShowStatus($"Cần đủ 4 Mon trong deck để chiến đấu! ({filledSlots}/4)");
+            return;
+        }
+
+        HideStatus();
         PopulateMapList();
         ListMapPanel.SetActive(true);
 
         if (_panelScaleCoroutine != null) StopCoroutine(_panelScaleCoroutine);
         _panelScaleCoroutine = StartCoroutine(ScalePanel(Vector3.zero, Vector3.one));
+    }
+
+    private Coroutine _statusCoroutine;
+
+    private void ShowStatus(string message)
+    {
+        if (statusText == null) return;
+        statusText.text = message;
+        statusText.gameObject.SetActive(true);
+
+        if (_statusCoroutine != null) StopCoroutine(_statusCoroutine);
+        _statusCoroutine = StartCoroutine(HideStatusAfterDelay(2.5f));
+    }
+
+    private void HideStatus()
+    {
+        if (statusText == null) return;
+        if (_statusCoroutine != null) StopCoroutine(_statusCoroutine);
+        statusText.gameObject.SetActive(false);
+    }
+
+    private IEnumerator HideStatusAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        statusText.gameObject.SetActive(false);
     }
 
     private void CloseListMapPanel()

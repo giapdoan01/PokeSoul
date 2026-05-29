@@ -16,6 +16,19 @@ public class CardInBattleItemPrefab : MonoBehaviour
     public Image TypeImage;
     public Sprite[] TypeSprites;
     public Sprite[] TypeBackgroundSprites;
+
+    [Header("Color Text By Type")]
+    public Color fireColor;
+    public Color waterColor;
+    public Color grassColor;
+    public Color electricColor;
+    public Color psychicColor;
+    public Color iceColor;
+    public Color darkColor;
+    public Color fightingColor;
+    public Color poisonColor;
+    public Color groundColor;
+
     public void SetCardData(PokemonData data)
     {
         cardData = data;
@@ -24,7 +37,29 @@ public class CardInBattleItemPrefab : MonoBehaviour
         typeText.text = cardData.type.ToString();
         cardCostText.text = cardData.getPokemonLevelDataByLevel(1).GetStatEntryByName("Cost").value.ToString();
         SetUpTypeSprite(cardData);
+        SetupTextColor(cardData.type);
     }
+    private void SetupTextColor(PokemonType type)
+    {
+        Color color = type switch
+        {
+            PokemonType.Fire     => fireColor,
+            PokemonType.Water    => waterColor,
+            PokemonType.Grass    => grassColor,
+            PokemonType.Electric => electricColor,
+            PokemonType.Psychic  => psychicColor,
+            PokemonType.Ice      => iceColor,
+            PokemonType.Dark     => darkColor,
+            PokemonType.Fighting => fightingColor,
+            PokemonType.Poison   => poisonColor,
+            PokemonType.Ground   => groundColor,
+            _                    => Color.white
+        };
+
+        cardNameText.color = color;
+        typeText.color = color;
+    }
+
     public void SetUpTypeSprite(PokemonData data)
     {
         switch (data.type)

@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class MonPreviewSystem : MonoBehaviour
 {
+    public static MonPreviewSystem Instance { get; private set; }
+
     [Header("Spawn Points (index 0-3 = slot 1-4)")]
     public Transform[] spawnPoints = new Transform[4];
 
     private GameObject[] _spawnedMons = new GameObject[4];
+
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -24,6 +31,7 @@ public class MonPreviewSystem : MonoBehaviour
 
     void OnDestroy()
     {
+        if (Instance == this) Instance = null;
         var pdm = PlayerDataManager.Instance;
         if (pdm != null)
             pdm.OnPlayerDataLoaded -= Refresh;

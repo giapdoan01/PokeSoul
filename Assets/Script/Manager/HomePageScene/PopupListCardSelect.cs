@@ -120,6 +120,8 @@ public class PopupListCardSelect : MonoBehaviour
             else
                 Debug.LogWarning("CardDeckHomePageContainer not found.");
 
+            MonPreviewSystem.Instance?.Refresh();
+
         }, "Đang thêm thẻ bài vào deck...");
     }
 }
