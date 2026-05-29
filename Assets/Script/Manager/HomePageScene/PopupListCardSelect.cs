@@ -10,6 +10,9 @@ public class PopupListCardSelect : MonoBehaviour
     public Transform container;
     public Button closeButton;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
     [Header("Scale Settings")]
     [SerializeField] private float scaleDuration = 0.3f;
 
@@ -21,6 +24,7 @@ public class PopupListCardSelect : MonoBehaviour
     {
         popupListCardSelect.transform.localScale = Vector3.zero;
         popupListCardSelect.SetActive(false);
+        closeButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
         closeButton.onClick.AddListener(ClosePopup);
     }
 

@@ -21,6 +21,9 @@ public class CardShopItemPrefab : MonoBehaviour
     public List<Sprite> typeSprites;
     public List<Sprite> typeCardBackgroundSprites;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
     private PokemonData _pokemonData;
     private int _price;
     private ShopManager _shopManager;
@@ -50,6 +53,7 @@ public class CardShopItemPrefab : MonoBehaviour
     // Gắn vào Button OnClick trong Inspector
     public void OnBuyButtonClicked()
     {
+        SoundUIManager.Instance?.PlayUISound(buttonClickSFX);
         if (_pokemonData == null)
         {
             Debug.LogError("[CardShopItemPrefab] _pokemonData null — SetupCardShopItem chưa được gọi!");

@@ -32,6 +32,9 @@ public class HomePageUI : MonoBehaviour
     public float pageWidth = 1500f;
     public float slideDuration = 0.35f;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
     [Header("Icon Scale")]
     public float normalScale = 1f;
     public float selectedScale = 1.35f;
@@ -50,6 +53,12 @@ public class HomePageUI : MonoBehaviour
         // Đặt vị trí ban đầu: Shop=-1500, Battle=0, Card=1500
         for (int i = 0; i < _panels.Length; i++)
             SetPanelX(_panels[i], (i - _currentIndex) * pageWidth);
+
+        openShopPanel.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
+        openBattlePanel.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
+        openCardPanel.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
+        openListMapButton?.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
+        closeListMapButton?.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
 
         openShopPanel.onClick.AddListener(() => GoToPanel(0, shopButtonIcon));
         openBattlePanel.onClick.AddListener(() => GoToPanel(1, battleButtonIcon));

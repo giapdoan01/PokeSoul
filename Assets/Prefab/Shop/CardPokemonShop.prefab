@@ -664,6 +664,7 @@ MonoBehaviour:
   priceText: {fileID: 1272932960682855204}
   gemIcon: {fileID: 2745109205874316685}
   purchasedImage: {fileID: 2079911303064133159}
+  popupNotificationShop: {fileID: 0}
   typeSprites:
   - {fileID: 726323485, guid: 19114b22f6a287740946c796321f93b6, type: 3}
   - {fileID: -174644815, guid: 0009d4312b05a234991ad1ec10452cd2, type: 3}
@@ -686,6 +687,7 @@ MonoBehaviour:
   - {fileID: -1256534718, guid: 732049f46f2b8f345859441713fb528d, type: 3}
   - {fileID: 25497196, guid: 8a9eee7b59ce7a64985e0a65dfe559a4, type: 3}
   - {fileID: 532238475, guid: 2963b38125edf3b4586e9a1a8c773ed2, type: 3}
+  buttonClickSFX: {fileID: 8300000, guid: bfd8033a7198c3d419ed0a35c7a7caa0, type: 3}
 --- !u!1 &4967151181253917241
 GameObject:
   m_ObjectHideFlags: 0

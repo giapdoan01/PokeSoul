@@ -1111,3 +1111,4 @@ MonoBehaviour:
   - {fileID: -1256534718, guid: 732049f46f2b8f345859441713fb528d, type: 3}
   - {fileID: 25497196, guid: 8a9eee7b59ce7a64985e0a65dfe559a4, type: 3}
   - {fileID: 532238475, guid: 2963b38125edf3b4586e9a1a8c773ed2, type: 3}
+  buttonClickSFX: {fileID: 8300000, guid: bfd8033a7198c3d419ed0a35c7a7caa0, type: 3}

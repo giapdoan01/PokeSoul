@@ -30,6 +30,9 @@ public class AuthUIManager : MonoBehaviour
     [SerializeField] private Button toLoginButton;
     [SerializeField] private TMP_Text registerErrorText;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
     [Header("Scene")]
     [SerializeField] private string gameSceneName = "MainGame";
 
@@ -47,6 +50,11 @@ public class AuthUIManager : MonoBehaviour
         AuthManager.Instance.OnLoginSuccess += HandleLoginSuccess;
         AuthManager.Instance.OnAuthError += HandleAuthError;
 
+        loginButton.onClick.AddListener(PlayButtonSFX);
+        registerButton.onClick.AddListener(PlayButtonSFX);
+        toRegisterButton.onClick.AddListener(PlayButtonSFX);
+        toLoginButton.onClick.AddListener(PlayButtonSFX);
+
         loginButton.onClick.AddListener(OnLoginClick);
         registerButton.onClick.AddListener(OnRegisterClick);
         toRegisterButton.onClick.AddListener(ShowRegister);
@@ -59,6 +67,10 @@ public class AuthUIManager : MonoBehaviour
         AuthManager.Instance.OnLoginSuccess -= HandleLoginSuccess;
         AuthManager.Instance.OnAuthError -= HandleAuthError;
     }
+
+    // ── SFX ───────────────────────────────────────────────────
+
+    private void PlayButtonSFX() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX);
 
     // ── SWITCH PANELS ─────────────────────────────────────────
 

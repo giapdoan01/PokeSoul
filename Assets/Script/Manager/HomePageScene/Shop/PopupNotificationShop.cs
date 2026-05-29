@@ -12,11 +12,15 @@ public class PopupNotificationShop : MonoBehaviour
     public ParticleSystem successEffect;
     public ParticleSystem failureEffect;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
     private const float AnimDuration = 0.25f;
 
     void Start()
     {
         gameObject.SetActive(false);
+        closeButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
         closeButton.onClick.AddListener(Hide);
     }
 

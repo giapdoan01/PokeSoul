@@ -16,12 +16,15 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
     
-    private int _positionInDeck;  // Vị trí của card trong deck (0-3)
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
+    private int _positionInDeck;
     private PopupListCardSelect _popupListCardSelect;
 
     void Start()
     {
-        // Gán sự kiện click cho button
+        addOrReplaceCardButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
         addOrReplaceCardButton.onClick.AddListener(AddOrReplaceCard);
         
         // Tìm popup trong scene

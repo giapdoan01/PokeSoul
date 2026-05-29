@@ -15,11 +15,15 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
     
+    [Header("SFX")]
+    [SerializeField] private AudioClip buttonClickSFX;
+
     private PokemonData _pokemonData;
     private PopupListCardSelect _parentPopup;
-    
+
     void Start()
     {
+        selectCardButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
         selectCardButton.onClick.AddListener(OnSelectCardButtonClicked);
     }
     
