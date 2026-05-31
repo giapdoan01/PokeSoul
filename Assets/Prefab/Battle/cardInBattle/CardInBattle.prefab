@@ -321,7 +321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 8.3496, y: 0}
+  m_AnchoredPosition: {x: 24.964996, y: 0}
   m_SizeDelta: {x: 32.2561, y: 32.2561}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4073905714648275329
@@ -745,7 +745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -12.8, y: 0}
+  m_AnchoredPosition: {x: -16, y: 0}
   m_SizeDelta: {x: 134.7789, y: -8.4977}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &6239308146533255128
@@ -778,8 +778,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dd883a248fced426693e05d482ebc9fc, type: 2}
-  m_sharedMaterial: {fileID: -4171563015097924827, guid: dd883a248fced426693e05d482ebc9fc, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 25b9830359d33e84cab8011435b1c45e, type: 2}
+  m_sharedMaterial: {fileID: 3611983438777329905, guid: 25b9830359d33e84cab8011435b1c45e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -803,7 +803,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.5
+  m_fontSize: 48.95
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -860,6 +860,7 @@ GameObject:
   - component: {fileID: 7315685158333690682}
   - component: {fileID: 4518739988158124395}
   - component: {fileID: 2563927489100122972}
+  - component: {fileID: 6206653842312159466}
   m_Layer: 5
   m_Name: CardInBattle
   m_TagString: Untagged
@@ -983,6 +984,18 @@ MonoBehaviour:
   fightingColor: {r: 0.5372549, g: 0.53333336, b: 0.5372549, a: 1}
   poisonColor: {r: 0.4784314, g: 0.20784315, b: 0.7411765, a: 1}
   groundColor: {r: 0.654902, g: 0.3803922, b: 0.14901961, a: 1}
+--- !u!225 &6206653842312159466
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6159316547419490326}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6747710812307148147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,7 +1063,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 844562805, guid: 02a1d27326c19f34c8fae16ef17a0a2e, type: 3}
+  m_Sprite: {fileID: 426223363, guid: 95161850152f6874aa088a854f968f68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

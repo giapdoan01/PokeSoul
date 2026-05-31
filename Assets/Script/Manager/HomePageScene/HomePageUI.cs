@@ -11,6 +11,7 @@ public class HomePageUI : MonoBehaviour
     public Button openShopPanel;
     public Button openCardPanel;
     public Button openListMapButton;
+    public Button openSettingsButton;
 
     [Header("Button Icons")]
     public RectTransform battleButtonIcon;
@@ -29,6 +30,7 @@ public class HomePageUI : MonoBehaviour
     public GameObject mapItemPrefab;
     public Button closeListMapButton;
     public TMP_Text statusText;
+    public SettingsHomePopup settingsHomePopup;
 
     [Header("Animation")]
     public float pageWidth = 1500f;
@@ -68,6 +70,8 @@ public class HomePageUI : MonoBehaviour
 
         openListMapButton?.onClick.AddListener(OpenListMapPanel);
         closeListMapButton?.onClick.AddListener(CloseListMapPanel);
+        openSettingsButton?.onClick.AddListener(() => settingsHomePopup?.Open());
+        openSettingsButton?.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
 
         ListMapPanel?.SetActive(false);
 

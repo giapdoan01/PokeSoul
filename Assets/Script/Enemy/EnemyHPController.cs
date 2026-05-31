@@ -6,10 +6,13 @@ using System;
 public class EnemyHPController : MonoBehaviour
 {
     private EnemyData enemyData;
+    private int _waveNumber;
+    private PlayerStatsInBattleManager _playerStats;
     public double currentHP;
     public double maxHP;
     public Action<double> onEnemyHealthChanged;
     public Action<double> onEnemyMaxHPSet;
+    public Action OnDied;
 
     public double CurrentHP => currentHP;
     public double MaxHP => maxHP;
@@ -17,6 +20,12 @@ public class EnemyHPController : MonoBehaviour
     public void SetEnemyData(EnemyData data)
     {
         enemyData = data;
+    }
+
+    public void SetPlayerStats(PlayerStatsInBattleManager playerStats, int waveNumber)
+    {
+        _playerStats = playerStats;
+        _waveNumber = waveNumber;
     }
 
     void Awake()
@@ -68,7 +77,27 @@ public class EnemyHPController : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{enemyData.enemyName} đã chết!");
-        Destroy(gameObject);
-        
+
+        var waveData = enemyData.getEnemyWaveDataByName(_waveNumber);
+        if (waveData != null && _playerStats != null)
+            _playerStats.AddCoin(waveData.enemyStats.reward);
+
+        onEnemyHealthChanged = null;
+        onEnemyMaxHPSet = null;
+        _playerStats = null;
+        OnDied?.Invoke();
+        OnDied = null;
+
+        MatchTracker.Instance?.RegisterEnemyDied();
+
+        if (EnemyObjectPool.Instance != null)
+            EnemyObjectPool.Instance.Return(gameObject);
+        else
+            Destroy(gameObject);
+    }
+
+    public void ResetHP()
+    {
+        currentHP = maxHP;
     }
 }

@@ -540,6 +540,7 @@ GameObject:
   - component: {fileID: 3414623624669382566}
   - component: {fileID: 7965373223034452277}
   - component: {fileID: 6179487506852325679}
+  - component: {fileID: 790435902170964262}
   m_Layer: 8
   m_Name: Spriggle
   m_TagString: Untagged
@@ -612,6 +613,29 @@ MonoBehaviour:
   defaultAttackCooldown: 1
   minAttackCooldown: 0.05
   preloadAmount: 5
+--- !u!136 &790435902170964262
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413999392726796028}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.30336156
+  m_Height: 0.8411178
+  m_Direction: 1
+  m_Center: {x: -2.7456315e-10, y: 0.44998577, z: 0.036406454}
 --- !u!1 &4631259591075683286
 GameObject:
   m_ObjectHideFlags: 0

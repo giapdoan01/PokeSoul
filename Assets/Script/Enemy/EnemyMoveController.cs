@@ -30,9 +30,19 @@ public class EnemyMoveController : MonoBehaviour
     {
         enemyWaveData = enemyData.getEnemyWaveDataByName(waveIndex);
         if (enemyWaveData != null)
-        {
             moveSpeed = enemyWaveData.enemyStats.speed;
-        }
+    }
+
+    public void ResetForReuse(WayPointForEnemy wayPoint)
+    {
+        wayPointManager = wayPoint;
+        currentWayPointIndex = 0;
+        reachedEnd = false;
+        currentWayPoint = null;
+        _status = GetComponent<EnemyStatusEffects>();
+
+        if (wayPointManager != null && wayPointManager.wayPoints.Count > 0)
+            wayPointManager.getWayPoint(0, out currentWayPoint);
     }
     
     void Start()
@@ -97,6 +107,11 @@ public class EnemyMoveController : MonoBehaviour
     
     void OnReachEndPoint()
     {
-       
+        MatchTracker.Instance?.RegisterEnemyReachedEnd();
+
+        if (EnemyObjectPool.Instance != null)
+            EnemyObjectPool.Instance.Return(gameObject);
+        else
+            gameObject.SetActive(false);
     }
 }

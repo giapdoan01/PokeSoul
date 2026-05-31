@@ -58,6 +58,8 @@ MonoBehaviour:
   spriteCompleted: {fileID: -235160139, guid: ab9b2274e0ae2834d8b873e616e5c950, type: 3}
   spriteNotCompleted: {fileID: -829659025, guid: 6444e038515a5db4883e49491da91119, type: 3}
   mapNameText: {fileID: 3876003700502559056}
+  toBattleButton: {fileID: 2244420799837513197}
+  battleSessionData: {fileID: 11400000, guid: 0d24aca7d3ddea1478f43c306c748e5b, type: 2}
 --- !u!222 &2845605565408090498
 CanvasRenderer:
   m_ObjectHideFlags: 0

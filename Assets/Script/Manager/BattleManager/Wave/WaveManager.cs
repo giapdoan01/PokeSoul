@@ -16,28 +16,41 @@ public class WaveManager : MonoBehaviour
 
     public Action<int> OnCountdownTick;
     public Action OnCountdownFinished;
+    public Action OnWaveSpawnComplete;   // toàn bộ enemy đã spawn xong
+    public Action OnWaveCleared;         // toàn bộ enemy đã chết
+
+    private int _aliveEnemyCount;
 
     private void Awake()
     {
-        if (mapData == null)
-        {
-            Debug.LogError("[WaveManager] Không tìm thấy Map Data! Vui lòng gán Map Data trong Inspector.");
-            return;
-        }
-
         currentWaveNumber = 1;
-        enemyBattleDatas = mapData.enemyDatas;
-        wayPointSystem = FindObjectOfType<WayPointForEnemy>();
+        cts = new CancellationTokenSource();
+    }
+
+    public void Init(Map map, WayPointForEnemy wayPoint)
+    {
+        mapData = map;
+        enemyBattleDatas = map.enemyDatas;
+        wayPointSystem = wayPoint;
 
         if (wayPointSystem == null)
             Debug.LogError("[WaveManager] Không tìm thấy WayPointForEnemy trong scene!");
         else if (wayPointSystem.wayPoints.Count == 0)
             Debug.LogError("[WaveManager] WayPointForEnemy không có waypoint nào!");
+
+        // Preload enemy vào pool
+        if (EnemyObjectPool.Instance != null)
+            foreach (var enemyData in enemyBattleDatas)
+                EnemyObjectPool.Instance.RegisterEnemy(enemyData.enemyName.Trim(), enemyData.enemyPrefab);
     }
 
-    private void Start()
+public void StartBattle()
     {
-        cts = new CancellationTokenSource();
+        if (mapData == null || wayPointSystem == null)
+        {
+            Debug.LogError("[WaveManager] Chưa được Init trước khi StartBattle!");
+            return;
+        }
         StartNextWave();
     }
 
@@ -85,6 +98,15 @@ public class WaveManager : MonoBehaviour
 
         Transform spawnPoint = wayPointSystem.wayPoints[0];
 
+        // Đếm tổng enemy sẽ spawn trong wave này
+        int totalCount = 0;
+        foreach (var ed in enemyBattleDatas)
+        {
+            var wd = ed.getEnemyWaveDataByName(waveNumber);
+            if (wd != null) totalCount += wd.enemyStats.count;
+        }
+        _aliveEnemyCount = totalCount;
+
         foreach (var enemyData in enemyBattleDatas)
         {
             EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveNumber);
@@ -96,23 +118,41 @@ public class WaveManager : MonoBehaviour
 
             for (int i = 0; i < waveData.enemyStats.count; i++)
             {
-                GameObject enemyInstance = Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
+                GameObject enemyInstance = EnemyObjectPool.Instance != null
+                    ? EnemyObjectPool.Instance.GetOrRegister(enemyData.enemyName, enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity)
+                    : Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
 
-                EnemyHPController hpController = enemyInstance.GetComponent<EnemyHPController>();
-                hpController.SetEnemyData(enemyData);
-                hpController.setHpByWaveName(waveNumber);
+                if (enemyInstance == null) { _aliveEnemyCount--; continue; }
+
+                MatchTracker.Instance?.RegisterEnemySpawned();
 
                 EnemyMoveController moveController = enemyInstance.GetComponent<EnemyMoveController>();
                 moveController.SetEnemyData(enemyData);
                 moveController.SetSpeedByWave(waveNumber);
+                moveController.ResetForReuse(wayPointSystem);
+
+                EnemyHPController hpController = enemyInstance.GetComponent<EnemyHPController>();
+                hpController.SetEnemyData(enemyData);
+                hpController.SetPlayerStats(playerStatsInBattleManager, waveNumber);
+                hpController.setHpByWaveName(waveNumber);
+                hpController.OnDied += OnEnemyDied;
 
                 await UniTask.Delay(1000, cancellationToken: ct);
             }
         }
+
+        // Toàn bộ enemy đã được spawn — show next wave button
+        OnWaveSpawnComplete?.Invoke();
     }
 
-    public void SetMapData(Map newMapData)
+    private void OnEnemyDied()
     {
-        mapData = newMapData;
+        _aliveEnemyCount--;
+        if (_aliveEnemyCount <= 0)
+        {
+            OnWaveCleared?.Invoke();
+            StartNextWave();
+        }
     }
+
 }

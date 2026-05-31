@@ -605,6 +605,7 @@ GameObject:
   - component: {fileID: 8641218657341010488}
   - component: {fileID: 8299732046797978979}
   - component: {fileID: 3830064172608123836}
+  - component: {fileID: 6542945227462301700}
   m_Layer: 8
   m_Name: Kibalt
   m_TagString: Untagged
@@ -677,6 +678,29 @@ MonoBehaviour:
   defaultAttackCooldown: 1
   minAttackCooldown: 0.05
   preloadAmount: 5
+--- !u!136 &6542945227462301700
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357776282559683045}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 0.78482914
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.3642403, z: 0}
 --- !u!1 &6449150565625131523
 GameObject:
   m_ObjectHideFlags: 0

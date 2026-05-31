@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 4464919077021746874}
   - component: {fileID: 1223042188985153978}
   - component: {fileID: 1880403034920110007}
+  - component: {fileID: 6256952229120090592}
   m_Layer: 8
   m_Name: Kiblu
   m_TagString: Untagged
@@ -149,6 +150,29 @@ MonoBehaviour:
   defaultAttackCooldown: 1
   minAttackCooldown: 0.05
   preloadAmount: 5
+--- !u!136 &6256952229120090592
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396789357132794312}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2649437
+  m_Height: 0.8772358
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.47610098, z: -0.0649437}
 --- !u!1 &1518860827558904244
 GameObject:
   m_ObjectHideFlags: 0

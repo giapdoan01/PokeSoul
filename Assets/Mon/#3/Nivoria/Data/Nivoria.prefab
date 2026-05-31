@@ -584,6 +584,7 @@ GameObject:
   - component: {fileID: 6298101303718389419}
   - component: {fileID: 788469686293651247}
   - component: {fileID: 6785635826905009616}
+  - component: {fileID: 4643722472298179206}
   m_Layer: 8
   m_Name: Nivoria
   m_TagString: Untagged
@@ -656,6 +657,29 @@ MonoBehaviour:
   defaultAttackCooldown: 1
   minAttackCooldown: 0.05
   preloadAmount: 5
+--- !u!136 &4643722472298179206
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696916833240894940}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Height: 0.82239217
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5624654, z: 0}
 --- !u!1 &6951864940459347282
 GameObject:
   m_ObjectHideFlags: 0

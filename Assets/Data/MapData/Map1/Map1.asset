@@ -15,11 +15,88 @@ MonoBehaviour:
   id: 1
   mapName: 1
   mapSprite: {fileID: -75761523, guid: 794ee628b2c2859478d63fc4861b7a91, type: 3}
-  rewardWinMap: 0
+  mapPrefab: {fileID: 993243062162354818, guid: c7bb86d9287eae94fb10c063ef22b0d5, type: 3}
+  rewardWinMap: 40
   enemyDatas:
   - {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
   waves:
   - waveNumber: 1
     waveReward:
-      waveReward: 100
+      waveReward: 140
       waveSpecialReward: 0
+  - waveNumber: 2
+    waveReward:
+      waveReward: 150
+      waveSpecialReward: 0
+  - waveNumber: 3
+    waveReward:
+      waveReward: 160
+      waveSpecialReward: 0
+  - waveNumber: 4
+    waveReward:
+      waveReward: 170
+      waveSpecialReward: 0
+  - waveNumber: 5
+    waveReward:
+      waveReward: 190
+      waveSpecialReward: 200
+  - waveNumber: 6
+    waveReward:
+      waveReward: 210
+      waveSpecialReward: 0
+  - waveNumber: 7
+    waveReward:
+      waveReward: 230
+      waveSpecialReward: 0
+  - waveNumber: 8
+    waveReward:
+      waveReward: 250
+      waveSpecialReward: 0
+  - waveNumber: 9
+    waveReward:
+      waveReward: 270
+      waveSpecialReward: 0
+  - waveNumber: 10
+    waveReward:
+      waveReward: 320
+      waveSpecialReward: 300
+  - waveNumber: 11
+    waveReward:
+      waveReward: 340
+      waveSpecialReward: 0
+  - waveNumber: 12
+    waveReward:
+      waveReward: 360
+      waveSpecialReward: 0
+  - waveNumber: 13
+    waveReward:
+      waveReward: 380
+      waveSpecialReward: 0
+  - waveNumber: 14
+    waveReward:
+      waveReward: 400
+      waveSpecialReward: 0
+  - waveNumber: 15
+    waveReward:
+      waveReward: 450
+      waveSpecialReward: 450
+  - waveNumber: 16
+    waveReward:
+      waveReward: 470
+      waveSpecialReward: 0
+  - waveNumber: 17
+    waveReward:
+      waveReward: 470
+      waveSpecialReward: 0
+  - waveNumber: 18
+    waveReward:
+      waveReward: 510
+      waveSpecialReward: 0
+  - waveNumber: 19
+    waveReward:
+      waveReward: 530
+      waveSpecialReward: 0
+  - waveNumber: 10
+    waveReward:
+      waveReward: 650
+      waveSpecialReward: 500

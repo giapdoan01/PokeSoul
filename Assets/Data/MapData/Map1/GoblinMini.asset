@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GoblinMini
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   id: _goblinmini
-  enemyName: 'Goblin Mini                   '
+  enemyName: 'GoblinMini                   '
   spriteEnemy: {fileID: 0}
   enemyPrefab: {fileID: 5327662555134996800, guid: 72cc25846a1fa6b419c6cb30939daf55, type: 3}
   enemyWaves:

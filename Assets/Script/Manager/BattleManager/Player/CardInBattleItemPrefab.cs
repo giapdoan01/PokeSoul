@@ -1,11 +1,11 @@
+using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
-using System.Reflection;
 
-public class CardInBattleItemPrefab : MonoBehaviour
+public class CardInBattleItemPrefab : MonoBehaviour,
+    IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public PokemonData cardData;
     public Image cardImage;
@@ -29,16 +29,121 @@ public class CardInBattleItemPrefab : MonoBehaviour
     public Color poisonColor;
     public Color groundColor;
 
+    // Inject từ CardDeckInBattleManager sau khi Instantiate
+    private Image _dragGhostImage;
+    private RectTransform _ghostRect;
+    private Canvas _rootCanvas;
+    private bool _isDragging;
+    private PlayerStatsInBattleManager _playerStats;
+    private int _cost;
+
+    private void Awake()
+    {
+        _rootCanvas = GetComponentInParent<Canvas>()?.rootCanvas;
+    }
+
+    // ── Setup ──
+
     public void SetCardData(PokemonData data)
     {
         cardData = data;
         monImage.sprite = cardData.spritePokemonCard;
         cardNameText.text = cardData.PokemonName;
         typeText.text = cardData.type.ToString();
-        cardCostText.text = cardData.getPokemonLevelDataByLevel(1).GetStatEntryByName("Cost").value.ToString();
+        var levelData = cardData.getPokemonLevelDataByLevel(1);
+        var costEntry = levelData?.GetStatEntryByName("Price");
+        _cost = costEntry != null ? (int)costEntry.value : 0;
+        cardCostText.text = costEntry != null ? _cost.ToString() : "?";
+        if (costEntry == null)
+            Debug.LogWarning($"[CardInBattleItemPrefab] '{cardData.PokemonName}' thiếu stat 'Price' ở level 1");
         SetUpTypeSprite(cardData);
         SetupTextColor(cardData.type);
     }
+
+    public void SetPlayerStats(PlayerStatsInBattleManager stats) => _playerStats = stats;
+
+    // Gọi bởi CardDeckInBattleManager ngay sau Instantiate
+    public void SetDragGhost(Image ghostImage)
+    {
+        _dragGhostImage = ghostImage;
+        if (_dragGhostImage == null) return;
+        _ghostRect = _dragGhostImage.GetComponent<RectTransform>();
+        _dragGhostImage.raycastTarget = false;
+        _dragGhostImage.gameObject.SetActive(false);
+    }
+
+    // ── Drag & Drop ──
+
+    public void OnBeginDrag(PointerEventData e)
+    {
+        if (cardData?.pokemonPrefab == null) return;
+        _isDragging = true;
+
+        if (_dragGhostImage != null)
+        {
+            _dragGhostImage.sprite = monImage.sprite;
+            _dragGhostImage.gameObject.SetActive(true);
+            MoveGhost(e.position);
+        }
+
+        GetComponent<CanvasGroup>()?.Let(cg => cg.alpha = 0.45f);
+    }
+
+    public void OnDrag(PointerEventData e)
+    {
+        if (!_isDragging) return;
+        MoveGhost(e.position);
+    }
+
+    public void OnEndDrag(PointerEventData e)
+    {
+        if (!_isDragging) return;
+        _isDragging = false;
+
+        _dragGhostImage?.gameObject.SetActive(false);
+        GetComponent<CanvasGroup>()?.Let(cg => cg.alpha = 1f);
+
+        TryPlaceMon(e.position);
+    }
+
+    private void MoveGhost(Vector2 screenPos)
+    {
+        if (_ghostRect == null || _rootCanvas == null) return;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _rootCanvas.GetComponent<RectTransform>(),
+            screenPos,
+            _rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _rootCanvas.worldCamera,
+            out Vector2 local
+        );
+        _ghostRect.localPosition = local;
+    }
+
+    private void TryPlaceMon(Vector2 screenPos)
+    {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
+        // Kiểm tra coin trước khi tìm slot
+        if (_playerStats != null && _playerStats.playerCoin < _cost)
+        {
+            Debug.Log($"[Card] Không đủ coin. Cần {_cost}, hiện có {_playerStats.playerCoin}");
+            return;
+        }
+
+        Ray ray = cam.ScreenPointToRay(screenPos);
+        Vector3 worldPos = Physics.Raycast(ray, out RaycastHit hit, 100f)
+            ? hit.point
+            : ray.GetPoint(10f);
+
+        PlacementSlot slot = PlacementSlotRegistry.FindNearestFree(worldPos, maxDistance: 5f);
+        if (slot == null) return;
+
+        if (slot.TrySpawn(cardData))
+            _playerStats?.MinusCoin(_cost);
+    }
+
+    // ── Visual helpers ──
+
     private void SetupTextColor(PokemonType type)
     {
         Color color = type switch
@@ -55,56 +160,19 @@ public class CardInBattleItemPrefab : MonoBehaviour
             PokemonType.Ground   => groundColor,
             _                    => Color.white
         };
-
         cardNameText.color = color;
         typeText.color = color;
     }
 
     public void SetUpTypeSprite(PokemonData data)
     {
-        switch (data.type)
-        {
-            case PokemonType.Fire:
-                TypeImage.sprite = TypeSprites[0];
-                cardImage.sprite = TypeBackgroundSprites[0];
-                break;
-            case PokemonType.Water:
-                TypeImage.sprite = TypeSprites[1];
-                cardImage.sprite = TypeBackgroundSprites[1];
-                break;
-            case PokemonType.Grass:
-                TypeImage.sprite = TypeSprites[2];
-                cardImage.sprite = TypeBackgroundSprites[2];
-                break;
-            case PokemonType.Electric:
-                TypeImage.sprite = TypeSprites[3];
-                cardImage.sprite = TypeBackgroundSprites[3];
-                break;
-            case PokemonType.Psychic:
-                TypeImage.sprite = TypeSprites[4];
-                cardImage.sprite = TypeBackgroundSprites[4];
-                break;
-            case PokemonType.Ice:
-                TypeImage.sprite = TypeSprites[5];
-                cardImage.sprite = TypeBackgroundSprites[5];
-                break;
-            case PokemonType.Dark:
-                TypeImage.sprite = TypeSprites[6];
-                cardImage.sprite = TypeBackgroundSprites[6];
-                break;
-            case PokemonType.Fighting:
-                TypeImage.sprite = TypeSprites[7];
-                cardImage.sprite = TypeBackgroundSprites[7];
-                break;
-            case PokemonType.Poison:
-                TypeImage.sprite = TypeSprites[8];
-                cardImage.sprite = TypeBackgroundSprites[8];
-                break;
-            case PokemonType.Ground:
-                TypeImage.sprite = TypeSprites[9];
-                cardImage.sprite = TypeBackgroundSprites[9];
-                break;
-        }
+        int idx = (int)data.type;
+        if (idx < TypeSprites.Length)           TypeImage.sprite  = TypeSprites[idx];
+        if (idx < TypeBackgroundSprites.Length) cardImage.sprite  = TypeBackgroundSprites[idx];
     }
+}
 
+internal static class CanvasGroupExt
+{
+    internal static void Let(this CanvasGroup cg, Action<CanvasGroup> action) => action(cg);
 }

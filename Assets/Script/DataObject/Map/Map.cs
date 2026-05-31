@@ -9,6 +9,7 @@ public class Map : ScriptableObject
     public string id;
     public string mapName;
     public Sprite mapSprite;
+    public GameObject mapPrefab;
     public int rewardWinMap;
     public EnemyData[] enemyDatas;
     public WaveData[] waves;

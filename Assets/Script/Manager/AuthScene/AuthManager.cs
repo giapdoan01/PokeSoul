@@ -13,6 +13,9 @@ public class AuthManager : MonoBehaviour
 
     public bool IsInitialized { get; private set; }
 
+    private const string KeyUsername = "saved_username";
+    private const string KeyPassword = "saved_password";
+
     private void Awake()
     {
         if (Instance == null)
@@ -31,6 +34,24 @@ public class AuthManager : MonoBehaviour
     {
         await UnityServices.InitializeAsync();
         IsInitialized = true;
+        await TryAutoLoginAsync();
+    }
+
+    // Tự động đăng nhập nếu có thông tin đã lưu
+    private async UniTask TryAutoLoginAsync()
+    {
+        string username = PlayerPrefs.GetString(KeyUsername, "");
+        string password = PlayerPrefs.GetString(KeyPassword, "");
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return;
+
+        await LoginAsync(username, password, saveCredentials: false);
+    }
+
+    public void ClearSavedLogin()
+    {
+        PlayerPrefs.DeleteKey(KeyUsername);
+        PlayerPrefs.DeleteKey(KeyPassword);
+        PlayerPrefs.Save();
     }
 
     public async UniTask RegisterAsync(string username, string password)
@@ -39,6 +60,7 @@ public class AuthManager : MonoBehaviour
         {
             await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(username, password);
             await PlayerDataManager.Instance.LoadOrCreatePlayerDataAsync(username);
+            SaveCredentials(username, password);
             OnLoginSuccess?.Invoke();
         }
         catch (AuthenticationException e)
@@ -51,12 +73,13 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    public async UniTask LoginAsync(string username, string password)
+    public async UniTask LoginAsync(string username, string password, bool saveCredentials = true)
     {
         try
         {
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
             await PlayerDataManager.Instance.LoadOrCreatePlayerDataAsync(username);
+            if (saveCredentials) SaveCredentials(username, password);
             OnLoginSuccess?.Invoke();
         }
         catch (AuthenticationException e)
@@ -71,7 +94,15 @@ public class AuthManager : MonoBehaviour
 
     public void Logout()
     {
+        ClearSavedLogin();
         AuthenticationService.Instance.SignOut();
+    }
+
+    private static void SaveCredentials(string username, string password)
+    {
+        PlayerPrefs.SetString(KeyUsername, username);
+        PlayerPrefs.SetString(KeyPassword, password);
+        PlayerPrefs.Save();
     }
 
     private static string GetErrorMessage(int errorCode) => errorCode switch

@@ -423,6 +423,7 @@ GameObject:
   - component: {fileID: 4575404275446565786}
   - component: {fileID: 6640397718854070329}
   - component: {fileID: 4101467204049952045}
+  - component: {fileID: 8204431344780606973}
   m_Layer: 8
   m_Name: Nibi
   m_TagString: Untagged
@@ -495,6 +496,29 @@ MonoBehaviour:
   defaultAttackCooldown: 1
   minAttackCooldown: 0.05
   preloadAmount: 5
+--- !u!136 &8204431344780606973
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3275126126924651834}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.19266498
+  m_Height: 0.81532836
+  m_Direction: 1
+  m_Center: {x: -1.9434974e-10, y: 0.4473076, z: 0.017030986}
 --- !u!1 &5399954814118264142
 GameObject:
   m_ObjectHideFlags: 0
