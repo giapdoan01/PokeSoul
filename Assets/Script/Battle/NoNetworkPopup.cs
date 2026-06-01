@@ -23,19 +23,7 @@ public class NoNetworkPopup : MonoBehaviour
         homeButton?.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
     }
 
-    private void OnEnable()
-    {
-        if (MatchTracker.Instance != null)
-            MatchTracker.Instance.OnNetworkLost += Show;
-    }
-
-    private void OnDisable()
-    {
-        if (MatchTracker.Instance != null)
-            MatchTracker.Instance.OnNetworkLost -= Show;
-    }
-
-    private void Show()
+    public void Show()
     {
         if (messageText != null)
             messageText.text = "Mất kết nối mạng!\nTrận đấu bị hủy.";

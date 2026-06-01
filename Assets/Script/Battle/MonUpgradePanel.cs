@@ -29,6 +29,10 @@ public class MonUpgradePanel : MonoBehaviour
 
     [Header("SFX")]
     public AudioClip buttonClickSFX;
+    public AudioClip coinSFX;
+    public AudioSource coinAudioSource;
+    public AudioClip evolveSFX;
+    public AudioSource evolveAudioSource;
 
     private MonOnSlot _current;
     private Coroutine _scaleCoroutine;
@@ -52,7 +56,13 @@ public class MonUpgradePanel : MonoBehaviour
 
     public void Show(MonOnSlot mon)
     {
-        _current = mon;
+        if (_current != mon)
+        {
+            UnsubscribeCoinEvent();
+            _current = mon;
+            var stats = _current?.GetPlayerStats();
+            if (stats != null) stats.OnCoinChanged += OnCoinChanged;
+        }
         Refresh();
         if (_scaleCoroutine != null) StopCoroutine(_scaleCoroutine);
         _scaleCoroutine = StartCoroutine(ScaleTo(Vector3.zero, Vector3.one));
@@ -60,8 +70,18 @@ public class MonUpgradePanel : MonoBehaviour
 
     public void Hide()
     {
+        UnsubscribeCoinEvent();
         if (_scaleCoroutine != null) StopCoroutine(_scaleCoroutine);
         _scaleCoroutine = StartCoroutine(ScaleTo(transform.localScale, Vector3.zero));
+    }
+
+    private void OnCoinChanged(int _) => RefreshButtonStates();
+
+    private void UnsubscribeCoinEvent()
+    {
+        if (_current == null) return;
+        var stats = _current.GetPlayerStats();
+        if (stats != null) stats.OnCoinChanged -= OnCoinChanged;
     }
 
     private void Refresh()
@@ -78,35 +98,57 @@ public class MonUpgradePanel : MonoBehaviour
         bool isMax = _current.IsMaxLevel();
         bool canEvo = isMax && _current.CurrentData.EvolutionPokemonData != null;
 
-        // Upgrade button
         upgradeButton.gameObject.SetActive(!isMax);
         if (!isMax)
             upgradePriceText.text = $"{_current.GetUpgradePrice()}";
 
-        // Evolve button
         evolveButton.gameObject.SetActive(canEvo);
         if (canEvo)
             evolvePriceText.text = $"{_current.GetEvoPrice()}";
+
+        RefreshButtonStates();
+    }
+
+    private void RefreshButtonStates()
+    {
+        if (_current == null) return;
+        upgradeButton.interactable = _current.CanAffordUpgrade();
+        evolveButton.interactable  = _current.CanAffordEvolve();
+    }
+
+    private void PlayCoinSFX()
+    {
+        if (coinSFX != null && coinAudioSource != null)
+            coinAudioSource.PlayOneShot(coinSFX);
     }
 
     private void OnUpgrade()
     {
         if (_current == null) return;
         if (_current.TryUpgrade())
+        {
+            PlayCoinSFX();
             Refresh();
+        }
     }
 
     private void OnEvolve()
     {
         if (_current == null) return;
         if (_current.TryEvolve())
-            Hide(); // slot sẽ destroy mon này, đóng panel
+        {
+            PlayCoinSFX();
+            if (evolveSFX != null && evolveAudioSource != null)
+                evolveAudioSource.PlayOneShot(evolveSFX);
+            Hide();
+        }
     }
 
     private void OnSell()
     {
         if (_current == null) return;
         _current.SellSelf();
+        PlayCoinSFX();
         Hide();
     }
 

@@ -17,9 +17,20 @@ public class EnemyHPController : MonoBehaviour
     public double CurrentHP => currentHP;
     public double MaxHP => maxHP;
 
+    [Header("SFX")]
+    public AudioClip spawnSFX;
+    public AudioClip dieSFX;
+    public AudioSource audioSource;
+
     public void SetEnemyData(EnemyData data)
     {
         enemyData = data;
+    }
+
+    public void PlaySpawnSFX()
+    {
+        if (spawnSFX != null && audioSource != null)
+            audioSource.PlayOneShot(spawnSFX);
     }
 
     public void SetPlayerStats(PlayerStatsInBattleManager playerStats, int waveNumber)
@@ -77,6 +88,9 @@ public class EnemyHPController : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{enemyData.enemyName} đã chết!");
+
+        if (dieSFX != null)
+            BattleSoundManager.Instance?.PlaySound(dieSFX);
 
         var waveData = enemyData.getEnemyWaveDataByName(_waveNumber);
         if (waveData != null && _playerStats != null)

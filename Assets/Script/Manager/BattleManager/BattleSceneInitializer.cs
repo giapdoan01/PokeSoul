@@ -14,7 +14,7 @@ public class BattleSceneInitializer : MonoBehaviour
 
     private static readonly Vector3 MapSpawnPosition = new Vector3(-5f, 0f, -5f);
 
-    private void Awake()
+    private void Start()
     {
         if (battleSessionData == null || battleSessionData.selectedMap == null)
         {

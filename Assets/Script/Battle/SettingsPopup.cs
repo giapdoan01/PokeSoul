@@ -19,8 +19,8 @@ public class SettingsPopup : MonoBehaviour
     [Header("SFX")]
     public AudioClip buttonClickSFX;
 
-    private const string BGMParam = "BGMVolume";
-    private const string SFXParam = "SFXVolume";
+    private const string BGMParam = "BGMBattleVolume";
+    private const string SFXParam = "SFXBattleVolume";
     private const string PrefsBGM = "settings_bgm";
     private const string PrefsSFX = "settings_sfx";
 

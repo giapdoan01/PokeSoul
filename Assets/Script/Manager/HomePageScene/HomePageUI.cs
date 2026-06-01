@@ -156,7 +156,14 @@ public class HomePageUI : MonoBehaviour
     {
         if (ListMapPanel == null) return;
 
-        var deck = PlayerDataManager.Instance?.GetBattleDeck();
+        var pdm = PlayerDataManager.Instance;
+        if (pdm == null || pdm.CurrentData == null)
+        {
+            ShowStatus("Đang tải dữ liệu, vui lòng thử lại...");
+            return;
+        }
+
+        var deck = pdm.GetBattleDeck();
         int filledSlots = deck != null ? deck.FindAll(id => !string.IsNullOrEmpty(id)).Count : 0;
         if (filledSlots < 4)
         {
@@ -235,24 +242,28 @@ public class HomePageUI : MonoBehaviour
 
     private void PopulateMapList()
     {
-        if (mapListContent == null || mapItemPrefab == null) return;
+        if (mapListContent == null) { Debug.LogWarning("[MapList] mapListContent is NULL"); return; }
+        if (mapItemPrefab == null)  { Debug.LogWarning("[MapList] mapItemPrefab is NULL"); return; }
 
-        // Xóa item cũ
         foreach (Transform child in mapListContent)
             Destroy(child.gameObject);
 
         var pdm = PlayerDataManager.Instance;
-        if (pdm == null || pdm.allMapData == null) return;
+        if (pdm == null)            { Debug.LogWarning("[MapList] PlayerDataManager.Instance is NULL"); return; }
+        if (pdm.allMapData == null) { Debug.LogWarning("[MapList] allMapData is NULL"); return; }
+        if (pdm.CurrentData == null){ Debug.LogWarning("[MapList] CurrentData is NULL"); return; }
 
         List<Map> allMaps = pdm.allMapData.maps;
+        Debug.Log($"[MapList] allMaps.Count = {allMaps?.Count}");
+
+        if (allMaps == null || allMaps.Count == 0) { Debug.LogWarning("[MapList] allMaps empty"); return; }
+
         for (int i = 0; i < allMaps.Count; i++)
         {
             Map map = allMaps[i];
-
-            // index dùng để tính lẻ/chẵn — dùng int.Parse(map.id) để đúng với id "1","2","3"...
             int.TryParse(map.id, out int mapIdInt);
-
             MapProgress progress = pdm.GetMapProgress(map.id);
+            Debug.Log($"[MapList] Spawning map={map.mapName} id={map.id} progress={progress != null}");
 
             var go   = Instantiate(mapItemPrefab, mapListContent);
             var item = go.GetComponent<MapItemPrefab>();

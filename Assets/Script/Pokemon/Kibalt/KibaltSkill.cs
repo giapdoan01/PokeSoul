@@ -12,6 +12,10 @@ public class KibaltSkill : MonoBehaviour, IPokemonSkillLaunch
     [Header("Spawn")]
     [SerializeField] private float spawnHeightOffset = 0f;
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private double runtimeDamage;
     private float runtimeDuration;
@@ -30,6 +34,13 @@ public class KibaltSkill : MonoBehaviour, IPokemonSkillLaunch
         lifeTimer = Mathf.Max(0.01f, runtimeDuration);
         CleanupMissingEnemies();
         transform.position = ResolveSkillSpawnPosition(targetEnemy);
+        if (skillSFX != null && audioSource != null)
+        {
+            audioSource.clip = skillSFX;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
         gameObject.SetActive(true);
 
         LogDebug($"Launch. damage={runtimeDamage}, duration={lifeTimer}, tick={tickInterval}");
@@ -212,6 +223,7 @@ public class KibaltSkill : MonoBehaviour, IPokemonSkillLaunch
         ownerSkill = null;
         enemyTag = null;
         enemiesInTrigger.Clear();
+        audioSource?.Stop();
     }
 
     private void LogDebug(string message)

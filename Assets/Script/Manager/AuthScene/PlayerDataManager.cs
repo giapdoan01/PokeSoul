@@ -84,7 +84,18 @@ public class PlayerDataManager : MonoBehaviour
     void Awake()
     {
         if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
-        else Destroy(gameObject);
+        else { Destroy(gameObject); return; }
+
+        if (allMapData == null)
+        {
+            allMapData = Resources.Load<AllMap>("AllMap");
+            Debug.LogWarning($"[PlayerDataManager] allMapData was null, loaded from Resources: {(allMapData != null ? "OK" : "FAILED")}");
+        }
+        if (allPokemonData == null)
+        {
+            allPokemonData = Resources.Load<AllPokemonData>("AllPokemonData");
+            Debug.LogWarning($"[PlayerDataManager] allPokemonData was null, loaded from Resources: {(allPokemonData != null ? "OK" : "FAILED")}");
+        }
     }
 
     async void OnApplicationQuit()
@@ -353,14 +364,20 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     public List<string> GetBattleDeck()
-        => Enumerable.Range(0, 4).Select(i => CurrentData.GetCardIdAt(i)).ToList();
+    {
+        if (CurrentData == null) return new List<string> { null, null, null, null };
+        return Enumerable.Range(0, 4).Select(i => CurrentData.GetCardIdAt(i)).ToList();
+    }
 
     // ── Map Progress API ──
 
     public List<MapProgress> GetAllMapProgress() => CurrentData.mapProgress;
 
     public MapProgress GetMapProgress(string mapId)
-        => CurrentData.mapProgress.Find(m => m.mapId == mapId);
+    {
+        if (CurrentData == null) return null;
+        return CurrentData.mapProgress.Find(m => m.mapId == mapId);
+    }
 
     /// Mở khóa map nếu chưa có trong danh sách.
     public async Task UnlockMapAsync(string mapId)
@@ -377,12 +394,19 @@ public class PlayerDataManager : MonoBehaviour
         var progress = GetMapProgress(mapId);
         if (progress == null)
         {
-            Debug.LogWarning($"[PlayerDataManager] Map {mapId} chưa được mở khóa.");
+            Debug.LogWarning($"[PlayerDataManager] Map {mapId} chưa unlock — auto-unlock và complete.");
+            CurrentData.mapProgress.Add(new MapProgress(mapId));
+            progress = GetMapProgress(mapId);
+        }
+
+        if (progress.isCompleted)
+        {
+            Debug.Log($"[PlayerDataManager] Map {mapId} đã hoàn thành trước đó.");
             return;
         }
-        if (progress.isCompleted) return;
 
         progress.isCompleted = true;
+        Debug.Log($"[PlayerDataManager] Marking map {mapId} as completed.");
 
         if (allMapData != null)
         {
@@ -392,7 +416,7 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         await SaveAsync();
-        Debug.Log($"[PlayerDataManager] Completed map: {mapId}");
+        Debug.Log($"[PlayerDataManager] Map {mapId} completed and saved.");
     }
 
     public bool IsMapUnlocked(string mapId)

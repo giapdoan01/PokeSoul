@@ -5,6 +5,10 @@ public class PlacementSlot : MonoBehaviour
 {
     public bool IsOccupied { get; private set; }
 
+    [Header("SFX")]
+    public AudioClip spawnClip;
+    public AudioSource audioSource;
+
     private GameObject _spawnedMon;
     private PlayerStatsInBattleManager _playerStats;
     private MonUpgradePanel _upgradePanel;
@@ -34,6 +38,10 @@ public class PlacementSlot : MonoBehaviour
         monOnSlot.Init(data, this, _playerStats, _upgradePanel);
 
         StartCoroutine(SpawnPopAnim(_spawnedMon.transform));
+
+        if (spawnClip != null && audioSource != null)
+            audioSource.PlayOneShot(spawnClip);
+
         return true;
     }
 
@@ -61,6 +69,7 @@ public class PlacementSlot : MonoBehaviour
 
     private static IEnumerator SpawnPopAnim(Transform t)
     {
+        Vector3 originalScale = t.localScale;
         t.localScale = Vector3.zero;
         float elapsed = 0f;
         const float duration = 0.35f;
@@ -71,10 +80,10 @@ public class PlacementSlot : MonoBehaviour
             elapsed += Time.deltaTime;
             float p = Mathf.Clamp01(elapsed / duration);
             float scale = 1f + c3 * Mathf.Pow(p - 1f, 3f) + c1 * Mathf.Pow(p - 1f, 2f);
-            t.localScale = Vector3.one * Mathf.Max(0f, scale);
+            t.localScale = originalScale * Mathf.Max(0f, scale);
             yield return null;
         }
 
-        t.localScale = Vector3.one;
+        t.localScale = originalScale;
     }
 }

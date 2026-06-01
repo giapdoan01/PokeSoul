@@ -17,6 +17,13 @@ public class PokemonData : ScriptableObject
     public PokemonData EvolutionPokemonData;
     public PokemonLevelData[] levelUpData;
 
+    public bool HasLevel(int level)
+    {
+        foreach (var levelData in levelUpData)
+            if (levelData.level == level) return true;
+        return false;
+    }
+
     public PokemonLevelData getPokemonLevelDataByLevel(int level)
     {
         foreach (var levelData in levelUpData)

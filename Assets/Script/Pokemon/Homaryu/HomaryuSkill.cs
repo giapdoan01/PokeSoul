@@ -19,6 +19,11 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private const string ImpactPoolKey = "HomaryuImpact";
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioClip impactSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private Transform target;
     private double runtimeDamage;
@@ -70,7 +75,11 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
             SetupBezier(targetEnemy, curveSign);
 
         if (spawnBurst)
+        {
             SpawnExtraProjectiles(pokemonData, level, targetEnemy, attack);
+            if (skillSFX != null && audioSource != null)
+                audioSource.PlayOneShot(skillSFX);
+        }
 
         gameObject.SetActive(true);
         LogDebug($"LaunchInternal start. damage={runtimeDamage}, curveSign={curveSign}");
@@ -362,6 +371,7 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
         useCurve = false;
         bezierT = 0f;
         target = null;
+        audioSource?.Stop();
         ResetRigidbodyState();
     }
 
@@ -388,6 +398,8 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
         }
 
         SpawnImpactVfx(other, hitPoint);
+        if (impactSFX != null)
+            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
         Release();
     }
 

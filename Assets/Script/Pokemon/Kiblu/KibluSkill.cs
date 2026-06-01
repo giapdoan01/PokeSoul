@@ -14,6 +14,11 @@ public class KibluSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private const string ImpactPoolKey = "KibluImpact";
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioClip impactSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private Transform target;
     private double runtimeDamage;
@@ -59,6 +64,8 @@ public class KibluSkill : MonoBehaviour, IPokemonSkillLaunch
         if (spawnBurst)
         {
             SpawnExtraProjectiles(pokemonData, level, targetEnemy, attack);
+            if (skillSFX != null && audioSource != null)
+                audioSource.PlayOneShot(skillSFX);
         }
 
         gameObject.SetActive(true);
@@ -296,6 +303,7 @@ public class KibluSkill : MonoBehaviour, IPokemonSkillLaunch
     {
         didHit = false;
         target = null;
+        audioSource?.Stop();
         ResetRigidbodyState();
     }
 
@@ -331,6 +339,8 @@ public class KibluSkill : MonoBehaviour, IPokemonSkillLaunch
         }
 
         SpawnImpactVfx();
+        if (impactSFX != null)
+            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
         Release();
     }
 

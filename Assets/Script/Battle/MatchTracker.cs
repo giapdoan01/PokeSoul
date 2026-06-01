@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
@@ -10,13 +11,15 @@ public class MatchTracker : MonoBehaviour
     [Header("Match Config")]
     public int maxEnemiesReachEnd = 10;
 
-    public event System.Action<WinData> OnWin;
-    public event System.Action<LoseData> OnLose;
-    public event System.Action OnNetworkLost;
+    [Header("Popups")]
+    public WinPopup winPopup;
+    public LosePopup losePopup;
+    public NoNetworkPopup noNetworkPopup;
 
     private int _enemiesReachedEnd;
     private int _totalAliveEnemies;
     private bool _matchEnded;
+    private bool _allWavesComplete;
     private bool _wasOnline = true;
     private Map _currentMap;
 
@@ -50,6 +53,14 @@ public class MatchTracker : MonoBehaviour
         _enemiesReachedEnd = 0;
         _totalAliveEnemies = 0;
         _matchEnded = false;
+        _allWavesComplete = false;
+    }
+
+    public void NotifyAllWavesComplete()
+    {
+        _allWavesComplete = true;
+        if (_totalAliveEnemies <= 0 && _enemiesReachedEnd < maxEnemiesReachEnd)
+            TriggerWin();
     }
 
     // ── Network monitoring ──
@@ -62,7 +73,7 @@ public class MatchTracker : MonoBehaviour
         if (_wasOnline && !online)
         {
             _wasOnline = false;
-            OnNetworkLost?.Invoke();
+            noNetworkPopup?.Show();
         }
         else if (!_wasOnline && online)
         {
@@ -78,7 +89,7 @@ public class MatchTracker : MonoBehaviour
     {
         if (_matchEnded) return;
         _totalAliveEnemies--;
-        if (_totalAliveEnemies <= 0 && _enemiesReachedEnd < maxEnemiesReachEnd)
+        if (_allWavesComplete && _totalAliveEnemies <= 0 && _enemiesReachedEnd < maxEnemiesReachEnd)
             TriggerWin();
     }
 
@@ -102,10 +113,10 @@ public class MatchTracker : MonoBehaviour
         if (_matchEnded) return;
         _matchEnded = true;
         SaveWinAsync().Forget();
-        OnWin?.Invoke(new WinData
+        winPopup?.Show(new WinData
         {
-            gemReward        = _currentMap != null ? _currentMap.rewardWinMap : 0,
-            mapName          = _currentMap != null ? _currentMap.mapName : "",
+            gemReward         = _currentMap != null ? _currentMap.rewardWinMap : 0,
+            mapName           = _currentMap != null ? _currentMap.mapName : "",
             enemiesReachedEnd = _enemiesReachedEnd
         });
     }
@@ -114,7 +125,8 @@ public class MatchTracker : MonoBehaviour
     {
         if (_matchEnded) return;
         _matchEnded = true;
-        OnLose?.Invoke(new LoseData
+        Debug.Log($"[MatchTracker] TriggerLose. losePopup={(losePopup != null ? "OK" : "NULL")}");
+        losePopup?.Show(new LoseData
         {
             enemiesReached = _enemiesReachedEnd,
             maxEnemies     = maxEnemiesReachEnd
@@ -128,16 +140,36 @@ public class MatchTracker : MonoBehaviour
     private async UniTaskVoid SaveWinAsync()
     {
         var pdm = PlayerDataManager.Instance;
-        if (pdm == null || _currentMap == null) return;
-        await pdm.CompleteMapAsync(_currentMap.id).AsUniTask();
+        if (pdm == null)
+        {
+            Debug.LogWarning("[MatchTracker] SaveWinAsync: PlayerDataManager.Instance is null.");
+            return;
+        }
+        if (_currentMap == null)
+        {
+            Debug.LogWarning("[MatchTracker] SaveWinAsync: _currentMap is null.");
+            return;
+        }
+        Debug.Log($"[MatchTracker] SaveWinAsync: saving map {_currentMap.id}...");
+        try
+        {
+            await pdm.CompleteMapAsync(_currentMap.id).AsUniTask();
+            Debug.Log($"[MatchTracker] SaveWinAsync: done.");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[MatchTracker] SaveWinAsync error: {e.Message}");
+        }
     }
 
     // ── Thoát app giữa trận ──
 
     private void OnApplicationPause(bool pause)
     {
+#if !UNITY_EDITOR
         if (pause && !_matchEnded)
             HandleAppQuit();
+#endif
     }
 
     private void OnApplicationQuit()

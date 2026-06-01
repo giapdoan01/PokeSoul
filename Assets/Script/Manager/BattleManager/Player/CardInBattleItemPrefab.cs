@@ -17,6 +17,10 @@ public class CardInBattleItemPrefab : MonoBehaviour,
     public Sprite[] TypeSprites;
     public Sprite[] TypeBackgroundSprites;
 
+    [Header("Coin SFX")]
+    public AudioClip coinSFX;
+    public AudioSource coinAudioSource;
+
     [Header("Color Text By Type")]
     public Color fireColor;
     public Color waterColor;
@@ -139,7 +143,11 @@ public class CardInBattleItemPrefab : MonoBehaviour,
         if (slot == null) return;
 
         if (slot.TrySpawn(cardData))
+        {
             _playerStats?.MinusCoin(_cost);
+            if (coinSFX != null && coinAudioSource != null)
+                coinAudioSource.PlayOneShot(coinSFX);
+        }
     }
 
     // ── Visual helpers ──

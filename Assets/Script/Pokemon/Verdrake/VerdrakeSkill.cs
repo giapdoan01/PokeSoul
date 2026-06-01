@@ -18,6 +18,11 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
     private const string TargetVfxPoolKey = "VerdrakeTargetVfx";
     private const string ImpactPoolKey = "VerdrakeImpact";
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioClip impactSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private Transform targetEnemy;
     private EnemyMoveController targetMoveController;
@@ -74,7 +79,11 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         SpawnTargetVfx();
 
         if (spawnExtra)
+        {
             SpawnExtraSkills(pokemonData, level, attack);
+            if (skillSFX != null && audioSource != null)
+                audioSource.PlayOneShot(skillSFX);
+        }
 
         gameObject.SetActive(true);
         LogDebug($"LaunchInternal done. damage={runtimeDamage}");
@@ -115,6 +124,8 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
             if (!didDamage)
                 TryApplyDamageAtPosition(target);
             SpawnImpact(target);
+            if (impactSFX != null)
+                MonImpactSoundManager.Instance?.PlaySound(impactSFX);
             ReleaseTargetVfx();
             Release();
         }
@@ -366,6 +377,7 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         targetEnemy = null;
         targetMoveController = null;
         activeTargetVfx = null;
+        audioSource?.Stop();
     }
 
     private void ConfigureColliders()

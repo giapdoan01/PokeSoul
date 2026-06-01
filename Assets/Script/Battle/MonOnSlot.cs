@@ -41,7 +41,7 @@ public class MonOnSlot : MonoBehaviour
 
     public bool IsMaxLevel()
     {
-        return CurrentData.getPokemonLevelDataByLevel(CurrentLevel + 1) == null;
+        return !CurrentData.HasLevel(CurrentLevel + 1);
     }
 
     public bool TryEvolve()
@@ -77,6 +77,10 @@ public class MonOnSlot : MonoBehaviour
         if (CurrentData.EvolutionPokemonData == null) return 0;
         return GetStat(CurrentData.EvolutionPokemonData, 1, "price");
     }
+
+    public bool CanAffordUpgrade() => !IsMaxLevel() && _playerStats != null && _playerStats.playerCoin >= GetUpgradePrice();
+    public bool CanAffordEvolve() => IsMaxLevel() && CurrentData.EvolutionPokemonData != null && _playerStats != null && _playerStats.playerCoin >= GetEvoPrice();
+    public PlayerStatsInBattleManager GetPlayerStats() => _playerStats;
 
     public int GetSellValue() => GetStat(CurrentData, CurrentLevel, "sell");
 

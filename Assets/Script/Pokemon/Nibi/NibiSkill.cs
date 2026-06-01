@@ -14,6 +14,11 @@ public class NibiSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private const string ImpactPoolKey = "NibiImpact";
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioClip impactSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private Transform target;
     private double runtimeDamage;
@@ -59,6 +64,8 @@ public class NibiSkill : MonoBehaviour, IPokemonSkillLaunch
         if (spawnBurst)
         {
             SpawnExtraProjectiles(pokemonData, level, targetEnemy, attack);
+            if (skillSFX != null && audioSource != null)
+                audioSource.PlayOneShot(skillSFX);
         }
 
         gameObject.SetActive(true);
@@ -291,6 +298,7 @@ public class NibiSkill : MonoBehaviour, IPokemonSkillLaunch
     {
         didHit = false;
         target = null;
+        audioSource?.Stop();
         ResetRigidbodyState();
     }
 
@@ -326,6 +334,8 @@ public class NibiSkill : MonoBehaviour, IPokemonSkillLaunch
         }
 
         SpawnImpactVfx(other, hitPoint);
+        if (impactSFX != null)
+            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
         Release();
     }
 

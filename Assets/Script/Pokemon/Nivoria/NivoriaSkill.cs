@@ -14,6 +14,10 @@ public class NivoriaSkill : MonoBehaviour, IPokemonSkillLaunch
     [SerializeField] private float castEffectLifeTime = 1f;
     [SerializeField] private int castEffectPreloadAmount = 1;
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private double runtimeDamage;
     private float runtimeDuration;
@@ -41,6 +45,14 @@ public class NivoriaSkill : MonoBehaviour, IPokemonSkillLaunch
         gameObject.SetActive(true);
 
         SpawnCastEffect();
+
+        if (skillSFX != null && audioSource != null)
+        {
+            audioSource.clip = skillSFX;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
         LogDebug($"Launch. damage={runtimeDamage}, duration={lifeTimer}, tick={tickInterval}");
         tickTimer = Mathf.Max(0.01f, tickInterval);
     }
@@ -265,6 +277,7 @@ public class NivoriaSkill : MonoBehaviour, IPokemonSkillLaunch
         ownerSkill = null;
         enemyTag = null;
         enemiesInTrigger.Clear();
+        audioSource?.Stop();
     }
 
     private void LogDebug(string message)

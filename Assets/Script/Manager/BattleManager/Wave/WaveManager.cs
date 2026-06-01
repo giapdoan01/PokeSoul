@@ -107,6 +107,13 @@ public void StartBattle()
         }
         _aliveEnemyCount = totalCount;
 
+        // Không còn enemy nào để spawn — tất cả wave đã xong
+        if (totalCount == 0)
+        {
+            MatchTracker.Instance?.NotifyAllWavesComplete();
+            return;
+        }
+
         foreach (var enemyData in enemyBattleDatas)
         {
             EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveNumber);
@@ -136,6 +143,7 @@ public void StartBattle()
                 hpController.SetPlayerStats(playerStatsInBattleManager, waveNumber);
                 hpController.setHpByWaveName(waveNumber);
                 hpController.OnDied += OnEnemyDied;
+                hpController.PlaySpawnSFX();
 
                 await UniTask.Delay(1000, cancellationToken: ct);
             }

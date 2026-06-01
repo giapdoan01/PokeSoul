@@ -13,6 +13,11 @@ public class SpriggleSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private const string ImpactPoolKey = "SpriggleImpact";
 
+    [Header("SFX")]
+    public AudioClip skillSFX;
+    public AudioClip impactSFX;
+    public AudioSource audioSource;
+
     private PokemonSkill ownerSkill;
     private Transform target;
     private double runtimeDamage;
@@ -46,6 +51,8 @@ public class SpriggleSkill : MonoBehaviour, IPokemonSkillLaunch
         runtimeDamage = ResolveDamage(pokemonData, level);
         didHit = false;
         ConfigurePhysicsForTriggerOnly();
+        if (skillSFX != null && audioSource != null)
+            audioSource.PlayOneShot(skillSFX);
         gameObject.SetActive(true);
         LogDebug($"Launch. damage={runtimeDamage}, target={(targetEnemy != null ? targetEnemy.name : "null")}");
     }
@@ -107,6 +114,8 @@ public class SpriggleSkill : MonoBehaviour, IPokemonSkillLaunch
         }
 
         SpawnImpactVfx(other, hitPoint);
+        if (impactSFX != null)
+            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
         Release();
     }
 
@@ -192,6 +201,7 @@ public class SpriggleSkill : MonoBehaviour, IPokemonSkillLaunch
     {
         didHit = false;
         target = null;
+        audioSource?.Stop();
         ResetRigidbodyState();
     }
 
