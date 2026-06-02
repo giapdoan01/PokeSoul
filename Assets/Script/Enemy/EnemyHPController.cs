@@ -39,16 +39,6 @@ public class EnemyHPController : MonoBehaviour
         _waveNumber = waveNumber;
     }
 
-    void Awake()
-    {
-
-    }
-    
-    private void Start()
-    {
-
-    }
-    
     public void setHpByWaveName(int waveName)
     {
         EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveName);

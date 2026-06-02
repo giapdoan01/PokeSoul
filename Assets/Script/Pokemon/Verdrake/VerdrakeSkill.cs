@@ -289,48 +289,11 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private Transform[] FindPriorityTargets(int count)
     {
-        if (ownerSkill == null) return System.Array.Empty<Transform>();
+        if (ownerSkill == null || EnemyRegistry.Instance == null)
+            return System.Array.Empty<Transform>();
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(ownerSkill.EnemyTag);
-        if (enemies == null || enemies.Length == 0) return System.Array.Empty<Transform>();
-
-        var inRange = new List<GameObject>();
-        Vector3 origin = ownerSkill.CastPoint.position;
-
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            if (enemies[i] == null || !enemies[i].activeInHierarchy) continue;
-            if (Vector3.Distance(origin, enemies[i].transform.position) <= ownerSkill.AttackRange)
-                inRange.Add(enemies[i]);
-        }
-
-        inRange.Sort((a, b) =>
-        {
-            EnemyMoveController moveA = a.GetComponent<EnemyMoveController>();
-            EnemyMoveController moveB = b.GetComponent<EnemyMoveController>();
-
-            int indexA = moveA != null ? moveA.CurrentWayPointIndex : 0;
-            int indexB = moveB != null ? moveB.CurrentWayPointIndex : 0;
-
-            if (indexA != indexB) return indexB.CompareTo(indexA);
-
-            float distA = GetDistToNextWaypoint(a.transform, moveA);
-            float distB = GetDistToNextWaypoint(b.transform, moveB);
-            return distA.CompareTo(distB);
-        });
-
-        var result = new Transform[Mathf.Min(count, inRange.Count)];
-        for (int i = 0; i < result.Length; i++)
-            result[i] = inRange[i].transform;
-
-        return result;
-    }
-
-    private static float GetDistToNextWaypoint(Transform enemy, EnemyMoveController move)
-    {
-        if (move == null || move.wayPointManager == null) return float.MaxValue;
-        int idx = Mathf.Min(move.CurrentWayPointIndex, move.wayPointManager.wayPoints.Count - 1);
-        return Vector3.Distance(enemy.position, move.wayPointManager.wayPoints[idx].position);
+        var targets = EnemyRegistry.Instance.GetTargetsInRange(ownerSkill.CastPoint.position, ownerSkill.AttackRange, count);
+        return targets.ToArray();
     }
 
     private double ResolveDamage(PokemonData pokemonData, int level)

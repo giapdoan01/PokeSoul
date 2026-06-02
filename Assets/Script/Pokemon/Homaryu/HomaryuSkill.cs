@@ -246,48 +246,11 @@ public class HomaryuSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private Transform[] FindNearestTargets(int count)
     {
-        if (ownerSkill == null || count <= 0) return System.Array.Empty<Transform>();
+        if (ownerSkill == null || count <= 0 || EnemyRegistry.Instance == null)
+            return System.Array.Empty<Transform>();
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(ownerSkill.EnemyTag);
-        if (enemies == null || enemies.Length == 0) return System.Array.Empty<Transform>();
-
-        Vector3 towerPos = ownerSkill.CastPoint.position;
-        float attackRange = ownerSkill.AttackRange;
-
-        System.Array.Sort(enemies, (a, b) =>
-        {
-            EnemyMoveController moveA = a.GetComponent<EnemyMoveController>();
-            EnemyMoveController moveB = b.GetComponent<EnemyMoveController>();
-
-            int indexA = moveA != null ? moveA.CurrentWayPointIndex : 0;
-            int indexB = moveB != null ? moveB.CurrentWayPointIndex : 0;
-
-            if (indexA != indexB)
-                return indexB.CompareTo(indexA); // waypoint cao hơn = ưu tiên hơn
-
-            // Cùng waypoint index thì chọn enemy gần waypoint tiếp theo hơn
-            float distA = GetDistanceToNextWaypoint(a.transform, moveA);
-            float distB = GetDistanceToNextWaypoint(b.transform, moveB);
-            return distA.CompareTo(distB);
-        });
-
-        // Lấy đủ count enemy trong tầm bắn
-        var result = new List<Transform>(count);
-        for (int i = 0; i < enemies.Length && result.Count < count; i++)
-        {
-            if (enemies[i] == null || !enemies[i].activeInHierarchy) continue;
-            if (Vector3.Distance(towerPos, enemies[i].transform.position) <= attackRange)
-                result.Add(enemies[i].transform);
-        }
-
-        return result.ToArray();
-    }
-
-    private static float GetDistanceToNextWaypoint(Transform enemy, EnemyMoveController move)
-    {
-        if (move == null || move.wayPointManager == null) return float.MaxValue;
-        int idx = Mathf.Min(move.CurrentWayPointIndex, move.wayPointManager.wayPoints.Count - 1);
-        return Vector3.Distance(enemy.position, move.wayPointManager.wayPoints[idx].position);
+        var targets = EnemyRegistry.Instance.GetTargetsInRange(ownerSkill.CastPoint.position, ownerSkill.AttackRange, count);
+        return targets.ToArray();
     }
 
     private Vector3 GetProjectileSpawnPosition(int index, int totalCount)

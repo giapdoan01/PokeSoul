@@ -305,48 +305,16 @@ public class PokemonSkill : MonoBehaviour
 
     private bool TryFindNearestEnemy(out Transform nearestTarget)
     {
-        nearestTarget = null;
-
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-        if (enemies == null || enemies.Length == 0)
-            return false;
-
-        Vector3 origin = transform.position;
-        int bestWaypointIndex = -1;
-        float bestDistanceToWaypoint = float.MaxValue;
-
-        for (int i = 0; i < enemies.Length; i++)
+        if (EnemyRegistry.Instance != null)
         {
-            GameObject enemy = enemies[i];
-            if (enemy == null || !enemy.activeInHierarchy)
-                continue;
-
-            if (Vector3.Distance(origin, enemy.transform.position) > attackRange)
-                continue;
-
-            EnemyMoveController move = enemy.GetComponent<EnemyMoveController>();
-            int waypointIndex = move != null ? move.CurrentWayPointIndex : 0;
-            float distanceToNextWaypoint = move != null && move.wayPointManager != null
-                ? Vector3.Distance(enemy.transform.position, move.wayPointManager.wayPoints[Mathf.Min(waypointIndex, move.wayPointManager.wayPoints.Count - 1)].position)
-                : float.MaxValue;
-
-            // Ưu tiên enemy có waypointIndex lớn hơn (đi xa hơn trên path)
-            // Nếu bằng nhau thì chọn enemy gần waypoint tiếp theo hơn
-            bool isBetter = waypointIndex > bestWaypointIndex
-                || (waypointIndex == bestWaypointIndex && distanceToNextWaypoint < bestDistanceToWaypoint);
-
-            if (isBetter)
-            {
-                bestWaypointIndex = waypointIndex;
-                bestDistanceToWaypoint = distanceToNextWaypoint;
-                nearestTarget = enemy.transform;
-            }
+            bool found = EnemyRegistry.Instance.TryGetPriorityTarget(transform.position, attackRange, out nearestTarget);
+            if (found) LogDebug($"Target found via EnemyRegistry: {nearestTarget.name}");
+            return found;
         }
 
-        if (nearestTarget != null)
-            LogDebug($"Target found: {nearestTarget.name} at waypointIndex={bestWaypointIndex}");
-
-        return nearestTarget != null;
+        // Fallback nếu EnemyRegistry chưa có trong scene
+        nearestTarget = null;
+        return false;
     }
 
     private void RotateToTarget(Transform target)

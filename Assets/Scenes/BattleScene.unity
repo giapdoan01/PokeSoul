@@ -2191,6 +2191,7 @@ GameObject:
   - component: {fileID: 431732698}
   - component: {fileID: 431732697}
   - component: {fileID: 431732699}
+  - component: {fileID: 431732700}
   m_Layer: 0
   m_Name: BattleSceneInitializer
   m_TagString: Untagged
@@ -2242,6 +2243,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ca7d801832b1e4a99ecd2490df8834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleClickManager
+--- !u!114 &431732700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431732696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb3b0d9e3e01d34db126fe230c03457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyRegistry
 --- !u!1 &439243524
 GameObject:
   m_ObjectHideFlags: 0
@@ -5986,7 +5999,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 0.9501598, g: 1, b: 0.9481132, a: 1}
-  m_Intensity: 1.7
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
