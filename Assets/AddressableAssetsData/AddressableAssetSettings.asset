@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 8925df96bc1865f4aa1d02200cb77eb6
   m_currentHash:
     serializedVersion: 2
-    Hash: 57ef7e198ed88014ae32c9bf7ac57af3
+    Hash: f4437038358e76e7009a5b008df10e6e
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
@@ -86,6 +86,20 @@ MonoBehaviour:
       - m_Id: f2d24ad020c7f984cb5224cbbc907fe9
         m_Value: 'ServerData/[BuildTarget]'
     - m_InheritedParent: 
+      m_Id: 2979a8799fb84b644aeee32091ce1416
+      m_ProfileName: WebGL
+      m_Values:
+      - m_Id: 67a13121054746c479aa8ddd2c4ed248
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: a4c63a39b3e1f7040a489be693f2c327
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: c34cacddbf037c942a1226758a7029fd
+        m_Value: https://github.com/giapdoan01/PokeSoul/releases/download/V.1.0.0
+      - m_Id: ee53c50bdc4bbdd4dae4c8288e77c995
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: f2d24ad020c7f984cb5224cbbc907fe9
+        m_Value: 'ServerData/[BuildTarget]'
+    - m_InheritedParent: 
       m_Id: fbd791094aa95b642b4dd05e5cd8e037
       m_ProfileName: RemoteGithub
       m_Values:
@@ -94,7 +108,7 @@ MonoBehaviour:
       - m_Id: a4c63a39b3e1f7040a489be693f2c327
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: c34cacddbf037c942a1226758a7029fd
-        m_Value: 'https://github.com/giapdoan01/PokeSoul/releases/download/V.1.0.0/[BuildTarget]'
+        m_Value: https://github.com/giapdoan01/PokeSoul/releases/download/V.1.0.0
       - m_Id: ee53c50bdc4bbdd4dae4c8288e77c995
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: f2d24ad020c7f984cb5224cbbc907fe9
