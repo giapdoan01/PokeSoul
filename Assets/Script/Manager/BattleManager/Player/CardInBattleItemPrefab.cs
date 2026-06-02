@@ -80,7 +80,7 @@ public class CardInBattleItemPrefab : MonoBehaviour,
 
     public void OnBeginDrag(PointerEventData e)
     {
-        if (cardData?.pokemonPrefab == null) return;
+        if (cardData == null || BattleAssetManager.Instance?.GetMonPrefab(cardData.id) == null) return;
         _isDragging = true;
 
         if (_dragGhostImage != null)

@@ -24,15 +24,18 @@ public class PlacementSlot : MonoBehaviour
 
     public bool TrySpawn(PokemonData data)
     {
-        if (IsOccupied || data?.pokemonPrefab == null) return false;
+        if (IsOccupied || data == null) return false;
+
+        var monPrefab = BattleAssetManager.Instance?.GetMonPrefab(data.id);
+        if (monPrefab == null) return false;
 
         // Register nếu chưa có
-        MonObjectPool.Instance?.RegisterMon(data.id, data.pokemonPrefab);
+        MonObjectPool.Instance?.RegisterMon(data.id, monPrefab);
 
         IsOccupied = true;
         _spawnedMon = MonObjectPool.Instance != null
             ? MonObjectPool.Instance.Get(data.id, transform.position, transform.rotation)
-            : Instantiate(data.pokemonPrefab, transform.position, transform.rotation);
+            : Instantiate(monPrefab, transform.position, transform.rotation);
 
         var monOnSlot = _spawnedMon.GetComponent<MonOnSlot>() ?? _spawnedMon.AddComponent<MonOnSlot>();
         monOnSlot.Init(data, this, _playerStats, _upgradePanel);

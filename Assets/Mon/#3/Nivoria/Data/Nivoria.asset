@@ -17,8 +17,18 @@ MonoBehaviour:
   type: 1
   spritePokemonCard: {fileID: -1773044898, guid: 36ecc37fb3f5d7f4392fb81c50c7ad96, type: 3}
   priceToBuyCard: 0
-  pokemonPrefab: {fileID: 6696916833240894940, guid: f095561b0d58e934d991415e6fc3e5b8, type: 3}
-  skillPrefab: {fileID: 6438419522423388420, guid: 5d5ce7570903b9441a88df31e21868f3, type: 3}
+  pokemonPrefabRef:
+    m_AssetGUID: f095561b0d58e934d991415e6fc3e5b8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  skillPrefabRef:
+    m_AssetGUID: 5d5ce7570903b9441a88df31e21868f3
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   EvolutionPokemonData: {fileID: 0}
   levelUpData:
   - level: 1

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -9,7 +10,7 @@ public class Map : ScriptableObject
     public string id;
     public string mapName;
     public Sprite mapSprite;
-    public GameObject mapPrefab;
+    public AssetReference mapPrefabRef;
     public int rewardWinMap;
     public EnemyData[] enemyDatas;
     public WaveData[] waves;

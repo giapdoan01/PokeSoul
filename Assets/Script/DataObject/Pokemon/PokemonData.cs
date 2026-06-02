@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using System;
 
 [CreateAssetMenu(fileName = "NewPokemonData", menuName = "PokeSoul/Pokemon Data")]
@@ -12,8 +13,8 @@ public class PokemonData : ScriptableObject
     public int priceToBuyCard;
 
     [Header("Info In battle")]
-    public GameObject pokemonPrefab;
-    public GameObject skillPrefab;
+    public AssetReference pokemonPrefabRef;
+    public AssetReference skillPrefabRef;
     public PokemonData EvolutionPokemonData;
     public PokemonLevelData[] levelUpData;
 

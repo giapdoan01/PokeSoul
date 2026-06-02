@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
 using System.Collections.Generic;
@@ -74,28 +76,46 @@ public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance { get; private set; }
     public PlayerData CurrentData { get; private set; }
-    public AllPokemonData allPokemonData;
-    public AllMap allMapData;
+    public AllPokemonData allPokemonData { get; private set; }
+    public AllMap allMapData { get; private set; }
     public PokemonData[] myPokemonDatas;
     public Action<int> OnGemChanged;
     public Action OnPlayerDataLoaded;
     public Action OnOwnCardUpdated;
 
+    // Giữ handle persistent — không release vì cần suốt vòng đời app
+    private AsyncOperationHandle<AllMap> _allMapHandle;
+    private AsyncOperationHandle<AllPokemonData> _allPokemonDataHandle;
+
     void Awake()
     {
         if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
         else { Destroy(gameObject); return; }
+    }
 
+    private async Task LoadPersistentAssetsAsync()
+    {
         if (allMapData == null)
         {
-            allMapData = Resources.Load<AllMap>("AllMap");
-            Debug.LogWarning($"[PlayerDataManager] allMapData was null, loaded from Resources: {(allMapData != null ? "OK" : "FAILED")}");
+            _allMapHandle = Addressables.LoadAssetAsync<AllMap>("AllMap");
+            await _allMapHandle.Task;
+            if (_allMapHandle.Status == AsyncOperationStatus.Succeeded)
+                allMapData = _allMapHandle.Result;
+            else
+                Debug.LogError("[PlayerDataManager] Failed to load AllMap via Addressables!");
         }
+
         if (allPokemonData == null)
         {
-            allPokemonData = Resources.Load<AllPokemonData>("AllPokemonData");
-            Debug.LogWarning($"[PlayerDataManager] allPokemonData was null, loaded from Resources: {(allPokemonData != null ? "OK" : "FAILED")}");
+            _allPokemonDataHandle = Addressables.LoadAssetAsync<AllPokemonData>("AllPokemonData");
+            await _allPokemonDataHandle.Task;
+            if (_allPokemonDataHandle.Status == AsyncOperationStatus.Succeeded)
+                allPokemonData = _allPokemonDataHandle.Result;
+            else
+                Debug.LogError("[PlayerDataManager] Failed to load AllPokemonData via Addressables!");
         }
+
+        Debug.Log($"[PlayerDataManager] Persistent assets loaded. allMapData={(allMapData != null ? "OK" : "NULL")}, allPokemonData={(allPokemonData != null ? "OK" : "NULL")}");
     }
 
     async void OnApplicationQuit()
@@ -106,6 +126,8 @@ public class PlayerDataManager : MonoBehaviour
 
     public async Task LoadOrCreatePlayerDataAsync(string username)
     {
+        await LoadPersistentAssetsAsync();
+
         try
         {
             var result = await CloudSaveService.Instance.Data.Player.LoadAsync(

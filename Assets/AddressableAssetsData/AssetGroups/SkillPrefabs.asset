@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SkillPrefabs
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: SkillPrefabs
+  m_GUID: f77f649f82a4ed3498c941855e53d10b
+  m_SerializeEntries:
+  - m_GUID: 1a155e9f2850fc641bd3ffaddec0c80c
+    m_Address: skill_nibi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a40f60774390714691c207da2bd1b4b
+    m_Address: skill_kiblu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d5ce7570903b9441a88df31e21868f3
+    m_Address: skill_nivoria
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c0c7653278c5e1746baa8a38abf8abf1
+    m_Address: skill_verdrake
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e0206a7fe98718743a344612b32ff010
+    m_Address: skill_homaryu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed10308d3cf094c41a6d716f35a6b20c
+    m_Address: skill_spriggle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee432d23b162deb44891e8aeafec1eed
+    m_Address: skill_homurin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fee565ce5902aa94eb09c577d385791a
+    m_Address: skill_kibalt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3d0fc4991e97f494ca7be93f451a242c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 9089655e7efdf834c888fbe7750831c8, type: 2}
+    - {fileID: 11400000, guid: 7fc58f5e6d24c3147baa332be3f69f62, type: 2}

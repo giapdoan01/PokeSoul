@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ public class EnemyData : ScriptableObject
     public Sprite spriteEnemy;
     
     [Header("Thông tin chiến đấu")]
-    public GameObject enemyPrefab;
+    public AssetReference enemyPrefabRef;
     public List<EnemyWaveData> enemyWaves;
 
     public EnemyWaveData getEnemyWaveDataByName(int waveName)

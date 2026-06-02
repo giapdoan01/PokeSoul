@@ -24,9 +24,11 @@ public class BattleSceneInitializer : MonoBehaviour
 
         Map map = battleSessionData.selectedMap;
 
-        if (map.mapPrefab == null)
+        var bam = BattleAssetManager.Instance;
+        GameObject mapPrefab = bam?.GetMapPrefab();
+        if (mapPrefab == null)
         {
-            Debug.LogError($"[BattleSceneInitializer] Map '{map.mapName}' chưa gán mapPrefab!");
+            Debug.LogError($"[BattleSceneInitializer] Map prefab chưa được load cho '{map.mapName}'!");
             return;
         }
 
@@ -34,7 +36,7 @@ public class BattleSceneInitializer : MonoBehaviour
         MatchTracker.Instance?.StartMatch(map);
 
         // Spawn map
-        GameObject mapInstance = Instantiate(map.mapPrefab, MapSpawnPosition, Quaternion.identity);
+        GameObject mapInstance = Instantiate(mapPrefab, MapSpawnPosition, Quaternion.identity);
 
         WayPointForEnemy wayPoint = mapInstance.GetComponentInChildren<WayPointForEnemy>();
         if (wayPoint == null)
@@ -80,10 +82,14 @@ public class BattleSceneInitializer : MonoBehaviour
             .Where(p => p != null)
             .ToArray();
 
-        // Preload Mon vào pool trước
+        // Preload Mon vào pool từ BattleAssetManager
         if (MonObjectPool.Instance != null)
             foreach (var mon in deck)
-                MonObjectPool.Instance.RegisterMon(mon.id, mon.pokemonPrefab);
+            {
+                var prefab = BattleAssetManager.Instance?.GetMonPrefab(mon.id);
+                if (prefab != null)
+                    MonObjectPool.Instance.RegisterMon(mon.id, prefab);
+            }
 
         cardDeckInBattleManager.SetupCardDeck(deck);
     }

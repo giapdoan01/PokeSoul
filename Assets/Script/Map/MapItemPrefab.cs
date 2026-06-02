@@ -62,9 +62,15 @@ public class MapItemPrefab : MonoBehaviour
 
     private void StartBattle(Map map)
     {
+        if (BattleSceneLoader.Instance != null)
+        {
+            BattleSceneLoader.Instance.StartLoad(map, battleSessionData);
+            return;
+        }
+
+        // Fallback nếu chưa có BattleSceneLoader trong scene
         if (battleSessionData != null)
             battleSessionData.selectedMap = map;
-
         SceneManager.LoadScene(BattleSceneName);
     }
 }

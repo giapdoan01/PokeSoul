@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Persistent
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Persistent
+  m_GUID: b21d2f1c86046634aa53c3bf635eb0c4
+  m_SerializeEntries:
+  - m_GUID: 03e2d9a40e34cba409fb4481604aeb51
+    m_Address: data_kiblu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f8d4df362f1603499d9cef545b713c4
+    m_Address: map_data_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5239d81423cff6644bcb47ccd7310673
+    m_Address: data_homaryu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 532a367ef3e90884fbdf43b0d6bfdcc7
+    m_Address: AllMap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bf2dfd21ab4c0842a01f3369d41ca9d
+    m_Address: data_nivoria
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d6bcc1b9f4cd5b418dc45010eae4338
+    m_Address: data_kibalt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ae981eb408892e449eebe13155a416d
+    m_Address: enemy_data_goblinmini_map1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c8d5b01fe14f3945b3edcf92fe83ea5
+    m_Address: data_homurin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3b880b6c513c6f498456acb6012eb23
+    m_Address: data_spriggle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1f532fddeb782a4aa65004a1126c8d6
+    m_Address: AllPokemonData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de6a93520efae5a4f892f79c38a54e9e
+    m_Address: data_nibi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee06ca152afb4eb46b0536f2c82f1b42
+    m_Address: data_verdrake
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3d0fc4991e97f494ca7be93f451a242c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: db6c4dbd615f9d945bfe4e5e9826acf7, type: 2}
+    - {fileID: 11400000, guid: 65b200d6c1266b747b68edc127b86e01, type: 2}

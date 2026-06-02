@@ -38,10 +38,14 @@ public class WaveManager : MonoBehaviour
         else if (wayPointSystem.wayPoints.Count == 0)
             Debug.LogError("[WaveManager] WayPointForEnemy không có waypoint nào!");
 
-        // Preload enemy vào pool
+        // Preload enemy vào pool từ BattleAssetManager
         if (EnemyObjectPool.Instance != null)
             foreach (var enemyData in enemyBattleDatas)
-                EnemyObjectPool.Instance.RegisterEnemy(enemyData.enemyName.Trim(), enemyData.enemyPrefab);
+            {
+                var prefab = BattleAssetManager.Instance?.GetEnemyPrefab(enemyData.id);
+                if (prefab != null)
+                    EnemyObjectPool.Instance.RegisterEnemy(enemyData.enemyName.Trim(), prefab);
+            }
     }
 
 public void StartBattle()
@@ -125,9 +129,12 @@ public void StartBattle()
 
             for (int i = 0; i < waveData.enemyStats.count; i++)
             {
+                var enemyPrefab = BattleAssetManager.Instance?.GetEnemyPrefab(enemyData.id);
+                if (enemyPrefab == null) { _aliveEnemyCount--; continue; }
+
                 GameObject enemyInstance = EnemyObjectPool.Instance != null
-                    ? EnemyObjectPool.Instance.GetOrRegister(enemyData.enemyName, enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity)
-                    : Instantiate(enemyData.enemyPrefab, spawnPoint.position, Quaternion.identity);
+                    ? EnemyObjectPool.Instance.GetOrRegister(enemyData.enemyName, enemyPrefab, spawnPoint.position, Quaternion.identity)
+                    : Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
 
                 if (enemyInstance == null) { _aliveEnemyCount--; continue; }
 

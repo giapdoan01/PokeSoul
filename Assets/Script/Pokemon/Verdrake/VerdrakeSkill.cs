@@ -6,16 +6,10 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
     [Header("Debug")]
     [SerializeField] private bool enableDebugLog;
 
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float skillHeightOffset = 2f;
-    [SerializeField] private float hitRadius = 0.4f;
-    [SerializeField] private GameObject targetVfxPrefab;
     [SerializeField] private GameObject verdrakeImpactPrefab;
     [SerializeField] private float impactLifeTime = 1.5f;
-    [SerializeField] private int vfxPreloadAmount = 5;
     [SerializeField] private int impactPreloadAmount = 5;
 
-    private const string TargetVfxPoolKey = "VerdrakeTargetVfx";
     private const string ImpactPoolKey = "VerdrakeImpact";
 
     [Header("SFX")]
@@ -30,25 +24,17 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
     private bool didDamage;
     private bool didFinish;
 
-    private GameObject activeTargetVfx;
-    private bool targetVfxReleased;
-    private Vector3 lastKnownVfxPosition;
-    private Collider[] cachedColliders;
+    private VerdrakeParticleController particleController;
 
     private void Awake()
     {
-        cachedColliders = GetComponentsInChildren<Collider>(true);
-        ConfigureColliders();
         RegisterPools();
+        particleController = GetComponent<VerdrakeParticleController>();
     }
 
     private void RegisterPools()
     {
         if (SkillObjectPolling.Instance == null) return;
-
-        if (targetVfxPrefab != null)
-            SkillObjectPolling.Instance.RegisterPrefab(TargetVfxPoolKey, targetVfxPrefab, vfxPreloadAmount);
-
         if (verdrakeImpactPrefab != null)
             SkillObjectPolling.Instance.RegisterPrefab(ImpactPoolKey, verdrakeImpactPrefab, impactPreloadAmount);
     }
@@ -67,16 +53,15 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         runtimeDamage = ResolveDamage(pokemonData, level);
         didDamage = false;
         didFinish = false;
-        targetVfxReleased = false;
 
-        ConfigureColliders();
+        Vector3 footPos = targetMoveController != null
+            ? targetMoveController.FootPosition
+            : targetEnemy.position;
 
-        // Spawn trên cao, mặt Z chỉ xuống dưới
-        transform.position = targetEnemy.position + Vector3.up * skillHeightOffset;
-        transform.forward = Vector3.down;
-        lastKnownVfxPosition = targetEnemy.position;
+        transform.position = new Vector3(footPos.x, 0.14f, footPos.z);
 
-        SpawnTargetVfx();
+        if (particleController != null)
+            particleController.Initialize(verdrakeImpactPrefab, impactLifeTime);
 
         if (spawnExtra)
         {
@@ -91,72 +76,23 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
 
     private void Update()
     {
-        if (didFinish) return;
+        if (didFinish || targetEnemy == null || !targetEnemy.gameObject.activeInHierarchy) return;
 
-        bool enemyAlive = targetEnemy != null && targetEnemy.gameObject.activeInHierarchy;
+        Vector3 footPos = targetMoveController != null
+            ? targetMoveController.FootPosition
+            : targetEnemy.position;
 
-        if (enemyAlive)
-        {
-            Vector3 footPos = targetMoveController != null
-                ? targetMoveController.FootPosition
-                : targetEnemy.position;
-
-            if (!targetVfxReleased && activeTargetVfx != null)
-            {
-                activeTargetVfx.transform.position = footPos;
-                lastKnownVfxPosition = footPos;
-            }
-        }
-
-        Vector3 target = activeTargetVfx != null ? activeTargetVfx.transform.position : lastKnownVfxPosition;
-        Vector3 direction = target - transform.position;
-
-        if (direction.sqrMagnitude > 0.0001f)
-        {
-            transform.position += direction.normalized * moveSpeed * Time.deltaTime;
-            transform.forward = direction.normalized;
-        }
-
-        // Distance check thay vì OnTriggerEnter để tránh physics timing issue
-        if (Vector3.Distance(transform.position, target) <= hitRadius)
-        {
-            LogDebug("Reached targetVfx. Finish.");
-            if (!didDamage)
-                TryApplyDamageAtPosition(target);
-            SpawnImpact(target);
-            if (impactSFX != null)
-                MonImpactSoundManager.Instance?.PlaySound(impactSFX);
-            ReleaseTargetVfx();
-            Release();
-        }
+        transform.position = new Vector3(footPos.x, 0.14f, footPos.z);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (didFinish) return;
+        if (didFinish || didDamage) return;
+        if (!IsEnemyCollision(other)) return;
 
-        // Chỉ xử lý damage khi chạm enemy, không dùng trigger để detect VFX
-        if (!didDamage && IsEnemyCollision(other))
-        {
-            TryApplyDamage(other);
-        }
-    }
+        EnemyHPController hp = other.GetComponentInParent<EnemyHPController>()
+            ?? other.GetComponent<EnemyHPController>();
 
-    private bool IsEnemyCollision(Collider other)
-    {
-        if (other == null) return false;
-
-        Transform t = other.transform;
-        if (targetEnemy != null &&
-            (t == targetEnemy || t.IsChildOf(targetEnemy) || targetEnemy.IsChildOf(t)))
-            return true;
-
-        return ownerSkill != null && other.CompareTag(ownerSkill.EnemyTag);
-    }
-
-    private void TryApplyDamage(Collider other)
-    {
-        EnemyHPController hp = other.GetComponentInParent<EnemyHPController>() ?? other.GetComponent<EnemyHPController>();
         if (hp != null)
         {
             hp.TakeDamage(runtimeDamage);
@@ -165,97 +101,23 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         }
     }
 
-    private void TryApplyDamageAtPosition(Vector3 position)
+    public void OnParticleArrived()
     {
-        if (didDamage) return;
-
-        // Fallback damage nếu enemy chưa bị hit khi skill tới đích
-        bool enemyAlive = targetEnemy != null && targetEnemy.gameObject.activeInHierarchy;
-        if (!enemyAlive) return;
-
-        EnemyHPController hp = targetEnemy.GetComponent<EnemyHPController>()
-            ?? targetEnemy.GetComponentInChildren<EnemyHPController>();
-        if (hp != null)
-        {
-            hp.TakeDamage(runtimeDamage);
-            didDamage = true;
-            LogDebug($"Damage applied at position: {runtimeDamage}");
-        }
+        if (didFinish) return;
+        LogDebug("Particle arrived. Finish.");
+        if (impactSFX != null)
+            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
+        Release();
     }
 
-    private void SpawnTargetVfx()
+    private bool IsEnemyCollision(Collider other)
     {
-        if (targetVfxPrefab == null || targetEnemy == null) return;
-
-        Vector3 footPos = targetMoveController != null
-            ? targetMoveController.FootPosition
-            : targetEnemy.position;
-
-        RegisterPools();
-
-        if (SkillObjectPolling.Instance != null)
-        {
-            activeTargetVfx = SkillObjectPolling.Instance.GetFromPool(TargetVfxPoolKey, footPos, Quaternion.identity);
-        }
-        else
-        {
-            activeTargetVfx = Instantiate(targetVfxPrefab, footPos, Quaternion.identity);
-        }
-
-        if (activeTargetVfx != null)
-        {
-            foreach (Collider col in activeTargetVfx.GetComponentsInChildren<Collider>(true))
-                col.isTrigger = true;
-
-            // Cần Rigidbody để OnTriggerEnter fire giữa 2 trigger collider
-            Rigidbody rb = activeTargetVfx.GetComponent<Rigidbody>()
-                ?? activeTargetVfx.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            rb.useGravity = false;
-
-            VerdrakeTargetVfxMarker marker = activeTargetVfx.GetComponent<VerdrakeTargetVfxMarker>()
-                ?? activeTargetVfx.AddComponent<VerdrakeTargetVfxMarker>();
-            marker.Owner = this;
-        }
-
-        LogDebug($"TargetVfx spawned at {footPos}");
-    }
-
-    private void ReleaseTargetVfx()
-    {
-        if (targetVfxReleased || activeTargetVfx == null) return;
-
-        targetVfxReleased = true;
-
-        if (SkillObjectPolling.Instance != null)
-            SkillObjectPolling.Instance.ReturnByInstance(activeTargetVfx);
-        else
-            Destroy(activeTargetVfx);
-
-        activeTargetVfx = null;
-    }
-
-    private void SpawnImpact(Vector3 position)
-    {
-        if (verdrakeImpactPrefab == null) return;
-
-        RegisterPools();
-
-        if (SkillObjectPolling.Instance != null)
-        {
-            GameObject impact = SkillObjectPolling.Instance.GetFromPool(ImpactPoolKey, position, Quaternion.identity);
-            if (impact != null)
-            {
-                SkillPoolToken token = impact.GetComponent<SkillPoolToken>();
-                if (token != null)
-                    token.ReturnToPoolAfterDelay(impactLifeTime);
-                return;
-            }
-        }
-
-        GameObject fallback = Instantiate(verdrakeImpactPrefab, position, Quaternion.identity);
-        if (impactLifeTime > 0f)
-            Destroy(fallback, impactLifeTime);
+        if (other == null) return false;
+        Transform t = other.transform;
+        if (targetEnemy != null &&
+            (t == targetEnemy || t.IsChildOf(targetEnemy) || targetEnemy.IsChildOf(t)))
+            return true;
+        return ownerSkill != null && other.CompareTag(ownerSkill.EnemyTag);
     }
 
     private void SpawnExtraSkills(PokemonData pokemonData, int level, string attack)
@@ -271,7 +133,7 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         {
             if (targets[i] == null || targets[i] == targetEnemy) continue;
 
-            Vector3 spawnPos = targets[i].position + Vector3.up * skillHeightOffset;
+            Vector3 spawnPos = targets[i].position;
             GameObject extraObj = ownerSkill.GetSkillObjectFromPool(spawnPos, Quaternion.identity);
             if (extraObj == null) continue;
 
@@ -336,23 +198,9 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
     {
         didDamage = false;
         didFinish = false;
-        targetVfxReleased = false;
         targetEnemy = null;
         targetMoveController = null;
-        activeTargetVfx = null;
         audioSource?.Stop();
-    }
-
-    private void ConfigureColliders()
-    {
-        if (cachedColliders == null || cachedColliders.Length == 0)
-            cachedColliders = GetComponentsInChildren<Collider>(true);
-
-        for (int i = 0; i < cachedColliders.Length; i++)
-        {
-            if (cachedColliders[i] != null)
-                cachedColliders[i].isTrigger = true;
-        }
     }
 
     private void LogDebug(string message)
@@ -360,9 +208,4 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         if (!enableDebugLog) return;
         Debug.Log($"[VerdrakeSkill:{name}] {message}", this);
     }
-}
-
-public class VerdrakeTargetVfxMarker : MonoBehaviour
-{
-    public VerdrakeSkill Owner { get; set; }
 }

@@ -15,7 +15,12 @@ MonoBehaviour:
   id: 1
   mapName: 1
   mapSprite: {fileID: -75761523, guid: 794ee628b2c2859478d63fc4861b7a91, type: 3}
-  mapPrefab: {fileID: 993243062162354818, guid: c7bb86d9287eae94fb10c063ef22b0d5, type: 3}
+  mapPrefabRef:
+    m_AssetGUID: c7bb86d9287eae94fb10c063ef22b0d5
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   rewardWinMap: 40
   enemyDatas:
   - {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}

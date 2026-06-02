@@ -343,9 +343,9 @@ public class PokemonSkill : MonoBehaviour
             return false;
         }
 
-        if (pokemonData.skillPrefab == null)
+        if (BattleAssetManager.Instance?.GetSkillPrefab(pokemonData.id) == null)
         {
-            Debug.LogWarning($"[PokemonSkill] skillPrefab is null on PokemonData '{pokemonData.name}'.");
+            Debug.LogWarning($"[PokemonSkill] Skill prefab not loaded for '{pokemonData.name}'.");
             return false;
         }
 
@@ -380,9 +380,12 @@ public class PokemonSkill : MonoBehaviour
             return;
         }
 
-        SkillObjectPolling.Instance.RegisterPrefab(poolKey, pokemonData.skillPrefab, preloadAmount);
+        var skillPrefab = BattleAssetManager.Instance?.GetSkillPrefab(pokemonData.id);
+        if (skillPrefab == null) return;
+
+        SkillObjectPolling.Instance.RegisterPrefab(poolKey, skillPrefab, preloadAmount);
         isSkillRegistered = true;
-        LogDebug($"Register skill prefab done. prefab={pokemonData.skillPrefab.name}, preload={preloadAmount}, poolKey={poolKey}");
+        LogDebug($"Register skill prefab done. prefab={skillPrefab.name}, preload={preloadAmount}, poolKey={poolKey}");
     }
 
     private void BuildPoolKey()
