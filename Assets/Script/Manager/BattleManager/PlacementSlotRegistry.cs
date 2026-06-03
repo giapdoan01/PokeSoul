@@ -11,7 +11,7 @@ public static class PlacementSlotRegistry
     public static void Unregister(PlacementSlot slot) => _slots.Remove(slot);
 
     // Tìm slot trống gần nhất với screenPos (world-space raycast từ camera)
-    public static PlacementSlot FindNearestFree(Vector3 worldPos, float maxDistance = 5f)
+    public static PlacementSlot FindNearestFree(Vector3 worldPos, float maxDistance = 2.5f)
     {
         PlacementSlot best = null;
         float bestDist = maxDistance;

@@ -30,13 +30,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c0c7653278c5e1746baa8a38abf8abf1
-    m_Address: skill_verdrake
+  - m_GUID: 8633e931623c23b4e9d9a4d32b185abd
+    m_Address: skill_homurin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e0206a7fe98718743a344612b32ff010
-    m_Address: skill_homaryu
+  - m_GUID: c0c7653278c5e1746baa8a38abf8abf1
+    m_Address: skill_verdrake
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -45,8 +45,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ee432d23b162deb44891e8aeafec1eed
-    m_Address: skill_homurin
+  - m_GUID: f8531dd5007ea8246b828d22837f2ac4
+    m_Address: skill_homaryu
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -55,6 +55,8 @@ public class BattleAssetManager : MonoBehaviour
 
     // ── Getter (sync — dùng trong BattleScene) ──
 
+    public bool HasMonPrefab(string pokemonId) => _monPrefabs.ContainsKey(pokemonId);
+
     public GameObject GetMonPrefab(string pokemonId)
     {
         if (_monPrefabs.TryGetValue(pokemonId, out var prefab)) return prefab;

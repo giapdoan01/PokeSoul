@@ -29,7 +29,7 @@ public class BattleSceneLoader : MonoBehaviour
 
     private async Task LoadAndStartBattle(Map map, BattleSessionData sessionData)
     {
-        LoadingManager.Instance?.ShowLoading("Đang tải trận đấu...");
+        LoadingManager.Instance?.ShowLoading("Loading...");
 
         var manager = EnsureBattleAssetManager();
         manager.ReleaseAll(); // clear trận cũ nếu có
@@ -50,17 +50,7 @@ public class BattleSceneLoader : MonoBehaviour
             .ToList();
 
         foreach (var pokemonData in deck)
-        {
-            // Mon prefab
-            var (monPrefab, monHandle) = await AddressableLoader.LoadAsync<GameObject>(pokemonData.pokemonPrefabRef);
-            if (monPrefab != null)
-                manager.StoreMonPrefab(pokemonData.id, monPrefab, monHandle);
-
-            // Skill prefab
-            var (skillPrefab, skillHandle) = await AddressableLoader.LoadAsync<GameObject>(pokemonData.skillPrefabRef);
-            if (skillPrefab != null)
-                manager.StoreSkillPrefab(pokemonData.id, skillPrefab, skillHandle);
-        }
+            await LoadMonChainAsync(pokemonData, manager);
 
         // ── Bước 3: Load Enemy prefabs theo map ──
         if (map.enemyDatas != null)
@@ -85,6 +75,27 @@ public class BattleSceneLoader : MonoBehaviour
         LoadingManager.Instance?.HideLoading();
         Debug.Log("[BattleSceneLoader] All assets loaded. Loading BattleScene...");
         SceneManager.LoadScene(BattleSceneName);
+    }
+
+    // Load prefab + skill của 1 Mon và toàn bộ evolution chain của nó
+    private static async Task LoadMonChainAsync(PokemonData data, BattleAssetManager manager)
+    {
+        if (data == null) return;
+
+        // Bỏ qua nếu đã load rồi (tránh load trùng khi 2 Mon cùng evo chain)
+        if (manager.HasMonPrefab(data.id)) return;
+
+        var (monPrefab, monHandle) = await AddressableLoader.LoadAsync<GameObject>(data.pokemonPrefabRef);
+        if (monPrefab != null)
+            manager.StoreMonPrefab(data.id, monPrefab, monHandle);
+
+        var (skillPrefab, skillHandle) = await AddressableLoader.LoadAsync<GameObject>(data.skillPrefabRef);
+        if (skillPrefab != null)
+            manager.StoreSkillPrefab(data.id, skillPrefab, skillHandle);
+
+        // Load tiếp evolution nếu có
+        if (data.EvolutionPokemonData != null)
+            await LoadMonChainAsync(data.EvolutionPokemonData, manager);
     }
 
     private static BattleAssetManager EnsureBattleAssetManager()
