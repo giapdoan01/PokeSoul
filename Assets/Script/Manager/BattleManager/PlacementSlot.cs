@@ -5,6 +5,10 @@ public class PlacementSlot : MonoBehaviour
 {
     public bool IsOccupied { get; private set; }
 
+    [Header("VFX")]
+    public GameObject hasMonVFX;
+    public GameObject onSelectVFX;
+
     [Header("SFX")]
     public AudioClip spawnClip;
     public AudioSource audioSource;
@@ -16,10 +20,21 @@ public class PlacementSlot : MonoBehaviour
     private void OnEnable()  => PlacementSlotRegistry.Register(this);
     private void OnDisable() => PlacementSlotRegistry.Unregister(this);
 
+    private void Start()
+    {
+        hasMonVFX?.SetActive(false);
+        onSelectVFX?.SetActive(false);
+    }
+
     public void SetDependencies(PlayerStatsInBattleManager playerStats, MonUpgradePanel upgradePanel)
     {
         _playerStats = playerStats;
         _upgradePanel = upgradePanel;
+    }
+
+    public void SetSelectVFX(bool active)
+    {
+        onSelectVFX?.SetActive(active);
     }
 
     public bool TrySpawn(PokemonData data)
@@ -33,6 +48,7 @@ public class PlacementSlot : MonoBehaviour
         MonObjectPool.Instance?.RegisterMon(data.id, monPrefab);
 
         IsOccupied = true;
+        hasMonVFX?.SetActive(true);
         _spawnedMon = MonObjectPool.Instance != null
             ? MonObjectPool.Instance.Get(data.id, transform.position, transform.rotation)
             : Instantiate(monPrefab, transform.position, transform.rotation);
@@ -68,6 +84,8 @@ public class PlacementSlot : MonoBehaviour
             Destroy(_spawnedMon);
         _spawnedMon = null;
         IsOccupied = false;
+        hasMonVFX?.SetActive(false);
+        onSelectVFX?.SetActive(false);
     }
 
     private static IEnumerator SpawnPopAnim(Transform t)

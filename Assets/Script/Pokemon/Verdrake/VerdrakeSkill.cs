@@ -85,29 +85,32 @@ public class VerdrakeSkill : MonoBehaviour, IPokemonSkillLaunch
         transform.position = new Vector3(footPos.x, 0.14f, footPos.z);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnParticleArrived()
     {
-        if (didFinish || didDamage) return;
-        if (!IsEnemyCollision(other)) return;
+        if (didFinish) return;
+        LogDebug("Particle arrived. Finish.");
 
-        EnemyHPController hp = other.GetComponentInParent<EnemyHPController>()
-            ?? other.GetComponent<EnemyHPController>();
+        if (!didDamage)
+            ApplyDamageToTarget();
+
+        if (impactSFX != null)
+            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
+        Release();
+    }
+
+    private void ApplyDamageToTarget()
+    {
+        if (targetEnemy == null || !targetEnemy.gameObject.activeInHierarchy) return;
+
+        EnemyHPController hp = targetEnemy.GetComponentInChildren<EnemyHPController>()
+            ?? targetEnemy.GetComponent<EnemyHPController>();
 
         if (hp != null)
         {
             hp.TakeDamage(runtimeDamage);
             didDamage = true;
-            LogDebug($"Damage applied: {runtimeDamage}");
+            LogDebug($"Damage applied via OnParticleArrived: {runtimeDamage}");
         }
-    }
-
-    public void OnParticleArrived()
-    {
-        if (didFinish) return;
-        LogDebug("Particle arrived. Finish.");
-        if (impactSFX != null)
-            MonImpactSoundManager.Instance?.PlaySound(impactSFX);
-        Release();
     }
 
     private bool IsEnemyCollision(Collider other)

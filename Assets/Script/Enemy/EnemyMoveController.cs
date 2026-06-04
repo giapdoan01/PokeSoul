@@ -20,11 +20,9 @@ public class EnemyMoveController : MonoBehaviour
 
     public void SetEnemyData(EnemyData data) => _enemyData = data;
 
-    public void SetSpeedByWave(int waveIndex)
+    public void SetSpeed(double speed)
     {
-        var waveData = _enemyData?.getEnemyWaveDataByName(waveIndex);
-        if (waveData != null)
-            _moveSpeed = waveData.enemyStats.speed;
+        _moveSpeed = speed;
     }
 
     public void ResetForReuse(WayPointForEnemy wayPoint)
@@ -100,6 +98,9 @@ public class EnemyMoveController : MonoBehaviour
     private void OnReachEndPoint()
     {
         MatchTracker.Instance?.RegisterEnemyReachedEnd();
+
+        // Notify WaveManager để _aliveEnemyCount giảm đúng
+        GetComponent<EnemyHPController>()?.OnEscaped();
 
         if (EnemyObjectPool.Instance != null)
             EnemyObjectPool.Instance.Return(gameObject);

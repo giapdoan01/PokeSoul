@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f085c8896dfed9b44a331f3735c7a1cb, type: 3}
+  m_Name: Aethelgard
+  m_EditorClassIdentifier: Assembly-CSharp::LandShopData
+  landName: Aethelgard
+  backgroundSprite: {fileID: -131777796, guid: 379c6bbd8f335ed4c9ca06d7c4abae92, type: 3}
+  gemPerGacha: 250
+  pokemons:
+  - {fileID: 11400000, guid: 8c8d5b01fe14f3945b3edcf92fe83ea5, type: 2}
+  - {fileID: 11400000, guid: a3b880b6c513c6f498456acb6012eb23, type: 2}
+  - {fileID: 11400000, guid: de6a93520efae5a4f892f79c38a54e9e, type: 2}
+  - {fileID: 11400000, guid: 03e2d9a40e34cba409fb4481604aeb51, type: 2}

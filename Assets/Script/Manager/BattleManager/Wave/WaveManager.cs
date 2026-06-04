@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
@@ -10,7 +11,6 @@ public class WaveManager : MonoBehaviour
     public int timeToStartFirstWave = 10;
 
     private int currentWaveNumber;
-    private EnemyData[] enemyBattleDatas;
     private WayPointForEnemy wayPointSystem;
     private CancellationTokenSource cts;
 
@@ -30,7 +30,6 @@ public class WaveManager : MonoBehaviour
     public void Init(Map map, WayPointForEnemy wayPoint)
     {
         mapData = map;
-        enemyBattleDatas = map.enemyDatas;
         wayPointSystem = wayPoint;
 
         if (wayPointSystem == null)
@@ -38,14 +37,17 @@ public class WaveManager : MonoBehaviour
         else if (wayPointSystem.wayPoints.Count == 0)
             Debug.LogError("[WaveManager] WayPointForEnemy không có waypoint nào!");
 
-        // Preload enemy vào pool từ BattleAssetManager
+        // Preload enemy vào pool từ BattleAssetManager (lấy từ spawnSequence)
         if (EnemyObjectPool.Instance != null)
-            foreach (var enemyData in enemyBattleDatas)
-            {
-                var prefab = BattleAssetManager.Instance?.GetEnemyPrefab(enemyData.id);
-                if (prefab != null)
-                    EnemyObjectPool.Instance.RegisterEnemy(enemyData.enemyName.Trim(), prefab);
-            }
+            foreach (var wave in map.waves)
+                if (wave.spawnSequence != null)
+                    foreach (var entry in wave.spawnSequence)
+                    {
+                        if (entry.enemyData == null) continue;
+                        var prefab = BattleAssetManager.Instance?.GetEnemyPrefab(entry.enemyData.id);
+                        if (prefab != null)
+                            EnemyObjectPool.Instance.RegisterEnemy(entry.enemyData.enemyName.Trim(), prefab);
+                    }
     }
 
 public void StartBattle()
@@ -75,14 +77,9 @@ public void StartBattle()
     {
         WaveReward waveReward = mapData.getWaveRewardByWaveNumber(waveNumber);
         if (waveReward != null)
-        {
-            int totalReward = waveReward.waveReward + waveReward.waveSpecialReward;
-            playerStatsInBattleManager.AddCoin(totalReward);
-        }
+            playerStatsInBattleManager.AddCoin(waveReward.waveReward + waveReward.waveSpecialReward);
         else
-        {
             Debug.LogWarning($"[WaveManager] Không tìm thấy phần thưởng cho wave {waveNumber}");
-        }
 
         if (waveNumber == 1)
         {
@@ -100,64 +97,85 @@ public void StartBattle()
             return;
         }
 
+        WaveData waveData = GetWaveData(waveNumber);
+
+        if (waveData?.spawnSequence != null && waveData.spawnSequence.Count > 0)
+            await SpawnBySequence(waveData.spawnSequence, ct);
+        else
+        {
+            MatchTracker.Instance?.NotifyAllWavesComplete();
+            return;
+        }
+
+        OnWaveSpawnComplete?.Invoke();
+    }
+
+    // Spawn theo spawnSequence mới — hỗ trợ thứ tự mixed enemy
+    private async UniTask SpawnBySequence(List<WaveSpawnEntry> sequence, CancellationToken ct)
+    {
         Transform spawnPoint = wayPointSystem.wayPoints[0];
 
-        // Đếm tổng enemy sẽ spawn trong wave này
         int totalCount = 0;
-        foreach (var ed in enemyBattleDatas)
-        {
-            var wd = ed.getEnemyWaveDataByName(waveNumber);
-            if (wd != null) totalCount += wd.enemyStats.count;
-        }
+        foreach (var entry in sequence)
+            if (entry.enemyData != null) totalCount += entry.count;
         _aliveEnemyCount = totalCount;
 
-        // Không còn enemy nào để spawn — tất cả wave đã xong
         if (totalCount == 0)
         {
             MatchTracker.Instance?.NotifyAllWavesComplete();
             return;
         }
 
-        foreach (var enemyData in enemyBattleDatas)
+        foreach (var entry in sequence)
         {
-            EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveNumber);
-            if (waveData == null)
+            if (entry.enemyData == null) continue;
+
+            for (int i = 0; i < entry.count; i++)
             {
-                Debug.LogWarning($"[WaveManager] Không tìm thấy dữ liệu wave {waveNumber} cho enemy {enemyData.enemyName}");
-                continue;
-            }
+                bool spawned = await SpawnSingleEnemy(entry, spawnPoint.position, ct);
+                if (!spawned) _aliveEnemyCount--;
 
-            for (int i = 0; i < waveData.enemyStats.count; i++)
-            {
-                var enemyPrefab = BattleAssetManager.Instance?.GetEnemyPrefab(enemyData.id);
-                if (enemyPrefab == null) { _aliveEnemyCount--; continue; }
-
-                GameObject enemyInstance = EnemyObjectPool.Instance != null
-                    ? EnemyObjectPool.Instance.GetOrRegister(enemyData.enemyName, enemyPrefab, spawnPoint.position, Quaternion.identity)
-                    : Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-
-                if (enemyInstance == null) { _aliveEnemyCount--; continue; }
-
-                MatchTracker.Instance?.RegisterEnemySpawned();
-
-                EnemyMoveController moveController = enemyInstance.GetComponent<EnemyMoveController>();
-                moveController.SetEnemyData(enemyData);
-                moveController.SetSpeedByWave(waveNumber);
-                moveController.ResetForReuse(wayPointSystem);
-
-                EnemyHPController hpController = enemyInstance.GetComponent<EnemyHPController>();
-                hpController.SetEnemyData(enemyData);
-                hpController.SetPlayerStats(playerStatsInBattleManager, waveNumber);
-                hpController.setHpByWaveName(waveNumber);
-                hpController.OnDied += OnEnemyDied;
-                hpController.PlaySpawnSFX();
-
-                await UniTask.Delay(1000, cancellationToken: ct);
+                float delay = Mathf.Max(0.1f, entry.delayBetweenSpawns);
+                await UniTask.Delay((int)(delay * 1000), cancellationToken: ct);
             }
         }
+    }
 
-        // Toàn bộ enemy đã được spawn — show next wave button
-        OnWaveSpawnComplete?.Invoke();
+    private async UniTask<bool> SpawnSingleEnemy(WaveSpawnEntry entry, Vector3 spawnPos, CancellationToken ct)
+    {
+        var enemyData = entry.enemyData;
+        var enemyPrefab = BattleAssetManager.Instance?.GetEnemyPrefab(enemyData.id);
+        if (enemyPrefab == null) return false;
+
+        GameObject enemyInstance = EnemyObjectPool.Instance != null
+            ? EnemyObjectPool.Instance.GetOrRegister(enemyData.enemyName, enemyPrefab, spawnPos, Quaternion.identity)
+            : Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+
+        if (enemyInstance == null) return false;
+
+        MatchTracker.Instance?.RegisterEnemySpawned();
+
+        EnemyMoveController moveController = enemyInstance.GetComponent<EnemyMoveController>();
+        moveController.SetEnemyData(enemyData);
+        moveController.SetSpeed(entry.speed);
+        moveController.ResetForReuse(wayPointSystem);
+
+        EnemyHPController hpController = enemyInstance.GetComponent<EnemyHPController>();
+        hpController.SetEnemyData(enemyData);
+        hpController.SetPlayerStats(playerStatsInBattleManager, entry.reward);
+        hpController.SetHp(entry.hp);
+        hpController.OnDied += OnEnemyDied;
+        hpController.PlaySpawnSFX();
+
+        return true;
+    }
+
+    private WaveData GetWaveData(int waveNumber)
+    {
+        if (mapData.waves == null) return null;
+        foreach (var w in mapData.waves)
+            if (w.waveNumber == waveNumber) return w;
+        return null;
     }
 
     private void OnEnemyDied()

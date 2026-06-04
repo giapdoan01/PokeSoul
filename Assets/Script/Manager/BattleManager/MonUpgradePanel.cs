@@ -36,6 +36,7 @@ public class MonUpgradePanel : MonoBehaviour
 
     private MonOnSlot _current;
     private Coroutine _scaleCoroutine;
+    private System.Action _onClosedCallback;
 
     private void Awake()
     {
@@ -54,8 +55,9 @@ public class MonUpgradePanel : MonoBehaviour
 
     private void PlayClick() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX);
 
-    public void Show(MonOnSlot mon)
+    public void Show(MonOnSlot mon, System.Action onClosed = null)
     {
+        _onClosedCallback = onClosed;
         if (_current != mon)
         {
             UnsubscribeCoinEvent();
@@ -71,6 +73,8 @@ public class MonUpgradePanel : MonoBehaviour
     public void Hide()
     {
         UnsubscribeCoinEvent();
+        _onClosedCallback?.Invoke();
+        _onClosedCallback = null;
         if (_scaleCoroutine != null) StopCoroutine(_scaleCoroutine);
         _scaleCoroutine = StartCoroutine(ScaleTo(transform.localScale, Vector3.zero));
     }

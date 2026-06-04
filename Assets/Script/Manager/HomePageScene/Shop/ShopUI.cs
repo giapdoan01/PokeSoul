@@ -2,33 +2,27 @@ using UnityEngine;
 
 public class ShopUI : MonoBehaviour
 {
-    public ShopManager shopManager;
+    public ShopData shopData;
     public Transform cardContainer;
-    public GameObject cardShopItemPrefab;
-    public PopupNotificationShop popupNotificationShop;
+    public GameObject landItemPrefab;
+    public PopupGachaCard popupGachaCard;
+    public ShopManager shopManager;
 
-    void Start()
+    private void Start()
     {
-        if (shopManager == null)
-            Debug.LogError("[ShopUI] Không tìm thấy ShopManager trong scene!");
-
-        SetupShop();
+        popupGachaCard.Init(shopManager);
+        SetupLands();
     }
 
-    public void SetupShop()
+    private void SetupLands()
     {
-        if (cardContainer == null || cardShopItemPrefab == null || shopManager == null) return;
-
-        // Xóa các item cũ trước khi spawn mới
         foreach (Transform child in cardContainer)
             Destroy(child.gameObject);
 
-        foreach (var pokemonData in shopManager.allPokemonData.allPokemonDatas)
+        foreach (var land in shopData.lands)
         {
-            bool isPurchased = shopManager.IsOwned(pokemonData.id);
-            var item = Instantiate(cardShopItemPrefab, cardContainer).GetComponent<CardShopItemPrefab>();
-            item.popupNotificationShop = popupNotificationShop;
-            item.SetupCardShopItem(pokemonData, pokemonData.priceToBuyCard, isPurchased, shopManager);
+            var item = Instantiate(landItemPrefab, cardContainer).GetComponent<LandItemPrefab>();
+            item.Setup(land, popupGachaCard);
         }
     }
 }

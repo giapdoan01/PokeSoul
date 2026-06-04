@@ -22,86 +22,169 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   rewardWinMap: 40
-  enemyDatas:
-  - {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
   waves:
   - waveNumber: 1
     waveReward:
       waveReward: 140
       waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 10
+      delayBetweenSpawns: 0.8
+      hp: 28
+      speed: 1
+      reward: 1
   - waveNumber: 2
-    waveReward:
-      waveReward: 150
-      waveSpecialReward: 0
-  - waveNumber: 3
     waveReward:
       waveReward: 160
       waveSpecialReward: 0
-  - waveNumber: 4
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 12
+      delayBetweenSpawns: 0.8
+      hp: 34
+      speed: 1.01
+      reward: 1
+  - waveNumber: 3
     waveReward:
-      waveReward: 170
+      waveReward: 180
       waveSpecialReward: 0
-  - waveNumber: 5
-    waveReward:
-      waveReward: 190
-      waveSpecialReward: 200
-  - waveNumber: 6
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 14
+      delayBetweenSpawns: 0.8
+      hp: 40
+      speed: 1.02
+      reward: 1
+  - waveNumber: 4
     waveReward:
       waveReward: 210
       waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 16
+      delayBetweenSpawns: 0.8
+      hp: 48
+      speed: 1.04
+      reward: 1
+  - waveNumber: 5
+    waveReward:
+      waveReward: 210
+      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 18
+      delayBetweenSpawns: 0.8
+      hp: 58
+      speed: 1.05
+      reward: 1
+  - waveNumber: 6
+    waveReward:
+      waveReward: 280
+      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 20
+      delayBetweenSpawns: 0.8
+      hp: 70
+      speed: 1.07
+      reward: 2
   - waveNumber: 7
     waveReward:
-      waveReward: 230
-      waveSpecialReward: 0
-  - waveNumber: 8
-    waveReward:
-      waveReward: 250
-      waveSpecialReward: 0
-  - waveNumber: 9
-    waveReward:
-      waveReward: 270
-      waveSpecialReward: 0
-  - waveNumber: 10
-    waveReward:
       waveReward: 320
-      waveSpecialReward: 300
-  - waveNumber: 11
-    waveReward:
-      waveReward: 340
       waveSpecialReward: 0
-  - waveNumber: 12
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 22
+      delayBetweenSpawns: 0.8
+      hp: 84
+      speed: 1.08
+      reward: 2
+  - waveNumber: 8
     waveReward:
       waveReward: 360
       waveSpecialReward: 0
-  - waveNumber: 13
-    waveReward:
-      waveReward: 380
-      waveSpecialReward: 0
-  - waveNumber: 14
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 24
+      delayBetweenSpawns: 0.8
+      hp: 98
+      speed: 1.1
+      reward: 2
+  - waveNumber: 3
     waveReward:
       waveReward: 400
       waveSpecialReward: 0
-  - waveNumber: 15
-    waveReward:
-      waveReward: 450
-      waveSpecialReward: 450
-  - waveNumber: 16
-    waveReward:
-      waveReward: 470
-      waveSpecialReward: 0
-  - waveNumber: 17
-    waveReward:
-      waveReward: 470
-      waveSpecialReward: 0
-  - waveNumber: 18
-    waveReward:
-      waveReward: 510
-      waveSpecialReward: 0
-  - waveNumber: 19
-    waveReward:
-      waveReward: 530
-      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 26
+      delayBetweenSpawns: 0.8
+      hp: 114
+      speed: 1.11
+      reward: 2
   - waveNumber: 10
     waveReward:
+      waveReward: 450
+      waveSpecialReward: 400
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 28
+      delayBetweenSpawns: 0.8
+      hp: 132
+      speed: 1.13
+      reward: 2
+  - waveNumber: 11
+    waveReward:
+      waveReward: 500
+      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 30
+      delayBetweenSpawns: 0.8
+      hp: 152
+      speed: 1.14
+      reward: 3
+  - waveNumber: 12
+    waveReward:
+      waveReward: 550
+      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 33
+      delayBetweenSpawns: 0.8
+      hp: 174
+      speed: 1.16
+      reward: 3
+  - waveNumber: 13
+    waveReward:
+      waveReward: 600
+      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 36
+      delayBetweenSpawns: 0.8
+      hp: 198
+      speed: 1.17
+      reward: 3
+  - waveNumber: 14
+    waveReward:
       waveReward: 650
-      waveSpecialReward: 500
+      waveSpecialReward: 0
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 39
+      delayBetweenSpawns: 0.8
+      hp: 224
+      speed: 1.19
+      reward: 3
+  - waveNumber: 15
+    waveReward:
+      waveReward: 750
+      waveSpecialReward: 600
+    spawnSequence:
+    - enemyData: {fileID: 11400000, guid: 8ae981eb408892e449eebe13155a416d, type: 2}
+      count: 42
+      delayBetweenSpawns: 0.8
+      hp: 250
+      speed: 1.2
+      reward: 3

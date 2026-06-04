@@ -12,7 +12,6 @@ public class Map : ScriptableObject
     public Sprite mapSprite;
     public AssetReference mapPrefabRef;
     public int rewardWinMap;
-    public EnemyData[] enemyDatas;
     public WaveData[] waves;
 
     public WaveReward getWaveRewardByWaveNumber(int waveNumber)
@@ -42,10 +41,22 @@ public class MapProgress
 }
 
 [System.Serializable]
+public class WaveSpawnEntry
+{
+    public EnemyData enemyData;
+    public int count = 1;
+    public float delayBetweenSpawns = 1f;
+    public double hp = 100;
+    public double speed = 3;
+    public int reward = 10;
+}
+
+[System.Serializable]
 public class WaveData
 {
     public int waveNumber;
     public WaveReward waveReward;
+    public List<WaveSpawnEntry> spawnSequence;
 }
 
 [System.Serializable]

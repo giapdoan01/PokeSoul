@@ -21,7 +21,13 @@ public class MonOnSlot : MonoBehaviour
 
     public void OnClick()
     {
-        _upgradePanel?.Show(this);
+        _slot?.SetSelectVFX(true);
+        _upgradePanel?.Show(this, OnPanelClosed);
+    }
+
+    private void OnPanelClosed()
+    {
+        _slot?.SetSelectVFX(false);
     }
 
     public bool TryUpgrade()

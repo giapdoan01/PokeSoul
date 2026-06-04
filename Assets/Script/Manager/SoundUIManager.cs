@@ -27,4 +27,18 @@ public class SoundUIManager : MonoBehaviour
         if (clip == null) return;
         audioSource.PlayOneShot(clip);
     }
+
+    public void PlayLoopSound(AudioClip clip)
+    {
+        if (clip == null) return;
+        audioSource.clip = clip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    public void StopLoopSound()
+    {
+        audioSource.loop = false;
+        audioSource.Stop();
+    }
 }

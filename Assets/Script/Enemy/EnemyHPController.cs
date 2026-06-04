@@ -6,7 +6,7 @@ using System;
 public class EnemyHPController : MonoBehaviour
 {
     private EnemyData enemyData;
-    private int _waveNumber;
+    private int _reward;
     private PlayerStatsInBattleManager _playerStats;
     public double currentHP;
     public double maxHP;
@@ -17,10 +17,17 @@ public class EnemyHPController : MonoBehaviour
     public double CurrentHP => currentHP;
     public double MaxHP => maxHP;
 
+    [Header("VFX")]
+    public GameObject bloodVFX;
+
     [Header("SFX")]
     public AudioClip spawnSFX;
     public AudioClip dieSFX;
     public AudioSource audioSource;
+
+    private const string BloodVFXPoolKey = "BloodVFX";
+    private const float BloodVFXLifeTime = 1.5f;
+    private const float BloodVFXYPos = 0.16f;
 
     public void SetEnemyData(EnemyData data)
     {
@@ -33,30 +40,30 @@ public class EnemyHPController : MonoBehaviour
             audioSource.PlayOneShot(spawnSFX);
     }
 
-    public void SetPlayerStats(PlayerStatsInBattleManager playerStats, int waveNumber)
+    private void Awake()
     {
-        _playerStats = playerStats;
-        _waveNumber = waveNumber;
+        if (bloodVFX != null && EnemyObjectPool.Instance != null)
+        {
+            // Đảm bảo VFX có component auto-return
+            if (bloodVFX.GetComponent<BloodVFXAutoReturn>() == null)
+                bloodVFX.AddComponent<BloodVFXAutoReturn>().lifeTime = BloodVFXLifeTime;
+
+            EnemyObjectPool.Instance.RegisterEnemy(BloodVFXPoolKey, bloodVFX);
+        }
     }
 
-    public void setHpByWaveName(int waveName)
+    public void SetPlayerStats(PlayerStatsInBattleManager playerStats, int reward)
     {
-        EnemyWaveData waveData = enemyData.getEnemyWaveDataByName(waveName);
-        if (waveData != null)
-        {
-            maxHP = waveData.enemyStats.HP;
-            currentHP = maxHP;
-            Debug.Log($"[EnemyHealtController] Đã thiết lập HP cho {enemyData.enemyName} ở wave {waveName}: {currentHP}");
+        _playerStats = playerStats;
+        _reward = reward;
+    }
 
-            // Thông báo maxHP để UI setup slider trước
-            onEnemyMaxHPSet?.Invoke(maxHP);
-            // Kích hoạt sự kiện onEnemyHealthChanged để UI cập nhật
-            onEnemyHealthChanged?.Invoke(currentHP);
-        }
-        else
-        {
-            Debug.LogError($"[EnemyHealtController] Không thể thiết lập HP cho {enemyData.enemyName} vì không tìm thấy dữ liệu wave: {waveName}");
-        }
+    public void SetHp(double hp)
+    {
+        maxHP = hp;
+        currentHP = maxHP;
+        onEnemyMaxHPSet?.Invoke(maxHP);
+        onEnemyHealthChanged?.Invoke(currentHP);
     }
 
     public void TakeDamage(double damage)
@@ -82,9 +89,10 @@ public class EnemyHPController : MonoBehaviour
         if (dieSFX != null)
             BattleSoundManager.Instance?.PlaySound(dieSFX);
 
-        var waveData = enemyData.getEnemyWaveDataByName(_waveNumber);
-        if (waveData != null && _playerStats != null)
-            _playerStats.AddCoin(waveData.enemyStats.reward);
+        SpawnBloodVFX();
+
+        if (_playerStats != null && _reward > 0)
+            _playerStats.AddCoin(_reward);
 
         onEnemyHealthChanged = null;
         onEnemyMaxHPSet = null;
@@ -98,6 +106,24 @@ public class EnemyHPController : MonoBehaviour
             EnemyObjectPool.Instance.Return(gameObject);
         else
             Destroy(gameObject);
+    }
+
+    // Gọi khi enemy chạy tới đích (không bị giết) — để WaveManager biết
+    public void OnEscaped()
+    {
+        onEnemyHealthChanged = null;
+        onEnemyMaxHPSet = null;
+        _playerStats = null;
+        OnDied?.Invoke();  // Notify WaveManager giống như die
+        OnDied = null;
+        // Không cộng reward, không RegisterEnemyDied (đã xử lý ở RegisterEnemyReachedEnd)
+    }
+
+    private void SpawnBloodVFX()
+    {
+        if (bloodVFX == null || EnemyObjectPool.Instance == null) return;
+        var vfxPos = new Vector3(transform.position.x, BloodVFXYPos, transform.position.z);
+        EnemyObjectPool.Instance.GetOrRegister(BloodVFXPoolKey, bloodVFX, vfxPos, Quaternion.identity);
     }
 
     public void ResetHP()

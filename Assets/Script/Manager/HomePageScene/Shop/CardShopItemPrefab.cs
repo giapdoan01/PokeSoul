@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 
 public class CardShopItemPrefab : MonoBehaviour
 {
@@ -13,93 +10,51 @@ public class CardShopItemPrefab : MonoBehaviour
     public TMP_Text pokemonNameText;
     public Image typeImage;
     public TMP_Text typeNameText;
-    public GameObject buyButton;
-    public TMP_Text priceText;
-    public Image gemIcon;
-    public Image purchasedImage;
-    public PopupNotificationShop popupNotificationShop;
+    public GameObject ownedOverlay;
+    public GameObject frameOn;
     public List<Sprite> typeSprites;
     public List<Sprite> typeCardBackgroundSprites;
 
     [Header("Color Text By Type")]
-    public Color fireColor = new Color(0f, 0f, 0f);
-    public Color waterColor = new Color(0f, 0f, 0f);
-    public Color grassColor = new Color(0f, 0f, 0f);
-    public Color electricColor = new Color(0f, 0f, 0f);
-    public Color psychicColor = new Color(0f, 0f, 0f);
-    public Color iceColor = new Color(0f, 0f, 0f);
-    public Color darkColor = new Color(0f, 0f, 0f);
-    public Color fightingColor = new Color(0f, 0f, 0f);
-    public Color poisonColor = new Color(0f, 0f, 0f);
-    public Color groundColor = new Color(0f, 0f, 0f);
+    public Color fireColor;
+    public Color waterColor;
+    public Color grassColor;
+    public Color electricColor;
+    public Color psychicColor;
+    public Color iceColor;
+    public Color darkColor;
+    public Color fightingColor;
+    public Color poisonColor;
+    public Color groundColor;
 
-    [Header("SFX")]
-    [SerializeField] private AudioClip buttonClickSFX;
+    public PokemonData PokemonData { get; private set; }
+    public bool IsOwned { get; private set; }
 
-    private PokemonData _pokemonData;
-    private int _price;
-    private ShopManager _shopManager;
-    private Vector3 _buyButtonOriginalScale;
-
-    public void SetupCardShopItem(PokemonData pokemonData, int price, bool isPurchased, ShopManager shopManager)
+    public void Setup(PokemonData data, bool isOwned)
     {
-        _pokemonData = pokemonData;
-        _price = price;
-        _shopManager = shopManager;
+        PokemonData = data;
 
-        pokemonImage.sprite = pokemonData.spritePokemonCard;
-        pokemonNameText.text = pokemonData.PokemonName;
-        typeNameText.text = pokemonData.type.ToString();
-        priceText.text = price.ToString();
-        priceText.gameObject.SetActive(!isPurchased);
+        pokemonImage.sprite = data.spritePokemonCard;
+        pokemonNameText.text = data.PokemonName;
+        typeNameText.text = data.type.ToString();
 
-        SetupType(pokemonData);
-        SetupTextColor(pokemonData.type);
-        SetPurchasedState(isPurchased);
+        SetupType(data);
+        SetupTextColor(data.type);
+        RefreshOwnedState(isOwned);
 
-        _buyButtonOriginalScale = buyButton.transform.localScale;
-
-        buyButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        buyButton.GetComponent<Button>().onClick.AddListener(OnBuyButtonClicked);
+        frameOn?.SetActive(false);
     }
 
-    // Gắn vào Button OnClick trong Inspector
-    public void OnBuyButtonClicked()
+    public void RefreshOwnedState(bool isOwned)
     {
-        SoundUIManager.Instance?.PlayUISound(buttonClickSFX);
-        if (_pokemonData == null)
-        {
-            Debug.LogError("[CardShopItemPrefab] _pokemonData null — SetupCardShopItem chưa được gọi!");
-            return;
-        }
-        if (_shopManager == null)
-        {
-            Debug.LogError("[CardShopItemPrefab] _shopManager null — SetupCardShopItem chưa được gọi!");
-            return;
-        }
-        StartCoroutine(PressAnimation());
-        _shopManager.BuyPokemon(_pokemonData, _price, OnBuySuccess, popupNotificationShop).Forget();
+        IsOwned = isOwned;
+        ownedOverlay?.SetActive(isOwned);
     }
 
-    private IEnumerator PressAnimation()
+    public void SetHighlight(bool active)
     {
-        buyButton.transform.localScale = _buyButtonOriginalScale * 0.88f;
-        yield return new WaitForSeconds(0.12f);
-        buyButton.transform.localScale = _buyButtonOriginalScale;
-    }
-
-    private void OnBuySuccess(PokemonData _)
-    {
-        SetPurchasedState(true);
-    }
-
-    private void SetPurchasedState(bool isPurchased)
-    {
-        var btn = buyButton.GetComponent<Button>();
-        btn.interactable = !isPurchased;
-        gemIcon.gameObject.SetActive(!isPurchased);
-        priceText.gameObject.SetActive(!isPurchased);
-        purchasedImage.gameObject.SetActive(isPurchased);
+        if (!IsOwned)
+            frameOn?.SetActive(active);
     }
 
     private void SetupTextColor(PokemonType type)
@@ -118,26 +73,25 @@ public class CardShopItemPrefab : MonoBehaviour
             PokemonType.Ground   => groundColor,
             _                    => Color.white
         };
-
         pokemonNameText.color = color;
         typeNameText.color = color;
     }
 
-    private void SetupType(PokemonData pokemonData)
+    private void SetupType(PokemonData data)
     {
-        int index = pokemonData.type switch
+        int index = data.type switch
         {
-            PokemonType.Fire => 0,
-            PokemonType.Water => 1,
-            PokemonType.Grass => 2,
+            PokemonType.Fire     => 0,
+            PokemonType.Water    => 1,
+            PokemonType.Grass    => 2,
             PokemonType.Electric => 3,
-            PokemonType.Psychic => 4,
-            PokemonType.Ice => 5,
-            PokemonType.Dark => 6,
+            PokemonType.Psychic  => 4,
+            PokemonType.Ice      => 5,
+            PokemonType.Dark     => 6,
             PokemonType.Fighting => 7,
-            PokemonType.Poison => 8,
-            PokemonType.Ground => 9,
-            _ => -1
+            PokemonType.Poison   => 8,
+            PokemonType.Ground   => 9,
+            _                    => -1
         };
 
         if (index >= 0 && index < typeSprites.Count)

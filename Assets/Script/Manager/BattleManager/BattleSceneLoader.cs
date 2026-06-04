@@ -52,16 +52,18 @@ public class BattleSceneLoader : MonoBehaviour
         foreach (var pokemonData in deck)
             await LoadMonChainAsync(pokemonData, manager);
 
-        // ── Bước 3: Load Enemy prefabs theo map ──
-        if (map.enemyDatas != null)
-        {
-            foreach (var enemyData in map.enemyDatas)
-            {
-                var (enemyPrefab, enemyHandle) = await AddressableLoader.LoadAsync<GameObject>(enemyData.enemyPrefabRef);
-                if (enemyPrefab != null)
-                    manager.StoreEnemyPrefab(enemyData.id, enemyPrefab, enemyHandle);
-            }
-        }
+        // ── Bước 3: Load Enemy prefabs từ spawnSequence (unique enemies) ──
+        var loadedEnemyIds = new System.Collections.Generic.HashSet<string>();
+        if (map.waves != null)
+            foreach (var wave in map.waves)
+                if (wave.spawnSequence != null)
+                    foreach (var entry in wave.spawnSequence)
+                    {
+                        if (entry.enemyData == null || !loadedEnemyIds.Add(entry.enemyData.id)) continue;
+                        var (enemyPrefab, enemyHandle) = await AddressableLoader.LoadAsync<GameObject>(entry.enemyData.enemyPrefabRef);
+                        if (enemyPrefab != null)
+                            manager.StoreEnemyPrefab(entry.enemyData.id, enemyPrefab, enemyHandle);
+                    }
 
         // ── Bước 4: Load Map prefab ──
         var (mapPrefab, mapHandle) = await AddressableLoader.LoadAsync<GameObject>(map.mapPrefabRef);

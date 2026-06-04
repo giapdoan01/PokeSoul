@@ -162,13 +162,6 @@ public class PlayerDataManager : MonoBehaviour
             RefreshMyPokemonDatas();
             OnGemChanged?.Invoke(CurrentData.gem);
 
-            ShopManager shopManager = FindObjectOfType<ShopManager>();
-            if (shopManager != null)
-            {
-                shopManager.SetupMyPokemonData(myPokemonDatas);
-                shopManager.SetUpAllPokemonData(allPokemonData);
-            }
-
             Debug.Log("[PlayerDataManager] OnPlayerDataLoaded event firing!");
             OnPlayerDataLoaded?.Invoke();
             Debug.Log("[PlayerDataManager] OnPlayerDataLoaded event fired!");
