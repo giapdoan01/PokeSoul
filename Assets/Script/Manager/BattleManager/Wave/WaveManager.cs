@@ -10,6 +10,8 @@ public class WaveManager : MonoBehaviour
     public PlayerStatsInBattleManager playerStatsInBattleManager;
     public int timeToStartFirstWave = 10;
 
+    private MapInfoDisplay _mapInfoDisplay;
+
     private int currentWaveNumber;
     private WayPointForEnemy wayPointSystem;
     private CancellationTokenSource cts;
@@ -66,11 +68,24 @@ public void StartBattle()
         cts?.Dispose();
     }
 
+    public void SetMapInfoDisplay(MapInfoDisplay display)
+    {
+        _mapInfoDisplay = display;
+        RefreshWaveDisplay();
+    }
+
     public void StartNextWave()
     {
         Debug.Log($"[WaveManager] Bắt đầu wave {currentWaveNumber}");
         SpawnEnemiesForCurrentWave(currentWaveNumber, cts.Token).Forget();
         currentWaveNumber++;
+        RefreshWaveDisplay();
+    }
+
+    private void RefreshWaveDisplay()
+    {
+        int total = mapData?.waves?.Length ?? 0;
+        _mapInfoDisplay?.UpdateWave(currentWaveNumber, total);
     }
 
     private async UniTaskVoid SpawnEnemiesForCurrentWave(int waveNumber, CancellationToken ct)

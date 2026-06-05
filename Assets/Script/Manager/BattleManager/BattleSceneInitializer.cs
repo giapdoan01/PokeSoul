@@ -42,6 +42,11 @@ public class BattleSceneInitializer : MonoBehaviour
         if (wayPoint == null)
             Debug.LogError($"[BattleSceneInitializer] mapPrefab '{map.mapName}' không có WayPointForEnemy!");
 
+        // Inject MapInfoDisplay
+        var mapInfoDisplay = mapInstance.GetComponentInChildren<MapInfoDisplay>();
+        MatchTracker.Instance?.SetMapInfoDisplay(mapInfoDisplay);
+        waveManager?.SetMapInfoDisplay(mapInfoDisplay);
+
         // Inject dependencies vào tất cả PlacementSlot trong map
         foreach (var slot in mapInstance.GetComponentsInChildren<PlacementSlot>())
             slot.SetDependencies(playerStatsInBattleManager, monUpgradePanel);

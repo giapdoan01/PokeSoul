@@ -15,4 +15,5 @@ MonoBehaviour:
   landName: Crystalized Chasm
   backgroundSprite: {fileID: 1575492454, guid: e6ee207b510766b4aa4cadca0e301530, type: 3}
   gemPerGacha: 500
-  pokemons: []
+  pokemons:
+  - {fileID: 11400000, guid: 66d2f130e9ca1f54e8e2a9f463998a6f, type: 2}

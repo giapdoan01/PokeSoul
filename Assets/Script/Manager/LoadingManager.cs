@@ -24,7 +24,7 @@ public class LoadingManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
+        if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
 
         if (loadingOverlay != null)
@@ -32,6 +32,11 @@ public class LoadingManager : MonoBehaviour
             _overlayRect = loadingOverlay.GetComponent<RectTransform>();
             loadingOverlay.SetActive(false);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
     }
 
     /// <summary>

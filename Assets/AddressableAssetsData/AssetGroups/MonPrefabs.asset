@@ -25,6 +25,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 164365844fdc4b64184e0276f343faf4
+    m_Address: prefab_clodoo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20251fbff765d5d41938372398789f31
+    m_Address: prefab_dunolith
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 43e9d61bac78bfc47b47a1c186679821
     m_Address: prefab_nibi
     m_ReadOnly: 0

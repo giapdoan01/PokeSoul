@@ -45,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66d2f130e9ca1f54e8e2a9f463998a6f
+    m_Address: data_clodoo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ae981eb408892e449eebe13155a416d
     m_Address: enemy_data_goblinmini_map1
     m_ReadOnly: 0
@@ -62,6 +67,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a3b880b6c513c6f498456acb6012eb23
     m_Address: data_spriggle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6ebb21abd256b34b9747dd9b21098a2
+    m_Address: data_dunolith
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5524bbd42acc9f47851272b881ec3c3
+    m_Address: land_crystalizedchasm
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

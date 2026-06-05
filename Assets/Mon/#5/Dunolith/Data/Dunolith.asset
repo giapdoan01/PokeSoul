@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9642cde8dc07a184c80518e3427bb310, type: 3}
+  m_Name: Dunolith
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonData
+  id: _dunolith
+  PokemonName: Dunolith
+  type: 9
+  spritePokemonCard: {fileID: -574821390, guid: dac4cf74eb1fb3246ab43b485bed04c4, type: 3}
+  priceToBuyCard: 0
+  pokemonPrefabRef:
+    m_AssetGUID: 20251fbff765d5d41938372398789f31
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  skillPrefabRef:
+    m_AssetGUID: 5219ae7c1f8e07141b24fc3d727af74a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  EvolutionPokemonData: {fileID: 0}
+  levelUpData:
+  - level: 1
+    statEntries:
+    - statName: price
+      value: 230
+    - statName: sell
+      value: 458
+    - statName: cd
+      value: 2.4
+    - statName: damage
+      value: 32
+    - statName: stundamage
+      value: 20
+  - level: 2
+    statEntries:
+    - statName: price
+      value: 95
+    - statName: sell
+      value: 525
+    - statName: cd
+      value: 2.3
+    - statName: damage
+      value: 40
+    - statName: stundamage
+      value: 26
+  - level: 3
+    statEntries:
+    - statName: price
+      value: 135
+    - statName: sell
+      value: 619
+    - statName: cd
+      value: 2.2
+    - statName: damage
+      value: 48
+    - statName: stundamage
+      value: 30
+  - level: 4
+    statEntries:
+    - statName: price
+      value: 185
+    - statName: sell
+      value: 749
+    - statName: cd
+      value: 2.1
+    - statName: damage
+      value: 56
+    - statName: stundamage
+      value: 34
+  - level: 5
+    statEntries:
+    - statName: price
+      value: 260
+    - statName: sell
+      value: 931
+    - statName: cd
+      value: 2
+    - statName: damage
+      value: 65
+    - statName: stundamage
+      value: 35

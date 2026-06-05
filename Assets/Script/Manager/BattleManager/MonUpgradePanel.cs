@@ -57,9 +57,11 @@ public class MonUpgradePanel : MonoBehaviour
 
     public void Show(MonOnSlot mon, System.Action onClosed = null)
     {
-        _onClosedCallback = onClosed;
         if (_current != mon)
         {
+            // Fire callback cũ để tắt VFX của Mon trước
+            _onClosedCallback?.Invoke();
+            _onClosedCallback = onClosed;
             UnsubscribeCoinEvent();
             _current = mon;
             var stats = _current?.GetPlayerStats();

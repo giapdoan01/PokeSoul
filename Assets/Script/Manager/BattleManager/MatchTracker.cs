@@ -22,6 +22,7 @@ public class MatchTracker : MonoBehaviour
     private bool _allWavesComplete;
     private bool _wasOnline = true;
     private Map _currentMap;
+    private MapInfoDisplay _mapInfoDisplay;
 
     public struct WinData
     {
@@ -47,6 +48,11 @@ public class MatchTracker : MonoBehaviour
         Instance = null;
     }
 
+    public void SetMapInfoDisplay(MapInfoDisplay display)
+    {
+        _mapInfoDisplay = display;
+    }
+
     public void StartMatch(Map map)
     {
         _currentMap = map;
@@ -54,6 +60,7 @@ public class MatchTracker : MonoBehaviour
         _totalAliveEnemies = 0;
         _matchEnded = false;
         _allWavesComplete = false;
+        _mapInfoDisplay?.UpdateEnemyEndpoint(0, maxEnemiesReachEnd);
     }
 
     public void NotifyAllWavesComplete()
@@ -98,6 +105,7 @@ public class MatchTracker : MonoBehaviour
         if (_matchEnded) return;
         _enemiesReachedEnd++;
         _totalAliveEnemies--;
+        _mapInfoDisplay?.UpdateEnemyEndpoint(_enemiesReachedEnd, maxEnemiesReachEnd);
 
         // Trả enemy về pool
         // (EnemyMoveController gọi hàm này rồi tự Return)
