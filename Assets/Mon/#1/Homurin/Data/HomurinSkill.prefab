@@ -5119,7 +5119,7 @@ MonoBehaviour:
   projectileSpread: 0.35
   homurinImpact: {fileID: 8975849560652886346, guid: 4b3df167d1b84e34f961542b5aa4b400, type: 3}
   impactLifeTime: 1.5
-  impactHeightOffset: 1
+  impactHeightOffset: 0.5
   impactPreloadAmount: 5
   skillSFX: {fileID: 8300000, guid: 16253fe049714bf42a93793acff286af, type: 3}
   impactSFX: {fileID: 8300000, guid: 4823e47e5ad54f3418bf3cc3cdf8cc15, type: 3}

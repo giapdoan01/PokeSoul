@@ -9,10 +9,10 @@ public class BattleAssetManager : MonoBehaviour
 {
     public static BattleAssetManager Instance { get; private set; }
 
-    private readonly Dictionary<string, GameObject> _monPrefabs    = new();
-    private readonly Dictionary<string, GameObject> _skillPrefabs  = new();
-    private readonly Dictionary<string, GameObject> _enemyPrefabs  = new();
-    private readonly List<AsyncOperationHandle>     _handles        = new();
+    private readonly Dictionary<string, GameObject> _monPrefabs   = new();
+    private readonly Dictionary<string, GameObject> _skillPrefabs = new();
+    private readonly Dictionary<string, GameObject> _enemyPrefabs = new();
+    private readonly List<AsyncOperationHandle>     _handles       = new();
     private GameObject _mapPrefab;
 
     private void Awake()
@@ -32,25 +32,25 @@ public class BattleAssetManager : MonoBehaviour
     public void StoreMonPrefab(string pokemonId, GameObject prefab, AsyncOperationHandle handle)
     {
         _monPrefabs[pokemonId] = prefab;
-        _handles.Add(handle);
+        if (handle.IsValid()) _handles.Add(handle);
     }
 
     public void StoreSkillPrefab(string pokemonId, GameObject prefab, AsyncOperationHandle handle)
     {
         _skillPrefabs[pokemonId] = prefab;
-        _handles.Add(handle);
+        if (handle.IsValid()) _handles.Add(handle);
     }
 
     public void StoreEnemyPrefab(string enemyId, GameObject prefab, AsyncOperationHandle handle)
     {
         _enemyPrefabs[enemyId] = prefab;
-        _handles.Add(handle);
+        if (handle.IsValid()) _handles.Add(handle);
     }
 
     public void StoreMapPrefab(GameObject prefab, AsyncOperationHandle handle)
     {
         _mapPrefab = prefab;
-        _handles.Add(handle);
+        if (handle.IsValid()) _handles.Add(handle);
     }
 
     // ── Getter (sync — dùng trong BattleScene) ──

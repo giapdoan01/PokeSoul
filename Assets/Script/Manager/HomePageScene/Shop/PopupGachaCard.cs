@@ -1,9 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class PopupGachaCard : MonoBehaviour
 {
@@ -13,6 +13,9 @@ public class PopupGachaCard : MonoBehaviour
     public Button closeButton;
     public TMP_Text costText;
     public PopupNotificationShop notification;
+
+    [Header("Overlay")]
+    public GameObject panelBackPanelPopupOverlay;
 
     [Header("Prefab")]
     public GameObject cardItemPrefab;
@@ -35,6 +38,7 @@ public class PopupGachaCard : MonoBehaviour
     {
         _anim = GetComponent<PopupScaleAnim>();
         gameObject.SetActive(false);
+        panelBackPanelPopupOverlay?.SetActive(false);
         closeButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
         closeButton.onClick.AddListener(Close);
         gachaButton.onClick.AddListener(() => SoundUIManager.Instance?.PlayUISound(buttonClickSFX));
@@ -52,14 +56,18 @@ public class PopupGachaCard : MonoBehaviour
         costText.text = $"{land.gemPerGacha}";
         SpawnCards();
         _anim ??= GetComponent<PopupScaleAnim>();
+        ShowOverlay();
         _anim.Open();
     }
 
     private void Close()
     {
         if (_isGaching) return;
-        _anim.Close();
+        _anim.Close(HideOverlay);
     }
+
+    private void ShowOverlay() => panelBackPanelPopupOverlay?.SetActive(true);
+    private void HideOverlay() => panelBackPanelPopupOverlay?.SetActive(false);
 
     private void SpawnCards()
     {
@@ -156,7 +164,7 @@ public class PopupGachaCard : MonoBehaviour
         while (elapsed < blinkDuration)
         {
             current?.SetHighlight(false);
-            current = cards[Random.Range(0, cards.Count)];
+            current = cards[UnityEngine.Random.Range(0, cards.Count)];
             current.SetHighlight(true);
 
             await UniTask.Delay((int)(blinkInterval * 1000));

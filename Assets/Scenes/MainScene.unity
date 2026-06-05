@@ -11692,8 +11692,10 @@ GameObject:
   - component: {fileID: 320923624}
   - component: {fileID: 320923626}
   - component: {fileID: 320923625}
+  - component: {fileID: 320923627}
+  - component: {fileID: 320923628}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: PanelPopupGacha
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11706,12 +11708,15 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320923623}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 899820962}
+  m_Children:
+  - {fileID: 1932283113}
+  - {fileID: 934157992}
+  - {fileID: 1736522179}
+  m_Father: {fileID: 1901806888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11756,6 +11761,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320923623}
   m_CullTransparentMesh: 1
+--- !u!114 &320923627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320923623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bf7335357a8d444a98311339ebadfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopupGachaCard
+  cardContainer: {fileID: 168362925}
+  gachaButton: {fileID: 934157993}
+  closeButton: {fileID: 1736522180}
+  costText: {fileID: 800586359}
+  notification: {fileID: 1966947770}
+  panelBackPanelPopupOverlay: {fileID: 899820961}
+  cardItemPrefab: {fileID: 3854278502390132901, guid: a4ed03a7d67580c46a41b9fdebe462d7, type: 3}
+  blinkDuration: 5
+  blinkInterval: 0.12
+  buttonClickSFX: {fileID: 8300000, guid: bfd8033a7198c3d419ed0a35c7a7caa0, type: 3}
+  gachaSFX: {fileID: 8300000, guid: 822a4cc906459fc4ea73ef6fb19611e0, type: 3}
+--- !u!114 &320923628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320923623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7afaa998139625f4abde5da39fb68566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopupScaleAnim
+  duration: 0.3
 --- !u!1 &323351895
 GameObject:
   m_ObjectHideFlags: 0
@@ -22406,7 +22447,7 @@ MonoBehaviour:
   shopData: {fileID: 11400000, guid: c40ba20f2c23d9f48a883b34c03bedd9, type: 2}
   cardContainer: {fileID: 1429119300}
   landItemPrefab: {fileID: 5027197674408737919, guid: 6eefaa5c0830ad14c9da7035d834fcc9, type: 3}
-  popupGachaCard: {fileID: 899820965}
+  popupGachaCard: {fileID: 320923627}
   shopManager: {fileID: 505207296}
 --- !u!114 &505207296
 MonoBehaviour:
@@ -29141,9 +29182,8 @@ GameObject:
   - component: {fileID: 899820964}
   - component: {fileID: 899820963}
   - component: {fileID: 899820965}
-  - component: {fileID: 899820966}
   m_Layer: 5
-  m_Name: PopupGacha
+  m_Name: PopupGachaOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29160,11 +29200,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 320923624}
-  - {fileID: 1932283113}
-  - {fileID: 934157992}
-  - {fileID: 1736522179}
+  m_Children: []
   m_Father: {fileID: 1901806888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -29210,41 +29246,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899820961}
   m_CullTransparentMesh: 1
---- !u!114 &899820965
-MonoBehaviour:
+--- !u!225 &899820965
+CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899820961}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3bf7335357a8d444a98311339ebadfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PopupGachaCard
-  cardContainer: {fileID: 168362925}
-  gachaButton: {fileID: 934157993}
-  closeButton: {fileID: 1736522180}
-  costText: {fileID: 800586359}
-  notification: {fileID: 1966947770}
-  cardItemPrefab: {fileID: 3854278502390132901, guid: a4ed03a7d67580c46a41b9fdebe462d7, type: 3}
-  blinkDuration: 5
-  blinkInterval: 0.12
-  buttonClickSFX: {fileID: 8300000, guid: bfd8033a7198c3d419ed0a35c7a7caa0, type: 3}
-  gachaSFX: {fileID: 8300000, guid: 822a4cc906459fc4ea73ef6fb19611e0, type: 3}
---- !u!114 &899820966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899820961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7afaa998139625f4abde5da39fb68566, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PopupScaleAnim
-  duration: 0.3
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &902640199
 GameObject:
   m_ObjectHideFlags: 0
@@ -29405,7 +29418,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934157991}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -29413,11 +29426,11 @@ RectTransform:
   - {fileID: 279603755}
   - {fileID: 800586358}
   - {fileID: 977404600}
-  m_Father: {fileID: 899820962}
+  m_Father: {fileID: 320923624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.0000000019791, y: 779}
+  m_AnchoredPosition: {x: 0, y: 85.04065}
   m_SizeDelta: {x: 203.8924, y: 66.5772}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &934157993
@@ -38354,17 +38367,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1736522178}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1825606382}
-  m_Father: {fileID: 899820962}
+  m_Father: {fileID: 320923624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 437.58, y: 437}
+  m_AnchoredPosition: {x: 437.58, y: 403.26254}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1736522180
@@ -49251,6 +49264,7 @@ RectTransform:
   - {fileID: 1235613843}
   - {fileID: 1942339261}
   - {fileID: 899820962}
+  - {fileID: 320923624}
   - {fileID: 1966947769}
   m_Father: {fileID: 779907299}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49517,18 +49531,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1932283112}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 168362925}
-  m_Father: {fileID: 899820962}
+  m_Father: {fileID: 320923624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10.752563}
-  m_SizeDelta: {x: -169.2065, y: -1582.4558}
+  m_AnchoredPosition: {x: 0, y: -44.489895}
+  m_SizeDelta: {x: -66.5854, y: -262.01172}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1932283114
 MonoBehaviour:
@@ -70200,7 +70214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5076118205327880437
 RectTransform:
   m_ObjectHideFlags: 0
