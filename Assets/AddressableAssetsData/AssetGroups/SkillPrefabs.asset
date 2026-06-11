@@ -40,6 +40,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a86017ab45e301040bc03265015ce264
+    m_Address: Assets/Mon/#6/Velune/Data/VeluneSkill.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b336043367135b341a84d807847a381d
+    m_Address: skill_velu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b8e512bfe0f582243818aa5e24e5d2ba
     m_Address: skill_clodoo
     m_ReadOnly: 0

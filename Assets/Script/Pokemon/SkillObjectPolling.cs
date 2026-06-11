@@ -186,6 +186,11 @@ public class SkillPoolToken : MonoBehaviour
         StartCoroutine(ReturnAfterDelay(delay));
     }
 
+    public void CancelAutoReturn()
+    {
+        StopAllCoroutines();
+    }
+
     private void OnDisable()
     {
         StopAllCoroutines();
