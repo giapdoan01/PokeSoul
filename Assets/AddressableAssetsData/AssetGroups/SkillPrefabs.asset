@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a197db93b8490d429d1bcdc08b6d62d
+    m_Address: skill_ovri
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5219ae7c1f8e07141b24fc3d727af74a
     m_Address: skill_dunolith
     m_ReadOnly: 0

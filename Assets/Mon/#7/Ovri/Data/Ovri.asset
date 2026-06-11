@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9642cde8dc07a184c80518e3427bb310, type: 3}
-  m_Name: Velune
+  m_Name: Ovri
   m_EditorClassIdentifier: Assembly-CSharp::PokemonData
-  id: _velune
-  PokemonName: velune
-  type: 8
-  spritePokemonCard: {fileID: 1446580741, guid: a2a296a0421151f4abd211dc9e8f95a4, type: 3}
+  id: _ovri
+  PokemonName: Ovri
+  type: 4
+  spritePokemonCard: {fileID: -1248166739, guid: 167a1758e4383714d90ed5527b7b8b78, type: 3}
   priceToBuyCard: 0
   pokemonPrefabRef:
-    m_AssetGUID: 71cb8eaf27f920a4a8632c80295a49c3
+    m_AssetGUID: ca489a1e4717f074484f6f6cc23798c5
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   skillPrefabRef:
-    m_AssetGUID: a86017ab45e301040bc03265015ce264
+    m_AssetGUID: 3a197db93b8490d429d1bcdc08b6d62d
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 
@@ -34,50 +34,60 @@ MonoBehaviour:
   - level: 1
     statEntries:
     - statName: price
-      value: 230
+      value: 70
     - statName: sell
-      value: 458
+      value: 49
     - statName: damage
-      value: 1
+      value: 5
     - statName: cd
-      value: 1.5
+      value: 0.800000011920929
+    - statName: pc
+      value: 1
   - level: 2
     statEntries:
     - statName: price
-      value: 95
+      value: 40
     - statName: sell
-      value: 525
+      value: 77
     - statName: damage
-      value: 1
+      value: 7
     - statName: cd
+      value: 0.800000011920929
+    - statName: pc
       value: 1
   - level: 3
     statEntries:
     - statName: price
-      value: 135
+      value: 60
     - statName: sell
-      value: 619
+      value: 119
     - statName: damage
-      value: 2
+      value: 9
     - statName: cd
-      value: 1.4
+      value: 0.7799999713897705
+    - statName: pc
+      value: 1
   - level: 4
     statEntries:
     - statName: price
-      value: 185
+      value: 85
     - statName: sell
-      value: 749
+      value: 178
     - statName: damage
-      value: 2
+      value: 10
     - statName: cd
+      value: 0.75
+    - statName: pc
       value: 1
   - level: 5
     statEntries:
     - statName: price
-      value: 260
+      value: 115
     - statName: sell
-      value: 931
+      value: 259
     - statName: damage
-      value: 2
+      value: 12
     - statName: cd
-      value: 0.5
+      value: 0.7200000286102295
+    - statName: pc
+      value: 1
