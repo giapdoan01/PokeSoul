@@ -1,7 +1,14 @@
 fileFormatVersion: 2
 guid: fb52193b640c1224b880efbfb3cdb0e0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 325300
+  packageName: Low Poly Trees & Nature Pack (70 Props)
+  packageVersion: 1.0
+  assetPath: Assets/Low Poly Trees & Nature Pack (70 Props)/Models/Models/New Folder/Tree_01_snow.fbx
+  uploadId: 855888
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -36,7 +41,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 3
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -58,6 +63,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -107,10 +115,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 325300
-  packageName: Low Poly Trees & Nature Pack (70 Props)
-  packageVersion: 1.0
-  assetPath: Assets/Low Poly Trees & Nature Pack (70 Props)/Models/Models/New Folder/Tree_01_snow.fbx
-  uploadId: 855888

@@ -12,7 +12,7 @@ public class BattleSceneInitializer : MonoBehaviour
     public PlayerStatsInBattleManager playerStatsInBattleManager;
     public MonUpgradePanel monUpgradePanel;
 
-    private static readonly Vector3 MapSpawnPosition = new Vector3(-5f, 0f, -5f);
+    private static readonly Vector3 MapSpawnPosition = new Vector3(-10f, 0f, -5f);
 
     private void Start()
     {
