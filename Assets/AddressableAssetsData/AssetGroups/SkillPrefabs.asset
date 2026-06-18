@@ -40,13 +40,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6dbd08449ac85624a81f51aaba2343f1
+    m_Address: skill_gekiguma
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8633e931623c23b4e9d9a4d32b185abd
     m_Address: skill_homurin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a912ba0ab997cd41b5f818c47791be9
+    m_Address: skill_lunelle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a86017ab45e301040bc03265015ce264
     m_Address: Assets/Mon/#6/Velune/Data/VeluneSkill.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa975db173347384eb45468a1eec54d3
+    m_Address: skill_kiakuma
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

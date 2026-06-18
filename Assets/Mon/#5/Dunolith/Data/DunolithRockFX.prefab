@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 120056878253969887}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.62, y: 0.101, z: 10.54903}
+  m_LocalPosition: {x: -0.62, y: -0.154, z: 10.54903}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 200077644778969269}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.306, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4975,7 +4975,7 @@ Transform:
   m_GameObject: {fileID: 2772343603894846972}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.461, z: 0}
+  m_LocalPosition: {x: 0, y: 0.155, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9869,7 +9869,7 @@ Transform:
   m_GameObject: {fileID: 4139557028323812023}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.455, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10129,7 +10129,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6
+      scalar: 200
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -10182,7 +10182,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6
+      scalar: 100
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -10235,7 +10235,7 @@ ParticleSystem:
     startSizeZ:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 80
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -10448,7 +10448,7 @@ ParticleSystem:
     gravitySource: 0
     maxNumParticles: 1000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 1
+    size3D: 0
     rotation3D: 1
     gravityModifier:
       serializedVersion: 2
@@ -14728,7 +14728,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 5191042488378561030, guid: 670f5c74b80cc38408c753e19d760fc8, type: 3}
+  m_Mesh: {fileID: -6905336887599701908, guid: 670f5c74b80cc38408c753e19d760fc8, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -14763,7 +14763,7 @@ Transform:
   m_GameObject: {fileID: 6090217054940881768}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.443, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15025,7 +15025,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6
+      scalar: 200
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -15078,7 +15078,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.6
+      scalar: 100
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -15131,7 +15131,7 @@ ParticleSystem:
     startSizeZ:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 80
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -15344,7 +15344,7 @@ ParticleSystem:
     gravitySource: 0
     maxNumParticles: 1000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 1
+    size3D: 0
     rotation3D: 1
     gravityModifier:
       serializedVersion: 2
@@ -15784,20 +15784,20 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 1
-          outSlope: 1
-          tangentMode: 34
+          inSlope: 2.1869924
+          outSlope: 2.1869924
+          tangentMode: 0
           weightedMode: 0
           inWeight: 0
-          outWeight: 0
+          outWeight: 0.10093232
         - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 1
-          outSlope: 1
+          time: 0.9944458
+          value: 0.7682934
+          inSlope: 0.7725845
+          outSlope: 0.7725845
           tangentMode: 34
           weightedMode: 0
-          inWeight: 0
+          inWeight: 0.33333334
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -19624,7 +19624,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 5191042488378561030, guid: 670f5c74b80cc38408c753e19d760fc8, type: 3}
+  m_Mesh: {fileID: -6905336887599701908, guid: 670f5c74b80cc38408c753e19d760fc8, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}

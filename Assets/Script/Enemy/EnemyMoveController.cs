@@ -66,8 +66,12 @@ public class EnemyMoveController : MonoBehaviour
         if (_reachedEnd || _currentWaypoint == null) return;
         if (_status != null && _status.IsImmobilized) return;
 
+        bool enchanted = _status != null && _status.IsEnchanted;
         float speed = (float)_moveSpeed * (_status != null ? _status.SpeedMultiplier : 1f);
         Vector3 direction = _currentWaypoint.position - transform.position;
+
+        if (enchanted)
+            direction = -direction; // Đi ngược về waypoint trước đó
 
         // Quay mặt theo hướng di chuyển
         if (direction != Vector3.zero)
@@ -75,8 +79,9 @@ public class EnemyMoveController : MonoBehaviour
 
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
-        // Dùng sqrMagnitude thay Vector3.Distance — tránh sqrt mỗi frame
-        if (direction.sqrMagnitude < 0.04f) // 0.04 = 0.2 * 0.2
+        if (enchanted) return; // Không advance waypoint khi đang mê hoặc
+
+        if (direction.sqrMagnitude < 0.04f)
             AdvanceWaypoint();
     }
 

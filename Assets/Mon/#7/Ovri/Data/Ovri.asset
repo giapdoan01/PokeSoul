@@ -29,7 +29,7 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
-  EvolutionPokemonData: {fileID: 0}
+  EvolutionPokemonData: {fileID: 11400000, guid: 8f38d10db6647e4448a8d578bd971d1f, type: 2}
   levelUpData:
   - level: 1
     statEntries:

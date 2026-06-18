@@ -15,7 +15,7 @@ MonoBehaviour:
   id: _homaryu
   PokemonName: Homaryu
   type: 0
-  spritePokemonCard: {fileID: 964515800, guid: 3077cdbd9ed0e8b43869f1d5cf7f4d43, type: 3}
+  spritePokemonCard: {fileID: -106225397, guid: d729fd94f756fbe4cb78b4c64460ee26, type: 3}
   priceToBuyCard: 0
   pokemonPrefabRef:
     m_AssetGUID: d7c3c0be080d4e84dbcea425d7758255

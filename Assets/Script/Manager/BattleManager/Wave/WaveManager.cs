@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
     public Action OnWaveCleared;         // toàn bộ enemy đã chết
 
     private int _aliveEnemyCount;
+    private bool _isSpawning;
 
     private void Awake()
     {
@@ -76,6 +77,7 @@ public void StartBattle()
 
     public void StartNextWave()
     {
+        if (_isSpawning) return;
         Debug.Log($"[WaveManager] Bắt đầu wave {currentWaveNumber}");
         SpawnEnemiesForCurrentWave(currentWaveNumber, cts.Token).Forget();
         currentWaveNumber++;
@@ -128,16 +130,18 @@ public void StartBattle()
     // Spawn theo spawnSequence mới — hỗ trợ thứ tự mixed enemy
     private async UniTask SpawnBySequence(List<WaveSpawnEntry> sequence, CancellationToken ct)
     {
+        _isSpawning = true;
         Transform spawnPoint = wayPointSystem.wayPoints[0];
 
         int totalCount = 0;
         foreach (var entry in sequence)
             if (entry.enemyData != null) totalCount += entry.count;
-        _aliveEnemyCount = totalCount;
+        _aliveEnemyCount += totalCount; // Tích lũy, không ghi đè
 
         if (totalCount == 0)
         {
             MatchTracker.Instance?.NotifyAllWavesComplete();
+            _isSpawning = false;
             return;
         }
 
@@ -154,6 +158,8 @@ public void StartBattle()
                 await UniTask.Delay((int)(delay * 1000), cancellationToken: ct);
             }
         }
+
+        _isSpawning = false;
     }
 
     private async UniTask<bool> SpawnSingleEnemy(WaveSpawnEntry entry, Vector3 spawnPos, CancellationToken ct)
