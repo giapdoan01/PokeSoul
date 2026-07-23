@@ -15,7 +15,6 @@ public class EnemyMoveController : MonoBehaviour
     private double _moveSpeed;
     private int _waypointIndex;
     private bool _reachedEnd;
-
     // ── Setup ──
 
     public void SetEnemyData(EnemyData data) => _enemyData = data;

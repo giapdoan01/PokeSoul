@@ -11,6 +11,7 @@ public class PokemonData : ScriptableObject
     public PokemonType type;
     public Sprite spritePokemonCard;
     public int priceToBuyCard;
+    public string Rarity;
 
     [Header("Info In battle")]
     public AssetReference pokemonPrefabRef;

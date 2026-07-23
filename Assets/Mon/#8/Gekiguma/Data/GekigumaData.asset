@@ -17,6 +17,7 @@ MonoBehaviour:
   type: 7
   spritePokemonCard: {fileID: 864352113, guid: db7bc715bfebb1b4791b3904dc443ecc, type: 3}
   priceToBuyCard: 0
+  Rarity: R
   pokemonPrefabRef:
     m_AssetGUID: de45056f82187f94cb40abd90fb98ed1
     m_SubObjectName: 

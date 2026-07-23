@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: MonPrefabs
   m_GUID: c3a00546416d2f24da70c72f7ee62fc6
   m_SerializeEntries:
+  - m_GUID: 09f274655339ced4c942bc829bc8805f
+    m_Address: prefab_homurin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 142f9beef4a05e24082803d4d5aea2ab
     m_Address: prefab_kibalt
     m_ReadOnly: 0

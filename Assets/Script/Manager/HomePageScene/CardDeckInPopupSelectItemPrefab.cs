@@ -9,11 +9,12 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
     public Image backgroundCard;
     public Image monImage;
     public Image typeImage;
+    public Image RarityImage;
     public TMP_Text monName;
-    public TMP_Text typeText;
     public Button selectCardButton;
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
+    public List<Sprite> RaritySprites;
     
     [Header("Color Text By Type")]
     public Color fireColor;
@@ -54,10 +55,10 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
             backgroundCard.enabled = true;
             monImage.sprite = pokemonData.spritePokemonCard;
             monName.text = pokemonData.PokemonName;
-            typeText.text = pokemonData.type.ToString();
             selectCardButton.interactable = true;
             SetupType(pokemonData);
             SetupTextColor(pokemonData.type);
+            SetupRarity(pokemonData);
         }
     }
 
@@ -67,10 +68,10 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
         backgroundCard.enabled = true;
         monImage.sprite = pokemonData.spritePokemonCard;
         monName.text = pokemonData.PokemonName;
-        typeText.text = pokemonData.type.ToString();
         selectCardButton.interactable = false;
         SetupType(pokemonData);
         SetupTextColor(pokemonData.type);
+        SetupRarity(pokemonData);
     }
     
     private void OnSelectCardButtonClicked()
@@ -99,7 +100,6 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
         };
 
         monName.color = color;
-        typeText.color = color;
     }
 
     private void SetupType(PokemonData cardPokemon)
@@ -145,6 +145,31 @@ public class CardDeckInPopupSelectItemPrefab : MonoBehaviour
             case PokemonType.Ground:
                 typeImage.sprite = TypeSprites[9];
                 backgroundCard.sprite = typeCardBackgroundImageList[9];
+                break;
+        }
+    }
+
+    private void SetupRarity(PokemonData pokemonData)
+    {
+        switch (pokemonData.Rarity)
+        {
+            case "C":
+                RarityImage.sprite = RaritySprites[0];
+                break;
+            case "R":
+                RarityImage.sprite = RaritySprites[1];
+                break;
+            case "S":
+                RarityImage.sprite = RaritySprites[2];
+                break;
+            case "SSR":
+                RarityImage.sprite = RaritySprites[3];
+                break;
+            case "SSS":
+                RarityImage.sprite = RaritySprites[4];
+                break;
+            default:
+                Debug.LogWarning($"Unknown rarity: {pokemonData.Rarity}");
                 break;
         }
     }

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System.Collections.Generic;
 
 public class CardInBattleItemPrefab : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -11,11 +12,12 @@ public class CardInBattleItemPrefab : MonoBehaviour,
     public Image cardImage;
     public Image monImage;
     public TMP_Text cardNameText;
-    public TMP_Text typeText;
     public TMP_Text cardCostText;
     public Image TypeImage;
+    public Image RarityImage;
     public Sprite[] TypeSprites;
     public Sprite[] TypeBackgroundSprites;
+    public List<Sprite> RaritySprites;
 
     [Header("Coin SFX")]
     public AudioClip coinSFX;
@@ -53,7 +55,6 @@ public class CardInBattleItemPrefab : MonoBehaviour,
         cardData = data;
         monImage.sprite = cardData.spritePokemonCard;
         cardNameText.text = cardData.PokemonName;
-        typeText.text = cardData.type.ToString();
         var levelData = cardData.getPokemonLevelDataByLevel(1);
         var costEntry = levelData?.GetStatEntryByName("Price");
         _cost = costEntry != null ? (int)costEntry.value : 0;
@@ -62,6 +63,7 @@ public class CardInBattleItemPrefab : MonoBehaviour,
             Debug.LogWarning($"[CardInBattleItemPrefab] '{cardData.PokemonName}' thiếu stat 'Price' ở level 1");
         SetUpTypeSprite(cardData);
         SetupTextColor(cardData.type);
+        SetupRarity(cardData);
     }
 
     public void SetPlayerStats(PlayerStatsInBattleManager stats) => _playerStats = stats;
@@ -169,7 +171,30 @@ public class CardInBattleItemPrefab : MonoBehaviour,
             _                    => Color.white
         };
         cardNameText.color = color;
-        typeText.color = color;
+    }
+    public void SetupRarity(PokemonData data)
+    {
+        switch (data.Rarity)
+        {
+            case "C":
+                RarityImage.sprite = RaritySprites[0];
+                break;
+            case "R":
+                RarityImage.sprite = RaritySprites[1];
+                break;
+            case "S":
+                RarityImage.sprite = RaritySprites[2];
+                break;
+            case "SSR":
+                RarityImage.sprite = RaritySprites[3];
+                break;
+            case "SSS":
+                RarityImage.sprite = RaritySprites[4];
+                break;
+            default:
+                Debug.LogWarning($"[CardInBattleItemPrefab] Unknown rarity: {data.Rarity}");
+                break;
+        }
     }
 
     public void SetUpTypeSprite(PokemonData data)

@@ -9,11 +9,12 @@ public class CardShopItemPrefab : MonoBehaviour
     public Image pokemonImage;
     public TMP_Text pokemonNameText;
     public Image typeImage;
-    public TMP_Text typeNameText;
+    public Image RarityImage;
     public GameObject ownedOverlay;
     public GameObject frameOn;
     public List<Sprite> typeSprites;
     public List<Sprite> typeCardBackgroundSprites;
+    public List<Sprite> RaritySprites;
 
     [Header("Color Text By Type")]
     public Color fireColor;
@@ -36,10 +37,10 @@ public class CardShopItemPrefab : MonoBehaviour
 
         pokemonImage.sprite = data.spritePokemonCard;
         pokemonNameText.text = data.PokemonName;
-        typeNameText.text = data.type.ToString();
 
         SetupType(data);
         SetupTextColor(data.type);
+        SetupRarity(data);
         RefreshOwnedState(isOwned);
 
         frameOn?.SetActive(false);
@@ -74,7 +75,6 @@ public class CardShopItemPrefab : MonoBehaviour
             _                    => Color.white
         };
         pokemonNameText.color = color;
-        typeNameText.color = color;
     }
 
     private void SetupType(PokemonData data)
@@ -99,5 +99,20 @@ public class CardShopItemPrefab : MonoBehaviour
 
         if (index >= 0 && index < typeCardBackgroundSprites.Count)
             typeCardBackground.sprite = typeCardBackgroundSprites[index];
+    }
+    public void SetupRarity(PokemonData data)
+    {
+        int index = data.Rarity switch
+        {
+            "C"    => 0,
+            "R"  => 1,
+            "S"      => 2,
+            "SSR"      => 3,
+            "SSS" => 4,
+            _           => -1
+        };
+
+        if (index >= 0 && index < RaritySprites.Count)
+            RarityImage.sprite = RaritySprites[index];
     }
 }

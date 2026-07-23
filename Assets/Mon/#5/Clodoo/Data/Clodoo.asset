@@ -17,6 +17,7 @@ MonoBehaviour:
   type: 9
   spritePokemonCard: {fileID: -1215648728, guid: aac19f33d44466249b07e160afd6235f, type: 3}
   priceToBuyCard: 0
+  Rarity: SSR
   pokemonPrefabRef:
     m_AssetGUID: 164365844fdc4b64184e0276f343faf4
     m_SubObjectName: 

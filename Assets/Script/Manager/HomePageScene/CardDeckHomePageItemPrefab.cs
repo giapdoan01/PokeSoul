@@ -9,12 +9,13 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
     public Image typeCardBackgroundImage;
     public Image monImage;
     public TMP_Text monName;
-    public TMP_Text typeText;
     public Image TypeImage;
+    public Image RarityImage;
     public Button addOrReplaceCardButton;
     public GameObject onSelectChangeFrame;
     public List<Sprite> TypeSprites;
     public List<Sprite> typeCardBackgroundImageList;
+    public List<Sprite> RaritySprites;
     
     [Header("Color Text By Type")]
     public Color fireColor;
@@ -51,12 +52,13 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
         typeCardBackgroundImage.enabled = true;
         monImage.enabled = true;
         TypeImage.enabled = true;
+        RarityImage.enabled = true;
         
         monImage.sprite = pokemonData.spritePokemonCard;
         monName.text = pokemonData.PokemonName;
-        typeText.text = pokemonData.type.ToString();
         SetupType(pokemonData);
         SetupTextColor(pokemonData.type);
+        SetupRarity(pokemonData);
     }
     
     public void SetupEmptyCard(int positionInDeck)
@@ -67,8 +69,8 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
         typeCardBackgroundImage.enabled = false;
         monImage.enabled = false;
         monName.text = "Add Mon";
-        typeText.text = "";
         TypeImage.enabled = false;
+        RarityImage.enabled = false;
     }
     
     public void SetSelectFrame(bool active)
@@ -107,7 +109,6 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
         };
 
         monName.color = color;
-        typeText.color = color;
     }
 
     public void SetupType(PokemonData cardPokemon)
@@ -153,6 +154,30 @@ public class CardDeckHomePageItemPrefab : MonoBehaviour
             case PokemonType.Ground:
                 TypeImage.sprite = TypeSprites[9];
                 typeCardBackgroundImage.sprite = typeCardBackgroundImageList[9];
+                break;
+        }
+    }
+    public void SetupRarity(PokemonData pokemonData)
+    {
+        switch (pokemonData.Rarity)
+        {
+            case "C":
+                RarityImage.sprite = RaritySprites[0];
+                break;
+            case "R":
+                RarityImage.sprite = RaritySprites[1];
+                break;
+            case "S":
+                RarityImage.sprite = RaritySprites[2];
+                break;
+            case "SSR":
+                RarityImage.sprite = RaritySprites[3];
+                break;
+            case "SSS":
+                RarityImage.sprite = RaritySprites[4];
+                break;
+            default:
+                Debug.LogWarning($"Unknown rarity: {pokemonData.Rarity}");
                 break;
         }
     }
